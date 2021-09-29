@@ -1,0 +1,20 @@
+{
+  "noAgency": "No Agencies Available",
+  "manageAgency": "Manage Agencies",
+  "updateAgency": "Update Agency",
+  "addnewagency": "Add New Agency",
+  "companyName": "Company Name",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "adminEmail": "Admin Email",
+  "createdOn": "Created On",
+  "trialPeriod": "Trial Period",
+  "status": "Status",
+  "action": "Action",
+  "isPremium": "Is Premium",
+  "cancel": "Cancel",
+  "save": "Save",
+  "updatedMsg": "Agency has been successfully updated",
+  "ok": "Ok",
+  "currentCountryCode": "US"
+}

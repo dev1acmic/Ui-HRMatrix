@@ -1,0 +1,20 @@
+{
+    "noEmployer": "Aucun employeur disponible.",
+    "manageEmployer": "Gérer les employeurs",
+    "updateEmployer": "Mettre à jour l'employeur",
+    "companyName": "Nom De L'Entreprise ",
+    "firstName": "Prénom",
+    "lastName": "Nom De Famille",
+    "adminEmail": "E-mail de l'administrateur",
+    "createdOn": "Créé sur",
+    "trialPeriod": "Période d'essai",
+    "status": "Statut",
+    "action": "action",
+    "isPremium": "Est Premium",
+    "cancel": "Supprimer",
+    "save": "Enregistrer",
+    "updatedMsg": "L'employeur a été mis à jour avec succès.",
+    "ok": "D'accord",
+    "addNewEmployer": "Ajouter un nouvel employeur",
+    "currentCountryCode": "FR"
+}

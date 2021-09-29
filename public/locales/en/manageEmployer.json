@@ -1,0 +1,20 @@
+{
+  "noEmployer": "No Employers Available.",
+  "manageEmployer": "Manage Employers",
+  "updateEmployer": "Update Employer",
+  "companyName": "Company Name",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "adminEmail": "Admin Email",
+  "createdOn": "Created On",
+  "trialPeriod": "Trial Period",
+  "status": "Status",
+  "action": "Action",
+  "isPremium": "Is Premium",
+  "cancel": "Cancel",
+  "save": "Save",
+  "updatedMsg": "Employer has been successfully updated.",
+  "ok": "Ok",
+  "addNewEmployer": "Add New Employer",
+  "currentCountryCode": "US"
+}

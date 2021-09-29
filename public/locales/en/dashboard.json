@@ -1,0 +1,71 @@
+{
+  "noactivejobs": "No Active Jobs",
+  "startpostingthejobsnow": "Jobs Will Be Displayed Here As Soon As You Add Them. Start Posting The Jobs Now",
+  "postjob": "Post Job",
+  "aquisitionAssignAlert": "Jobs will be displayed here as soon as your acquisition team assigns them",
+  "employerAssignAlert": "Jobs will be displayed here as soon as your employer assigns them.",
+  "managerAssignAlert": "Jobs will be displayed here as soon as your hiring manager assigns them",
+  "summary": {
+    "open": "Open",
+    "jobs": "Jobs",
+    "candidates": "Candidates",
+    "shortlisted": "Shortlisted",
+    "interviewed": "Interviewed",
+    "needAttention": "Need Attention"
+  },
+  "analytics": {
+    "hiringProcessAnalytics": "Hiring Process Analytics",
+    "funnel": {
+      "recruitmentFunnel": "Recruitment Funnel"
+    },
+    "bar": {
+      "averageHiringPeriod": "Average Hiring Period",
+      "days": "Days",
+      "profileSourcing": "Profile Sourcing",
+      "profileReview": "Profile Review",
+      "interview": "Interview",
+      "finalization": "Finalization"
+    }
+  },
+  "trackerBar": {
+    "searchJobs": "Search Jobs",
+    "jobsTracker": "Jobs Tracker",
+    "pendingSubmission": "Pending Submission",
+    "pendingReview": "Pending Review",
+    "onTrack": "On Track",
+    "closed": "Closed"
+  },
+  "tracker": {
+    "review": "Review",
+    "sendtoAgency": "Send to Agency",
+    "unlockPremium": "Unlock Premium",
+    "noActiveSubscription": "It looks like you do not have an active subscription. Please contact your administrator.",
+    "unlockAlert": "You are trying to view a candidate from our premium network. Please unlock the candidate from skill matrix.",
+    "ok": "Ok",
+    "activateSubscription": "Activate Subscription",
+    "subscribeAlert": "You do not have an active subscription. To submit a candidate please add a payment method under settings.",
+    "doLater": "I can do it later",
+    "buyNow": "Buy Now",
+    "closeJob": "Close Job",
+    "closeJobAlert": "Are you sure you want to close this job?",
+    "no": "No",
+    "yes": "Yes",
+    "jobNotFoundAlert": "Unable to find a Job ID or Job title related to the keyword",
+    "noSearchResults": "No Search Results",
+    "allRecruiters": "All Recruiters",
+    "view": "View",
+    "postedBy": "Posted By:",
+    "postedOn": "Posted On:",
+    "agencies": "Agencies",
+    "recruiters": "Recruiters",
+    "applicants": "Applicants",
+    "skillMatrix": "Skill Matrix",
+    "edit": "Edit",
+    "close": "Close",
+    "addProfile": "Add Profile",
+    "inProgress": "In Progress",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "onHold": "On Hold"
+  }
+}

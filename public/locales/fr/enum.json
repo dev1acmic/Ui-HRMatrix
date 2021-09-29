@@ -1,0 +1,75 @@
+{
+  "competency": {
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "expert": "Spécialiste"
+  },
+  "jobType": {
+    "fullTime": "À Plein Temps",
+    "partTime": "À temps partiel",
+    "contract": "Contrat",
+    "internship": "Stage",
+    "seasonal": "Saisonnier"
+  },
+  "role": {
+    "administrator": "Administrateur",
+    "hiringManager": "Gestionnaire d'embauche",
+    "talentAcquisitionOfficer": "Chargée d'acquisition de talents",
+    "interviewer": "Interviewer",
+    "recruiter": "Recruteur",
+    "agencyAdmin": "Administrateur d'agence",
+    "superUserAdmin": "Administrateur super utilisateur"
+  },
+  "roles": {
+    "admin": "Administrateur",
+    "hiringManager": "Gestionnaire d'embauche",
+    "talentAcquisitionTeam": "Équipe d'acquisition de talents",
+    "interviewPanel": "Panel d'interview",
+    "recruiter": "Recruteur",
+    "agencyAdmin": "Administrateur d'agence",
+    "superUserAdmin": "Administrateur super utilisateur"
+  },
+  "month": {
+    "jan": "Jan",
+    "feb": "Fév",
+    "mar": "Mar",
+    "apr": "Avr",
+    "may": "Mai",
+    "jun": "Jui",
+    "jul": "Juil",
+    "aug": "Aoû",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Déc"
+  },
+  "jobStatus": {
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "approved": "Approuvé",
+    "rejected": "Rejeté",
+    "onHold": "En attente",
+    "closed": "Fermé"
+  },
+  "priority": {
+    "low": "Faible",
+    "medium": "Moyen",
+    "high": "Haut"
+  },
+  "answerType": {
+    "singleAnswer": "Réponse Unique",
+    "multipleAnswer": "Réponse Multiple",
+    "yesNo": "Oui/Non"
+  },
+  "interviewMode": {
+    "virtual": "Virtuel",
+    "onsite": "Sur Site"
+  },
+  "assessmentType": {
+    "low": "Faible",
+    "medium": "Moyen",
+    "high": "Haut",
+    "excellent": "Excellent"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "noactivejobs": "Aucun travail actif.",
+  "startpostingthejobsnow": "Les Emplois Seront Affichés Ici Dès Que Vous Les Ajoutez. Commencez À Afficher Les Emplois Maintenant",
+  "postjob": "Publier un emploi",
+  "aquisitionAssignAlert": "Les emplois seront affichés ici dès que votre équipe d'acquisition les aura attribués",
+  "employerAssignAlert": "Les emplois seront affichés ici dès que votre employeur les aura attribués.",
+  "managerAssignAlert": "Les emplois seront affichés ici dès que votre responsable du recrutement les aura attribués",
+  "summary": {
+    "open": "Ouverte",
+    "jobs": "Emplois",
+    "candidates": "Candidats",
+    "shortlisted": "En Lice",
+    "interviewed": "Interviewé",
+    "needAttention": "Besoin d'attention"
+  },
+  "analytics": {
+    "hiringProcessAnalytics": "Analyse des processus d'embauche",
+    "funnel": {
+      "recruitmentFunnel": "Entonnoir de recrutement"
+    },
+    "bar": {
+      "averageHiringPeriod": "Période d'embauche moyenne",
+      "days": "Jours",
+      "profileSourcing": "Sourcing de profils",
+      "profileReview": "Examen du profil",
+      "interview": "Entrevue",
+      "finalization": "Finalisation"
+    }
+  },
+  "trackerBar": {
+    "searchJobs": "Recherche de travail",
+    "jobsTracker": "Suivi des emplois",
+    "pendingSubmission": "Soumission",
+    "pendingReview": "Examen en attente",
+    "onTrack": "Ouverte",
+    "closed": "Fermé"
+  },
+  "tracker": {
+    "review": "La revue",
+    "sendtoAgency": "Envoyer à l'agence",
+    "unlockPremium": "Débloquer Premium",
+    "noActiveSubscription": "Il semble que vous ne disposez pas d'un abonnement actif. Veuillez contacter votre administrateur.",
+    "unlockAlert": "Vous essayez de voir un candidat de notre réseau premium. Veuillez déverrouiller le candidat de la matrice de compétences.",
+    "ok": "D'accord",
+    "activateSubscription": "Activer l'abonnement",
+    "subscribeAlert": "Vous n'avez pas d'abonnement actif. Pour soumettre un candidat, veuillez ajouter un mode de paiement dans les paramètres.",
+    "doLater": "Je peux le faire plus tard",
+    "buyNow": "Acheter maintenant",
+    "closeJob": "Fermer le travail",
+    "closeJobAlert": "Êtes-vous sûr de vouloir fermer ce poste?",
+    "no": "Non",
+    "yes": "Oui",
+    "jobNotFoundAlert": "Impossible de trouver un identifiant de poste ou une titre de poste lié au mot clé",
+    "noSearchResults": "Aucun résultat trouvé",
+    "allRecruiters": "Tous les recruteurs",
+    "view": "Vue",
+    "postedBy": "Posté par:",
+    "postedOn": "Posté sur:",
+    "agencies": "Agences",
+    "recruiters": "Recruteurs",
+    "applicants": "Candidats",
+    "skillMatrix": "Matrice de compétence",
+    "edit": "Éditer",
+    "close": "Fermer",
+    "addProfile": "Ajouter un profil",
+    "inProgress": "En cours",
+    "approved": "Approuvé",
+    "rejected": "Rejeté",
+    "onHold": "En attente"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "hire": "Hire",
+  "previous": "Previous",
+  "next": "Next",
+  "overallAssessmentscore": "Overall Assessment Score",
+  "hireConfirmation": "Once hired you will not be able to make any changes.",
+  "rejectConfirmation": "Once rejected you will not be able to make any changes.",
+  "intrwQuestionnaire": "Interview Questionnaire",
+  "backtoSkillMatrix": " Back To Skill Matrix",
+  "noAccesstoLevel": "You will have to complete the previous level to have access to this level.",
+  "behaviour": {
+    "weightage": "Weightage",
+    "timeManagement": "Time Management",
+    "criticalThinking": "Critical Thinking",
+    "communication": "Communication",
+    "leadership": "Leadership",
+    "collaboration": "Collaboration"
+  },
+  "comments": {
+    "interviewerComments": "Interviewer Comments",
+    "enterComments": "Enter Comments Here"
+  },
+  "score": {
+    "skillCompetency": "Skill Competency",
+    "interviewQuestion": "Interview Question",
+    "overallScore": "Overall Score"
+  },
+  "domain": {
+    "domainCompetency": "Domain Competency",
+    "overallDomainKnowledge": "Overall Domain Knowledge"
+  },
+  "profile": {
+    "panelname": "Panel Name",
+    "position": "Position",
+    "level": "Level",
+    "typeofInterview": "Type Of Interview",
+    "dateofInterview": "Date Of Interview",
+    "interviewer": "To Interview"
+  },
+  "questionnaire": {
+    "overall": "Overall"
+  },
+  "skills": {
+    "overallSkillsLevel": "Overall Skills Level",
+    "overrideSkillsScore": "Override Individual Skills Score"
+  }
+}

@@ -1,0 +1,20 @@
+{
+    "noAgency": "Aucune Agence disponible",
+    "manageAgency": "Gérer les agences",
+    "updateAgency": "Agence de mise à jour",
+    "addnewagency": "ajouter les nouveaux organismes",
+    "companyName": "Nom De L'Entreprise ",
+    "firstName": "Prénom",
+    "lastName": "Nom De Famille",
+    "adminEmail": "E-mail de l'administrateur",
+    "createdOn": "Créé sur",
+    "trialPeriod": "Période d'essai",
+    "status": "Statut",
+    "action": "action",
+    "isPremium": "Est Premium",
+    "cancel": "Supprimer",
+    "save": "Enregistrer",
+    "updatedMsg": "L'agence a été mise à jour avec succès",
+    "ok": "D'accord",
+    "currentCountryCode": "FR"
+}

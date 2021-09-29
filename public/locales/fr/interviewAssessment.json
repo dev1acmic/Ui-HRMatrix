@@ -1,0 +1,47 @@
+{
+  "hire": "Louer",
+  "previous": "Précédent",
+  "next": "Prochain",
+  "overallAssessmentscore": "Note D'Évaluation Globale",
+  "hireConfirmation": "Une fois embauché, vous ne pourrez plus apporter de modifications.",
+  "rejectConfirmation": "Une fois rejeté, vous ne pourrez plus apporter de modifications.",
+  "intrwQuestionnaire": "questionnaire d'entretien",
+  "backtoSkillMatrix": "Retour à la matrice de compétences",
+  "noAccesstoLevel": "Vous devrez terminer le niveau précédent pour avoir accès à ce niveau.",
+  "behaviour": {
+    "weightage": "Poids",
+    "timeManagement": "Gestion Du Temps",
+    "criticalThinking": "Esprit Critique",
+    "communication": "La Communication",
+    "leadership": "Direction",
+    "collaboration": "Collaboration"
+  },
+  "comments": {
+    "interviewerComments": "Intervieweur Observations",
+    "enterComments": "Inscrivez  Commentaire Ici"
+  },
+  "score": {
+    "skillCompetency": "Compétence De Compétence",
+    "interviewQuestion": "Question D'Entrevue",
+    "overallScore": "Score Global"
+  },
+  "domain": {
+    "domainCompetency": "Compétence De Domaine",
+    "overallDomainKnowledge": "Connaissance Globale Du Domaine"
+  },
+  "profile": {
+    "panelname": "Nom du Jury",
+    "position": "Position",
+    "level": "Niveau",
+    "typeofInterview": "Type D'Entretien",
+    "dateofInterview": "Date De L'Entrevue",
+    "interviewer": "Interviewer"
+  },
+  "questionnaire": {
+    "overall": "Global"
+  },
+  "skills": {
+    "overallSkillsLevel": "Niveau Global De Compétences",
+    "overrideSkillsScore": "Remplacer Le Score De Compétences Individuelles"
+  }
+}

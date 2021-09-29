@@ -1,0 +1,76 @@
+{
+  "beginner": "Beginner",
+  "competency": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "jobType": {
+    "fullTime": "Full-Time",
+    "partTime": "Part-Time",
+    "contract": "Contract",
+    "internship": "Internship",
+    "seasonal": "Seasonal"
+  },
+  "role": {
+    "administrator": "Administrator",
+    "hiringManager": "Hiring Manager",
+    "talentAcquisitionOfficer": "Talent Acquisition Officer",
+    "interviewer": "Interviewer",
+    "recruiter": "Recruiter",
+    "agencyAdmin": "Agency Admin",
+    "superUserAdmin": "Super User Admin"
+  },
+  "roles": {
+    "admin": "Admin",
+    "hiringManager": "Hiring Manager",
+    "talentAcquisitionTeam": "Talent Acquisition Team",
+    "interviewPanel": "Interview Panel",
+    "recruiter": "Recruiter",
+    "agencyAdmin": "Agency Admin",
+    "superUserAdmin": "Super User Admin"
+  },
+  "month": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "jobStatus": {
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "onHold": "On Hold",
+    "closed": "Closed"
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "answerType": {
+    "singleAnswer": "Single Answer",
+    "multipleAnswer": "Multiple Answer",
+    "yesNo": "Yes/No"
+  },
+  "interviewMode": {
+    "virtual": "Virtual",
+    "onsite": "Onsite"
+  },
+  "assessmentType": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "excellent": "Excellent"
+  }
+}

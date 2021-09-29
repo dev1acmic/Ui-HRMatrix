@@ -1,0 +1,73 @@
+{
+  "summary": "SUMMARY",
+  "detail": "DETAIL",
+  "Noofjobs": "Number of Jobs",
+  "allrevenue": "All Revenue",
+  "currentjobs": "Current Jobs",
+  "currentrevenue": "Current Revenue",
+  "revenue": "Revenue",
+  "slno": "Sl No.",
+  "total": "Total",
+  "fulltime": "Full-Time",
+  "parttime": "Part-Time",
+  "contractors": "Contractors",
+  "internship": "Internship",
+  "seasonal": "Seasonal",
+  "ofcandidates": "# of Candidates",
+  "ofcandidatesSubmitted": "# of Candidates Submitted",
+  "currentJob": "Current Job",
+  "year": "YEAR",
+  "month": "Month",
+  "noRecordsFound": "No Records Found.",
+  "hrManager": "Hiring Manager",
+  "exportToExcel": "Export to Excel",
+  "admin": {
+    "analytics": "EMPLOYER ANALYTICS",
+    "allemployers": "All Employers",
+    "currentemployers": "Current Employers",
+    "noofcandidates": "No. of Candidates",
+    "newemployers": "New Employers",
+    "employer": "Employer",
+    "#ofdepartments": "# Of Depts",
+    "currentJobPostings": "Current Job Postings",
+    "alljobpostings": "All Job Postings",
+    "candidateSubmissions": "Candidate Submissions"
+  },
+  "agency": {
+    "analytics": "AGENCY ANALYTICS",
+    "allagencies": "All Agencies",
+    "preferredagencies": "Preferred Agencies",
+    "htnetworkagencies": "HT Network Agencies",
+    "currentagencies": "Current Agencies",
+    "curntprefrdagencies": "Current Preferred Agencies",
+    "curntjobsagncyexclsv": "Current Jobs - P. Agencies exclusive",
+    "currentHTNagncy": "Current HTN Agencies",
+    "currentHTNjobsagncy": "Current Jobs HTN + Agencies",
+    "agency": "Agency",
+    "current": "Current",
+    "employerinteractions": "Employer Interactions",
+    "jobpostings": "# Job Postings",
+    "candidate": "Candidate"
+  },
+  "employer": {
+    "candidatesShortlisted": "Current Candidates Short-Listed",
+    "candidatesSubmitted": "Current Candidates Submitted",
+    "noofcandidatesfrompreferredagencies": "No. of Candidates From Preferred Agencies",
+    "noofcandidatesfromhtnagencies": "No. of Candidates From HTN Agencies"
+  },
+  "status": {
+    "noofJobsPosted": "No. of Jobs Posted",
+    "noofPositionsFilled": "No. of Positions Filled",
+    "billing": "Billing",
+    "noofcandidatesshortlisted": "No. of Candidates Short-Listed",
+    "noofcandidatessubmitted": "No. of Candidates Submitted",
+    "noofCandfromPreferredAgncy": "No. of Candidates from Preferred Agencies",
+    "noofCandfromhtnAgncy": "No. of Candidates from HTN Agencies",
+    "noofJobsReceived": "No. of Jobs Received",
+    "noofJobRelied": "No. of Jobs Replied to",
+    "noofCandidatesHired": "No. of Candidates Hired"
+  },
+  "data": {
+    "department": "Department"
+  }
+}
