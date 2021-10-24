@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import {
   Container,
   Box,
@@ -7,7 +7,7 @@ import {
   Typography,
   CircularProgress,
 } from "@material-ui/core";
-import { Dashboard as DashboardLayout } from "layouts";
+import {Dashboard as DashboardLayout} from "layouts";
 import {
   WorkOutlineOutlined,
   CompareArrowsOutlined,
@@ -18,16 +18,16 @@ import {
   CardMembershipOutlined,
 } from "@material-ui/icons";
 import styles from "./style";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {
   getJobApplicationsById,
   getJobApplicationsByJobPost,
   getFile,
   getApplicantAssessmentLevelsAndScore,
 } from "services/jobApplication/action";
-import { JobApplicationSelectStatus } from "util/enum";
+import {JobApplicationSelectStatus} from "util/enum";
 
 import {
   Timeline,
@@ -41,14 +41,14 @@ import {
   RadarChart,
   PrintHeader,
 } from "./components/";
-import { getApplicatSkillMatrix, paginate } from "util/helper";
+import {getApplicatSkillMatrix, paginate} from "util/helper";
 import Popout from "react-popout";
 
 import nodata from "assets/images/nodata-graph.png";
 
 const Recap = (props) => {
-  const { classes } = props;
-  const { t } = useTranslation("common");
+  const {classes} = props;
+  const {t} = useTranslation("common");
   const pageSize = 1;
   const [loading, setLoading] = React.useState(true);
   const [state, setState] = React.useState();
@@ -68,7 +68,7 @@ const Recap = (props) => {
     } else if (props.match.params && props.match.params.jobApplId) {
       jobApplId = props.match.params.jobApplId;
     }
-    setState({ ...state, jobApplId: parseInt(jobApplId) });
+    setState({...state, jobApplId: parseInt(jobApplId)});
     if (jobPostId > 0) {
       props
         .getJobApplicationsByJobPost(
@@ -83,15 +83,15 @@ const Recap = (props) => {
           }
         });
     }
-  }, []);
+  }, [props.location.state.jobApplId]);
 
   useEffect(() => {
     let appln = props.jobApplication;
     if (appln && applicationMatrix) {
       let index = applicationMatrix.findIndex((c) => c.id === appln.id);
       if (index !== -1) {
-        appln = { ...applicationMatrix[index], ...appln };
-        setState({ ...state, pageNo: index + 1 });
+        appln = {...applicationMatrix[index], ...appln};
+        setState({...state, pageNo: index + 1});
         setApplicant(appln);
         setLoading(false);
       }
@@ -129,8 +129,8 @@ const Recap = (props) => {
     let res = await props.getFile(id);
     //console.log(resumeUpload);
     if (res.status) {
-      const { url, originalName } = res.result;
-      setResumePopOut({ url: url, title: originalName, isOpen: true });
+      const {url, originalName} = res.result;
+      setResumePopOut({url: url, title: originalName, isOpen: true});
     }
   };
 
@@ -144,7 +144,7 @@ const Recap = (props) => {
         <Popout
           url={resumePopOut.url}
           title={resumePopOut.title}
-          options={{ height: "300", width: "600" }}
+          options={{height: "300", width: "600"}}
           onClosing={handleCloseFile}
         >
           <div>{t("wait")}</div>
@@ -167,7 +167,7 @@ const Recap = (props) => {
             display: "flex",
           }}
         >
-          <CircularProgress style={{ height: 30, width: 30 }} />
+          <CircularProgress style={{height: 30, width: 30}} />
         </div>
       )}
       {applicant && (
@@ -245,7 +245,7 @@ const Recap = (props) => {
                         <Typography
                           variant="h2"
                           className={classes.heading}
-                          style={{ marginTop: 20 }}
+                          style={{marginTop: 20}}
                         >
                           <HowToRegOutlined />
                           {t("common:interviewresults")}
@@ -257,7 +257,7 @@ const Recap = (props) => {
                         />
                       </Box>
                     </Grid>
-                    <Grid item sm={6} style={{ borderRadius: 0 }}>
+                    <Grid item sm={6} style={{borderRadius: 0}}>
                       <Box className={classes.chartWrap}>
                         <Typography variant="h2" className={classes.heading}>
                           <StarBorderOutlined /> Skills Proficiency
@@ -268,18 +268,18 @@ const Recap = (props) => {
                         <Typography
                           variant="h2"
                           className={classes.heading}
-                          style={{ marginTop: 20 }}
+                          style={{marginTop: 20}}
                         >
                           <GamesOutlined /> {t("common:softskills")}
                         </Typography>
                         {assessment && assessment.length > 0 ? (
                           <RadarChart assessment={assessment} />
                         ) : (
-                          <div style={{ position: "relative" }}>
+                          <div style={{position: "relative"}}>
                             <img
                               alt="No data"
                               src={nodata}
-                              style={{ width: "90%", marginTop: "-8%" }}
+                              style={{width: "90%", marginTop: "-8%"}}
                             />
 
                             <Typography
@@ -303,7 +303,7 @@ const Recap = (props) => {
               <Typography
                 variant="h2"
                 className={classes.heading}
-                style={{ marginBottom: -50, marginLeft: 20 }}
+                style={{marginBottom: -50, marginLeft: 20}}
               >
                 <AddOutlined /> {t("swotanalysis")}
               </Typography>
@@ -422,7 +422,7 @@ const Recap = (props) => {
                     <Typography
                       variant="h2"
                       className={classes.heading}
-                      style={{ paddingLeft: 20, marginBottom: 0 }}
+                      style={{paddingLeft: 20, marginBottom: 0}}
                     >
                       <HowToRegOutlined />
                       {t("common:interviewresults")}
@@ -476,7 +476,7 @@ const Recap = (props) => {
                         <img
                           alt="No data"
                           src={nodata}
-                          style={{ width: "280px", marginTop: "-30px" }}
+                          style={{width: "280px", marginTop: "-30px"}}
                         />
 
                         <Typography
@@ -535,12 +535,12 @@ const Recap = (props) => {
                     item
                     spacing="0"
                     xs={12}
-                    style={{ padding: "25px 10px 25px 30px" }}
+                    style={{padding: "25px 10px 25px 30px"}}
                   >
                     <Typography
                       variant="h2"
                       className={classes.heading}
-                      style={{ marginBottom: 50 }}
+                      style={{marginBottom: 50}}
                     >
                       <WorkOutlineOutlined /> {t("common:careertimeline")}
                     </Typography>
@@ -551,7 +551,7 @@ const Recap = (props) => {
                   className={classes.colRight}
                   item
                   xs={8}
-                  style={{ border: "none", boxShadow: "none" }}
+                  style={{border: "none", boxShadow: "none"}}
                 >
                   <Grid item spacing="0" xs={12}>
                     <Typography

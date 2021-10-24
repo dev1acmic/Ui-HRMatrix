@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, {Fragment} from "react";
+import {Link} from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 // Externals
@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 // Material helpers
-import { withStyles } from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import moment from "moment";
 
 // Material components
@@ -29,7 +29,7 @@ import {
   VerifiedUserOutlined as HiringIcon,
   SupervisedUserCircleOutlined as RecruiterIcon,
 } from "@material-ui/icons";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 // Component styles
 import styles from "./styles";
@@ -69,40 +69,40 @@ const getCategoryIcon = (category) => {
 };
 
 const NotificationList = (props) => {
-  const { className, classes } = props;
-  const { t } = useTranslation("jobPost");
+  const {className, classes} = props;
+  const {t} = useTranslation("jobPost");
   const rootClassName = classNames(classes.root, className);
 
   const htmlNotificationItem = (notification, index) => {
-    const { category, id, message, createdAt, isRead } = notification;
+    const {category, id, message, createdAt, isRead, params} = notification;
     const categoryIcon = getCategoryIcon(category);
     const readStyle = isRead ? null : classes.listRead;
 
     return (
-      <Link key={index}>
+      <>
         <ListItem
           className={classNames(classes.listItem, readStyle)}
-          component="div"
-          onClick={() => {
+          onClick={async () => {
             if (!isRead) {
-              props.onSelect(id);
+              await props.onSelect(id);
             }
+            props.toJobPost(params, category);
           }}
         >
           <ListItemIcon
             className={classes.listItemIcon}
-            style={{ color: categoryIcon.color }}
+            style={{color: categoryIcon.color}}
           >
             {categoryIcon.icon}
           </ListItemIcon>
           <ListItemText
-            classes={{ secondary: classes.listItemTextSecondary }}
+            classes={{secondary: classes.listItemTextSecondary}}
             primary={message}
             secondary={moment(createdAt).fromNow()}
           />
         </ListItem>
         <Divider />
-      </Link>
+      </>
     );
   };
 
@@ -110,7 +110,7 @@ const NotificationList = (props) => {
     if (notifications.list.length < notifications.total) {
       return (
         <Button
-          style={{ marginLeft: 5 }}
+          style={{marginLeft: 5}}
           //color="primary"
           size="small"
           variant="contained"
@@ -126,7 +126,7 @@ const NotificationList = (props) => {
   };
 
   const htmlNotificationList = () => {
-    const { notifications, isNotificationLoading } = props;
+    const {notifications, isNotificationLoading} = props;
 
     if (isNotificationLoading) {
       return (
@@ -143,7 +143,7 @@ const NotificationList = (props) => {
         <div className={classes.notiHeader}>
           <Typography variant="h6">{t("platformnotifications")}</Typography>
         </div>
-        <div className={classes.content} style={{ height: 250 }}>
+        <div className={classes.content} style={{height: 250}}>
           <PerfectScrollbar>
             <List component="div">
               {notifications.list.map((notification, index) =>
@@ -175,7 +175,7 @@ const NotificationList = (props) => {
   };
 
   return (
-    <div className={rootClassName} style={{ overflow: "hidden" }}>
+    <div className={rootClassName} style={{overflow: "hidden"}}>
       {htmlNotificationList()}
     </div>
   );
