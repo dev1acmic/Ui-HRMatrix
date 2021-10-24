@@ -83,7 +83,7 @@ const Recap = (props) => {
           }
         });
     }
-  }, [props.location.state.jobApplId]);
+  }, [props.location]);
 
   useEffect(() => {
     let appln = props.jobApplication;
@@ -178,6 +178,8 @@ const Recap = (props) => {
             currentPage={state.pageNo}
             componentRef={componentRef}
             handleShowResume={handleShowResume}
+            jobPostId={props.match.params && props.match.params.jobPostId}
+            history={props.history}
           />
           <div>
             <TopBar
