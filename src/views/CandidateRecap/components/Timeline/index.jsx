@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/core";
 
 // Material components
-import { Typography } from "@material-ui/core";
+import { Typography, Tooltip } from "@material-ui/core";
 import {
   WorkOutlineOutlined,
   CardMembershipOutlined,
@@ -113,10 +113,12 @@ const TimeLine = (props) => {
             <div className={classes.treeItemWrap}>
               {item.value.company && (
                 <div className={classes.treeItemSub}>
-                  <WorkOutlineOutlined
-                    className={classes.treeIcon}
-                    style={{ color: getColor(index) }}
-                  />
+                  <Tooltip title="Job">
+                    <WorkOutlineOutlined
+                      className={classes.treeIcon}
+                      style={{ color: getColor(index) }}
+                    />
+                  </Tooltip>
                   <Typography className={classes.treeItemHead}>
                     {item.value.company}
                   </Typography>
@@ -127,10 +129,12 @@ const TimeLine = (props) => {
               )}
               {item.value.has && (
                 <div className={classes.treeItemSub}>
-                  <CardMembershipOutlined
-                    className={classes.treeIcon}
-                    style={{ color: getColor(index) }}
-                  />
+                  <Tooltip title="Certificate">
+                    <CardMembershipOutlined
+                      className={classes.treeIcon}
+                      style={{ color: getColor(index) }}
+                    />
+                  </Tooltip>
                   <Typography className={classes.treeItemHead}>
                     {item.value.name}
                   </Typography>
@@ -138,10 +142,12 @@ const TimeLine = (props) => {
               )}
               {item.value.qualification && (
                 <div className={classes.treeItemSub}>
-                  <CardGiftcardOutlined
-                    className={classes.treeIcon}
-                    style={{ color: getColor(index) }}
-                  />
+                  <Tooltip title="Education">
+                    <CardGiftcardOutlined
+                      className={classes.treeIcon}
+                      style={{ color: getColor(index) }}
+                    />
+                  </Tooltip>
                   <Typography className={classes.treeItemHead}>
                     {item.value.qualification}
                   </Typography>
