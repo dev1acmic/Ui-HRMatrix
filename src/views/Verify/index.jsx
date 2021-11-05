@@ -41,6 +41,7 @@ class Verify extends Component {
       uid: 0,
       showResetPassword: false,
       isReset: false,
+      expired: false,
     };
   }
 
@@ -59,6 +60,11 @@ class Verify extends Component {
         this.setState({
           hideLoading: true,
         });
+        if (!res) {
+          this.setState({
+            expired: true,
+          });
+        }
         //this.props.history.push("/sign-in");
       }
     }
@@ -133,17 +139,29 @@ class Verify extends Component {
                     margin: "0 auto",
                   }}
                 />
-
-                <Typography
-                  variant="p"
-                  style={{
-                    fontFamily: "Montserrat",
-                    lineHeight: "27px",
-                    fontSize: "18px",
-                  }}
-                >
-                  {t("succMsg.useractivationsuccess")}
-                </Typography>
+                {!this.state.expired ? (
+                  <Typography
+                    variant="p"
+                    style={{
+                      fontFamily: "Montserrat",
+                      lineHeight: "27px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {t("succMsg.useractivationsuccess")}
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="p"
+                    style={{
+                      fontFamily: "Montserrat",
+                      lineHeight: "27px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {t("activationlinkexpired")}
+                  </Typography>
+                )}
                 <br></br>
                 <Grid item xs={12} md={12} style={{ padding: "0" }}>
                   <Button

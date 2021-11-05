@@ -313,6 +313,7 @@
     "verifyemailpleasewait": "Vérification. S'il vous plaît, attendez...",
     "pswdResetSuccesssMsg": "Vous avez réinitialisé le mot de passe avec succès",
     "resendActivation": "Renvoyer l'activation",
+    "activationlinkexpired":"Lien expiré / Déjà activé",
     "enterProvidedEmail": "Entrez l'e-mail que vous avez fourni lors de l'inscription pour recevoir les instructions d'activation.",
     "checkSpamforActivationMail": "Si vous ne recevez pas votre e-mail d'activation dans quelques minutes, veuillez vérifier votre dossier spam.",
     "skillScore": "Score de compétence",
