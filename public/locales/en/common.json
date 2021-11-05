@@ -250,6 +250,8 @@
     "profilephoto": "Profile Photo ",
     "resume": "Resume ",
     "education": "Education",
+    "certificate":"Certificate",
+    "job":"Job",
     "beginner": "Beginner",
     "intermediate": "Intermediate ",
     "advanced": "Advanced",
