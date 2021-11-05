@@ -308,6 +308,7 @@
     "verifyemailpleasewait": "Verifying. Please wait...",
     "pswdResetSuccesssMsg": "You have successfully reset the password",
     "resendActivation": "Resend Activation",
+    "activationlinkexpired":"Link Expired / Already activated",
     "enterProvidedEmail": "Enter the email you have provided during the registration to receive the activation instruction.",
     "checkSpamforActivationMail": " If you do not receive your activation email within a few minutes, please check your spam folder.",
     "skillScore": "Skill Score",
