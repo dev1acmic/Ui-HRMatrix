@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
 // Material helpers
-import { withStyles } from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 
 // Material components
-import { Typography, Tooltip } from "@material-ui/core";
+import {Typography, Tooltip} from "@material-ui/core";
 import {
   WorkOutlineOutlined,
   CardMembershipOutlined,
@@ -13,7 +13,7 @@ import {
 
 // Component styles
 import styles from "./styles";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 const colors = [
   "#894CBD",
@@ -26,8 +26,8 @@ const colors = [
 ];
 
 const TimeLine = (props) => {
-  const { classes, applicant, isPrint } = props;
-  const { t } = useTranslation("common");
+  const {classes, applicant, isPrint} = props;
+  const {t} = useTranslation("common");
   const [timeline, setTimeline] = useState(null);
   useEffect(() => {
     if (applicant) {
@@ -38,7 +38,7 @@ const TimeLine = (props) => {
       applicant.jobapplicantcerts &&
         applicant.jobapplicantcerts.map((a) => {
           if (a.has) {
-            certificates = [...certificates, { ...a }];
+            certificates = [...certificates, {...a}];
           }
         });
       /**
@@ -82,7 +82,7 @@ const TimeLine = (props) => {
             value: item,
           });
         } else {
-          const newData = { ...dict[index].value, ...item };
+          const newData = {...dict[index].value, ...item};
           dict[index].value = newData;
         }
       });
@@ -108,7 +108,7 @@ const TimeLine = (props) => {
           >
             <Typography
               className={classes.treeLyear}
-              style={{ borderColor: getColor(index) }}
+              style={{borderColor: getColor(index)}}
             >
               {item.key}
             </Typography>
@@ -118,7 +118,7 @@ const TimeLine = (props) => {
                   <Tooltip title={t("job")}>
                     <WorkOutlineOutlined
                       className={classes.treeIcon}
-                      style={{ color: getColor(index) }}
+                      style={{color: getColor(index)}}
                     />
                   </Tooltip>
                   <Typography className={classes.treeItemHead}>
@@ -134,7 +134,7 @@ const TimeLine = (props) => {
                   <Tooltip title={t("certificate")}>
                     <CardMembershipOutlined
                       className={classes.treeIcon}
-                      style={{ color: getColor(index) }}
+                      style={{color: getColor(index)}}
                     />
                   </Tooltip>
                   <Typography className={classes.treeItemHead}>
@@ -147,7 +147,7 @@ const TimeLine = (props) => {
                   <Tooltip title={t("education")}>
                     <CardGiftcardOutlined
                       className={classes.treeIcon}
-                      style={{ color: getColor(index) }}
+                      style={{color: getColor(index)}}
                     />
                   </Tooltip>
                   <Typography className={classes.treeItemHead}>

@@ -311,6 +311,7 @@
     "verifycontinuetologin": "Continuer à se connecter",
     "verifyresetpassword": "Réinitialiser le mot de passe",
     "verifyemailpleasewait": "Vérification. S'il vous plaît, attendez...",
+    "activationlinkexpired":"Lien expiré / Déjà activé",
     "pswdResetSuccesssMsg": "Vous avez réinitialisé le mot de passe avec succès",
     "resendActivation": "Renvoyer l'activation",
     "activationlinkexpired":"Lien expiré / Déjà activé",

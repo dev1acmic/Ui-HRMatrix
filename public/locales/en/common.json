@@ -308,6 +308,7 @@
     "verifycontinuetologin": "Continue to Login",
     "verifyresetpassword": "Reset Password",
     "verifyemailpleasewait": "Verifying. Please wait...",
+    "activationlinkexpired":"Link Expired / Already activated",
     "pswdResetSuccesssMsg": "You have successfully reset the password",
     "resendActivation": "Resend Activation",
     "activationlinkexpired":"Link Expired / Already activated",
