@@ -30,18 +30,20 @@ const Paginate = (props) => {
 
   return (
     <div>
-      <Button
-        style={{position: "absolute", top: 90, color: "#696565"}}
-        //color="primary"
-        size="small"
-        variant="contained"
-        onClick={() => {
-          skillMatrix();
-        }}
-      >
-        <ArrowBackOutlined size />
-        {t("interviewAssessment:backtoSkillMatrix")}
-      </Button>
+      {props.showBack && (
+        <Button
+          style={{position: "absolute", top: 90, color: "#696565"}}
+          //color="primary"
+          size="small"
+          variant="contained"
+          onClick={() => {
+            skillMatrix();
+          }}
+        >
+          <ArrowBackOutlined size />
+          {t("interviewAssessment:backtoSkillMatrix")}
+        </Button>
+      )}
       <Box className={classes.topButtonWrap}>
         <ButtonGroup
           variant="contained"

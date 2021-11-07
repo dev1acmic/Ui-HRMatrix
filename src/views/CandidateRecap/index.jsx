@@ -56,12 +56,17 @@ const Recap = (props) => {
   const [applicationMatrix, setApplicationMatrix] = React.useState(null);
   const [resumePopOut, setResumePopOut] = React.useState(null);
   const [assessment, setAssessment] = React.useState(null);
-
+  const [showBack, setShowBack] = React.useState(false);
   const componentRef = useRef();
 
   useEffect(() => {
     let jobApplId;
     const jobPostId = props.match.params ? props.match.params.jobPostId : null;
+    if (props.location.state && props.location.state.isSkillMatrix) {
+      setShowBack(true);
+    } else {
+      setShowBack(false);
+    }
 
     if (props.location.state && props.location.state.jobApplId) {
       jobApplId = props.location.state.jobApplId;
@@ -174,6 +179,7 @@ const Recap = (props) => {
         <Container className={classes.root}>
           <Paginate
             handlePaginate={handlePaginate}
+            showBack={showBack}
             totalPage={applicationMatrix.length}
             currentPage={state.pageNo}
             componentRef={componentRef}

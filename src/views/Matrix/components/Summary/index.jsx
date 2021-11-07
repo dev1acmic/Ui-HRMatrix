@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {
   Button,
   Container,
@@ -26,12 +26,12 @@ import {
   Grid,
 } from "@material-ui/core";
 
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { useTranslation } from "react-i18next";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+import {useTranslation} from "react-i18next";
 
 import classNames from "classnames";
-import { JobType, JobApplicationSelectStatus } from "util/enum";
+import {JobType, JobApplicationSelectStatus} from "util/enum";
 import {
   AccountCircleOutlined,
   DescriptionOutlined,
@@ -44,7 +44,7 @@ import {
 } from "@material-ui/icons";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import styles from "../style";
-import { paginate, formatCurrency } from "util/helper";
+import {paginate, formatCurrency} from "util/helper";
 
 import moment from "moment";
 
@@ -94,17 +94,16 @@ const theme = createMuiTheme({
 });
 
 const Summary = (props) => {
-  const { t } = useTranslation("matrix");
-  const { classes, skillWeightage, screeningWeightage } = props;
+  const {t} = useTranslation("matrix");
+  const {classes, skillWeightage, screeningWeightage} = props;
 
   const [state, setState] = React.useState({
     pageNo: 1,
   });
 
   const [applicationMatrix, setApplicationMatrix] = React.useState(null);
-  const [applicationMatrixPage, setApplicationMatrixPage] = React.useState(
-    null
-  );
+  const [applicationMatrixPage, setApplicationMatrixPage] =
+    React.useState(null);
   const [maxValues, setMaxValues] = React.useState(null);
 
   //unlock premium alert
@@ -136,21 +135,21 @@ const Summary = (props) => {
         pageNo = pageNo - 1;
         page = paginate(props.applicationMatrix, pageSize, pageNo);
       }
-      setState({ ...state, pageNo });
+      setState({...state, pageNo});
       setApplicationMatrixPage(page);
     }
   }, [props.applicationMatrix, props.maxValues]);
 
   const handlePaginateNext = (event, page) => {
     const pageNo = page + 1;
-    setState({ ...state, pageNo });
+    setState({...state, pageNo});
     setApplicationMatrixPage(paginate(applicationMatrix, pageSize, pageNo));
   };
 
   const candidateRecap = (jobpostId, jobappId) => {
     props.history.push({
       pathname: "/rc/recap/" + jobpostId,
-      state: { jobApplId: jobappId },
+      state: {jobApplId: jobappId, isSkillMatrix: true},
     });
   };
 
@@ -164,9 +163,9 @@ const Summary = (props) => {
 
   const getActionColumns = (index, applicant, hideDetails) => {
     const selectIcon = isRowSelected(applicant.selectStatus) ? (
-      <CheckBoxOutlined style={{ color: "#75d49b" }} />
+      <CheckBoxOutlined style={{color: "#75d49b"}} />
     ) : (
-      <CheckBoxOutlineBlank style={{ color: "#75d49b" }} />
+      <CheckBoxOutlineBlank style={{color: "#75d49b"}} />
     );
 
     if (
@@ -190,7 +189,7 @@ const Summary = (props) => {
               className={classes.gridButton}
               title={t("details.messageRecruiter")}
             >
-              <ChatOutlined style={{ color: "#896743" }} />
+              <ChatOutlined style={{color: "#896743"}} />
             </IconButton>
           </TableCell>
 
@@ -200,7 +199,7 @@ const Summary = (props) => {
             title={t("details.removeCandidate")}
           >
             <IconButton disabled className={classes.gridButton}>
-              <CancelOutlined style={{ color: "#FF725F" }} />
+              <CancelOutlined style={{color: "#FF725F"}} />
             </IconButton>
           </TableCell>
         </>
@@ -229,7 +228,7 @@ const Summary = (props) => {
               !hideDetails && props.handleOpenModalforSendMsgRec(applicant.id);
             }}
           >
-            <ChatOutlined style={{ color: "#896743" }} />
+            <ChatOutlined style={{color: "#896743"}} />
           </IconButton>
         </TableCell>
 
@@ -241,7 +240,7 @@ const Summary = (props) => {
               props.handleConfirmRemove(applicant.id);
             }}
           >
-            <CancelOutlined style={{ color: "#FF725F" }} />
+            <CancelOutlined style={{color: "#FF725F"}} />
           </IconButton>
         </TableCell>
       </>
@@ -258,7 +257,7 @@ const Summary = (props) => {
         : t("postInterview.hr");
 
     return (
-      <TableHead className={classes.tableRow} style={{ borderRadius: 4 }}>
+      <TableHead className={classes.tableRow} style={{borderRadius: 4}}>
         <TableRow>
           <TableCell rowSpan="2" width="45" className={classes.tableHeadTL12}>
             {t("details.rank")}
@@ -271,7 +270,7 @@ const Summary = (props) => {
           </TableCell>
           <TableCell
             className={classes.tableHead}
-            style={{ backgroundColor: "#E6F6FC" }}
+            style={{backgroundColor: "#E6F6FC"}}
             colSpan="3"
           >
             {t("details.score")}
@@ -332,8 +331,8 @@ const Summary = (props) => {
             {moment(reqAvailDate).format("ll")}
           </TableCell>
           <TableCell className={classes.tableHead}>
-            {t("common:currencySymbol")}{formatCurrency(reqPayRate)}/
-            {payRateType}
+            {t("common:currencySymbol")}
+            {formatCurrency(reqPayRate)}/{payRateType}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -357,7 +356,7 @@ const Summary = (props) => {
             : false
           : false;
       const applicant = applicationMatrixPage[index];
-      let { id, exp, availDate, payRate, selectStatus, resumeId } = applicant;
+      let {id, exp, availDate, payRate, selectStatus, resumeId} = applicant;
       availDate = moment(availDate);
       payRate = parseFloat(payRate);
 
@@ -448,7 +447,8 @@ const Summary = (props) => {
             </TableCell>
             <TableCell className={classes.tableBody}>
               <Box className={classes.arrowWrap}>
-                {t("common:currencySymbol")}{formatCurrency(payRate)}
+                {t("common:currencySymbol")}
+                {formatCurrency(payRate)}
                 <ArrowDropDownCircleOutlined className={payRateArrow} />
               </Box>
             </TableCell>
@@ -459,7 +459,7 @@ const Summary = (props) => {
                 title={t("details.candidateRecap")}
               >
                 <AccountCircleOutlined
-                  style={{ color: "#4FBEF1" }}
+                  style={{color: "#4FBEF1"}}
                   onClick={() => {
                     !hideDetails && candidateRecap(applicant.jobpostId, id);
                   }}
@@ -474,7 +474,7 @@ const Summary = (props) => {
                   !hideDetails && props.handleShowResume(resumeId);
                 }}
               >
-                <DescriptionOutlined style={{ color: "#4FBEF1" }} />
+                <DescriptionOutlined style={{color: "#4FBEF1"}} />
               </IconButton>
             </TableCell>
             {getActionColumns(index, applicant, hideDetails)}

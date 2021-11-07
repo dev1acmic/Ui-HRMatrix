@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {
   Container,
   Menu,
@@ -43,10 +43,10 @@ import {
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import styles from "../style";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { paginate, formatCurrency } from "util/helper";
-import { useTranslation } from "react-i18next";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+import {paginate, formatCurrency} from "util/helper";
+import {useTranslation} from "react-i18next";
 
 import {
   JobType,
@@ -55,8 +55,8 @@ import {
   JobStatus,
 } from "util/enum";
 import moment from "moment";
-import { AssignInterviewer } from "../../../Modals";
-import { loadUsers } from "services/admin/action";
+import {AssignInterviewer} from "../../../Modals";
+import {loadUsers} from "services/admin/action";
 
 const theme = createMuiTheme({
   overrides: {
@@ -104,14 +104,9 @@ const theme = createMuiTheme({
 });
 
 const PostInterview = (props) => {
-  const {
-    classes,
-    profile,
-    interviewers,
-    skillWeightage,
-    interviewWeightage,
-  } = props;
-  const { t } = useTranslation("matrix", "common");
+  const {classes, profile, interviewers, skillWeightage, interviewWeightage} =
+    props;
+  const {t} = useTranslation("matrix", "common");
   const [state, setState] = React.useState({
     selected: "absoulte",
     anchorEl: null,
@@ -120,13 +115,12 @@ const PostInterview = (props) => {
     pageNo: 1,
   });
   const [applicationMatrix, setApplicationMatrix] = React.useState(null);
-  const [applicationMatrixPage, setApplicationMatrixPage] = React.useState(
-    null
-  );
+  const [applicationMatrixPage, setApplicationMatrixPage] =
+    React.useState(null);
   const [jobPost, setJobPost] = React.useState(null);
   const [maxValues, setMaxValues] = React.useState(null);
 
-  const { anchorEl, expandSkill, expandQn } = state;
+  const {anchorEl, expandSkill, expandQn} = state;
   const [interviewerModal, setInterviewerModal] = React.useState(false);
   const [values, setValues] = React.useState({
     orgId: profile.orgId,
@@ -172,30 +166,30 @@ const PostInterview = (props) => {
         pageNo = pageNo - 1;
         page = paginate(props.applicationMatrix, pageSize, pageNo);
       }
-      setState({ ...state, pageNo });
+      setState({...state, pageNo});
       setApplicationMatrixPage(page);
     }
   }, [props.applicationMatrix, props.maxValues]);
 
   const handleClick = (i) => (event) => {
-    setState({ ...state, index: i, anchorEl: event.currentTarget });
+    setState({...state, index: i, anchorEl: event.currentTarget});
   };
 
   const handleClose = () => {
-    setState({ ...state, anchorEl: null });
+    setState({...state, anchorEl: null});
   };
 
   const handleToggleSkill = () => {
-    setState({ ...state, expandSkill: !expandSkill });
+    setState({...state, expandSkill: !expandSkill});
   };
 
   const handleToggleQn = () => {
-    setState({ ...state, expandQn: !expandQn });
+    setState({...state, expandQn: !expandQn});
   };
 
   const handlePaginateNext = (event, page) => {
     const pageNo = page + 1;
-    setState({ ...state, pageNo });
+    setState({...state, pageNo});
     setApplicationMatrixPage(paginate(applicationMatrix, pageSize, pageNo));
   };
 
@@ -221,7 +215,7 @@ const PostInterview = (props) => {
   const candidateRecap = (jobpostId, jobappId) => {
     props.history.push({
       pathname: "/rc/recap/" + jobpostId,
-      state: { jobApplId: jobappId },
+      state: {jobApplId: jobappId, isSkillMatrix: true},
     });
   };
 
@@ -229,7 +223,7 @@ const PostInterview = (props) => {
     const candidates = applicationMatrix.map((c) => c.id);
     props.history.push({
       pathname: "/rc/assessment/" + jobappId + "/" + level,
-      state: { candidates },
+      state: {candidates},
       //state: { jobApplId: jobappId, level: level }
     });
   };
@@ -343,7 +337,7 @@ const PostInterview = (props) => {
               candidateRecap(applicant.jobpostId, applicant.id);
             }}
           >
-            <AccountCircleOutlined style={{ color: "#75d49b" }} />
+            <AccountCircleOutlined style={{color: "#75d49b"}} />
           </IconButton>
           <IconButton
             title={t("details.resume")}
@@ -352,7 +346,7 @@ const PostInterview = (props) => {
               props.handleShowResume(applicant.resumeId);
             }}
           >
-            <DescriptionOutlined style={{ color: "#75d49b" }} />
+            <DescriptionOutlined style={{color: "#75d49b"}} />
           </IconButton>
           <IconButton
             className={classes.gridButton}
@@ -361,7 +355,7 @@ const PostInterview = (props) => {
               props.handleOpenModalforSendMsgRec(applicant.id);
             }}
           >
-            <ChatOutlined style={{ color: "#75d49b" }} />
+            <ChatOutlined style={{color: "#75d49b"}} />
           </IconButton>
         </StyledMenuItem>
       );
@@ -378,7 +372,7 @@ const PostInterview = (props) => {
               candidateRecap(applicant.jobpostId, applicant.id);
             }}
           >
-            <AccountCircleOutlined style={{ color: "#75d49b" }} />
+            <AccountCircleOutlined style={{color: "#75d49b"}} />
           </IconButton>
           <IconButton
             title={t("details.resume")}
@@ -387,7 +381,7 @@ const PostInterview = (props) => {
               props.handleShowResume(applicant.resumeId);
             }}
           >
-            <DescriptionOutlined style={{ color: "#75d49b" }} />
+            <DescriptionOutlined style={{color: "#75d49b"}} />
           </IconButton>
 
           <IconButton
@@ -397,7 +391,7 @@ const PostInterview = (props) => {
               props.handleOpenModalforSendMsgRec(applicant.id);
             }}
           >
-            <ChatOutlined style={{ color: "#75d49b" }} />
+            <ChatOutlined style={{color: "#75d49b"}} />
           </IconButton>
         </StyledMenuItem>
       );
@@ -416,7 +410,7 @@ const PostInterview = (props) => {
             //props.handleSelect(applicant.id, JobApplicationSelectStatus.Hired);
           }}
         >
-          <CheckCircleOutlineOutlined style={{ color: "#75d49b" }} />
+          <CheckCircleOutlineOutlined style={{color: "#75d49b"}} />
         </IconButton>
         <IconButton
           title={t("postInterview.reject")}
@@ -432,7 +426,7 @@ const PostInterview = (props) => {
             // );
           }}
         >
-          <CancelOutlined style={{ color: "#FF725F" }} />
+          <CancelOutlined style={{color: "#FF725F"}} />
         </IconButton>
         <IconButton
           title={t("details.candidateRecap")}
@@ -442,7 +436,7 @@ const PostInterview = (props) => {
             candidateRecap(applicant.jobpostId, applicant.id);
           }}
         >
-          <AccountCircleOutlined style={{ color: "#75d49b" }} />
+          <AccountCircleOutlined style={{color: "#75d49b"}} />
         </IconButton>
         <IconButton
           title={t("details.resume")}
@@ -451,7 +445,7 @@ const PostInterview = (props) => {
             props.handleShowResume(applicant.resumeId);
           }}
         >
-          <DescriptionOutlined style={{ color: "#75d49b" }} />
+          <DescriptionOutlined style={{color: "#75d49b"}} />
         </IconButton>
 
         <IconButton
@@ -461,7 +455,7 @@ const PostInterview = (props) => {
             props.handleOpenModalforSendMsgRec(applicant.id);
           }}
         >
-          <ChatOutlined style={{ color: "#75d49b" }} />
+          <ChatOutlined style={{color: "#75d49b"}} />
         </IconButton>
       </StyledMenuItem>
     );
@@ -487,9 +481,9 @@ const PostInterview = (props) => {
       const color = diff >= 0 ? "#75d49b" : "#FF725F";
       const checkBox =
         diff >= 0 ? (
-          <CheckCircleOutlineOutlined style={{ color: color }} />
+          <CheckCircleOutlineOutlined style={{color: color}} />
         ) : (
-          <CancelOutlined style={{ color: color }} />
+          <CancelOutlined style={{color: color}} />
         );
 
       //change the skill table cell depending in selection
@@ -510,7 +504,7 @@ const PostInterview = (props) => {
             <Box className={classes.arrowWrap}>
               {skill.exp}
               <br />
-              <span className={classes.varianceVal} style={{ color: color }}>
+              <span className={classes.varianceVal} style={{color: color}}>
                 {Math.abs(diff)}
               </span>
               <ArrowDropDownCircleOutlined className={arrow} />
@@ -574,7 +568,7 @@ const PostInterview = (props) => {
               onClick={() => {
                 interviewAssessment(applicant.id, q.level);
               }}
-              style={{ color: "#2233ff", cursor: "pointer" }}
+              style={{color: "#2233ff", cursor: "pointer"}}
             >
               <span className={classes.circleProgVal}>{ansScorePrc}%</span>
               <CircularProgress
@@ -648,7 +642,7 @@ const PostInterview = (props) => {
     applicationMatrixPage.map((applicant, index) => {
       //for (let index = 0; index < applicationMatrixPage.length; index++) {
       //const applicant = applicationMatrixPage[index];
-      let { selectStatus, exp, availDate, payRate } = applicant;
+      let {selectStatus, exp, availDate, payRate} = applicant;
 
       availDate = moment(availDate);
       payRate = parseFloat(payRate);
@@ -783,7 +777,7 @@ const PostInterview = (props) => {
         <Dialog
           open={values.showJobClosedModal}
           onClose={() => {
-            setValues({ ...values, showJobClosedModal: false });
+            setValues({...values, showJobClosedModal: false});
           }}
           mess
           aria-labelledby="alert-dialog-title"
@@ -812,7 +806,7 @@ const PostInterview = (props) => {
   };
 
   const hideClosedJobAlert = () => {
-    setValues({ ...values, showJobClosedModal: false });
+    setValues({...values, showJobClosedModal: false});
   };
 
   const getLinearBar = (value, maxValue) => {
@@ -899,7 +893,7 @@ const PostInterview = (props) => {
         break;
       }
 
-      const { level } = jobPost.jobinterviewers[index];
+      const {level} = jobPost.jobinterviewers[index];
       questionHead.push(
         <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
       );
@@ -931,14 +925,14 @@ const PostInterview = (props) => {
     // Show expand icon only if count exceeds config
     if (jobPost.jobskills.length > skillShowCount) {
       expandSkillIcon = expandSkill ? (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
             className={classes.skillMoreBtn}
             onClick={handleToggleSkill}
           />
         </IconButton>
       ) : (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastRewindRounded
             className={classes.skillMoreBtn}
             onClick={handleToggleSkill}
@@ -951,14 +945,14 @@ const PostInterview = (props) => {
     // Show expand icon only if count exceeds config
     if (jobPost.jobinterviewers.length > qnShowCount) {
       expandQnIcon = expandQn ? (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
             className={classes.screenMoreBtn}
             onClick={handleToggleQn}
           />
         </IconButton>
       ) : (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastRewindRounded
             className={classes.screenMoreBtn}
             onClick={handleToggleQn}
@@ -968,7 +962,7 @@ const PostInterview = (props) => {
     }
 
     return (
-      <TableHead className={classes.tableRow} style={{ borderRadius: 4 }}>
+      <TableHead className={classes.tableRow} style={{borderRadius: 4}}>
         <TableRow>
           <TableCell className={classes.tableHeadTL1} colSpan="2">
             {" "}
@@ -1185,7 +1179,7 @@ const PostInterview = (props) => {
   }
 };
 
-const mapDispatchToProps = { loadUsers };
+const mapDispatchToProps = {loadUsers};
 const mapStateToProps = (state) => ({
   profile: state.profile,
   interviewers: state.admin && state.admin.users,

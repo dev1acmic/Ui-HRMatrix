@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from "react";
+﻿import React, {useEffect} from "react";
 import {
   Container,
   Menu,
@@ -47,12 +47,12 @@ import {
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import styles from "../style";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { skillCompetencySet, skillPrioritySet, paginate } from "util/helper";
-import { useTranslation } from "react-i18next";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+import {skillCompetencySet, skillPrioritySet, paginate} from "util/helper";
+import {useTranslation} from "react-i18next";
 
-import { JobApplicationSelectStatus } from "util/enum";
+import {JobApplicationSelectStatus} from "util/enum";
 
 const theme = createMuiTheme({
   overrides: {
@@ -100,8 +100,8 @@ const theme = createMuiTheme({
 });
 
 const Details = (props) => {
-  const { t } = useTranslation("matrix");
-  const { classes, skillWeightage, screeningWeightage } = props;
+  const {t} = useTranslation("matrix");
+  const {classes, skillWeightage, screeningWeightage} = props;
 
   const [state, setState] = React.useState({
     selected: "absoulte",
@@ -111,13 +111,12 @@ const Details = (props) => {
     pageNo: 1,
   });
   const [applicationMatrix, setApplicationMatrix] = React.useState(null);
-  const [applicationMatrixPage, setApplicationMatrixPage] = React.useState(
-    null
-  );
+  const [applicationMatrixPage, setApplicationMatrixPage] =
+    React.useState(null);
   const [jobPost, setJobPost] = React.useState(null);
   const [maxValues, setMaxValues] = React.useState(null);
   const [isPremiumSubscribed, setIsPremiumSubscribed] = React.useState(null);
-  const { selected, anchorEl, expandSkill, expandQn } = state;
+  const {selected, anchorEl, expandSkill, expandQn} = state;
   const skillShowCount = 10;
   const qnShowCount = 5;
   const pageSize = 5;
@@ -144,7 +143,7 @@ const Details = (props) => {
         pageNo = pageNo - 1;
         page = paginate(props.applicationMatrix, pageSize, pageNo);
       }
-      setState({ ...state, pageNo });
+      setState({...state, pageNo});
       setApplicationMatrixPage(page);
     }
   }, [props.applicationMatrix, props.maxValues]);
@@ -156,35 +155,35 @@ const Details = (props) => {
     if (h) {
       return false;
     }
-    setState({ ...state, index: i, anchorEl: event.currentTarget });
+    setState({...state, index: i, anchorEl: event.currentTarget});
   };
 
   const handleClose = () => {
-    setState({ ...state, anchorEl: null });
+    setState({...state, anchorEl: null});
   };
 
   const handleChange = (value) => {
-    setState({ ...state, selected: value });
+    setState({...state, selected: value});
   };
 
   const handleToggleSkill = () => {
-    setState({ ...state, expandSkill: !expandSkill });
+    setState({...state, expandSkill: !expandSkill});
   };
 
   const handleToggleQn = () => {
-    setState({ ...state, expandQn: !expandQn });
+    setState({...state, expandQn: !expandQn});
   };
 
   const handlePaginateNext = (event, page) => {
     const pageNo = page + 1;
-    setState({ ...state, pageNo });
+    setState({...state, pageNo});
     setApplicationMatrixPage(paginate(applicationMatrix, pageSize, pageNo));
   };
 
   const candidateRecap = (jobpostId, jobappId) => {
     props.history.push({
       pathname: "/rc/recap/" + jobpostId,
-      state: { jobApplId: jobappId },
+      state: {jobApplId: jobappId},
     });
   };
 
@@ -198,9 +197,9 @@ const Details = (props) => {
 
   const getHtmlMenuItems = (applicant, hideDetails) => {
     const selectIcon = isRowSelected(applicant.selectStatus) ? (
-      <CheckBoxOutlined style={{ color: "#75d49b" }} />
+      <CheckBoxOutlined style={{color: "#75d49b"}} />
     ) : (
-      <CheckBoxOutlineBlank style={{ color: "#75d49b" }} />
+      <CheckBoxOutlineBlank style={{color: "#75d49b"}} />
     );
 
     if (
@@ -217,7 +216,7 @@ const Details = (props) => {
               candidateRecap(applicant.jobpostId, applicant.id);
             }}
           >
-            <AccountCircleOutlined style={{ color: "#75d49b" }} />
+            <AccountCircleOutlined style={{color: "#75d49b"}} />
           </IconButton>
           <IconButton
             title={t("details.resume")}
@@ -226,7 +225,7 @@ const Details = (props) => {
               props.handleShowResume(applicant.resumeId);
             }}
           >
-            <DescriptionOutlined style={{ color: "#75d49b" }} />
+            <DescriptionOutlined style={{color: "#75d49b"}} />
           </IconButton>
           <TableCell title={t("details.shortlist")}>
             <IconButton disabled className={classes.gridButton}>
@@ -237,11 +236,11 @@ const Details = (props) => {
             className={classes.gridButton}
             title={t("details.messageRecruiter")}
           >
-            <ChatOutlined style={{ color: "#75d49b" }} />
+            <ChatOutlined style={{color: "#75d49b"}} />
           </IconButton>
           <TableCell title={t("details.removeCandidate")}>
             <IconButton disabled className={classes.gridButton}>
-              <CancelOutlined style={{ color: "#FF725F" }} />
+              <CancelOutlined style={{color: "#FF725F"}} />
             </IconButton>
           </TableCell>
         </StyledMenuItem>
@@ -258,7 +257,7 @@ const Details = (props) => {
             candidateRecap(applicant.jobpostId, applicant.id);
           }}
         >
-          <AccountCircleOutlined style={{ color: "#75d49b" }} />
+          <AccountCircleOutlined style={{color: "#75d49b"}} />
         </IconButton>
         <IconButton
           title={t("details.resume")}
@@ -267,7 +266,7 @@ const Details = (props) => {
             props.handleShowResume(applicant.resumeId);
           }}
         >
-          <DescriptionOutlined style={{ color: "#75d49b" }} />
+          <DescriptionOutlined style={{color: "#75d49b"}} />
         </IconButton>
         <IconButton
           title={t("details.shortlist")}
@@ -285,7 +284,7 @@ const Details = (props) => {
             !hideDetails && props.handleOpenModalforSendMsgRec(applicant.id);
           }}
         >
-          <ChatOutlined style={{ color: "#75d49b" }} />
+          <ChatOutlined style={{color: "#75d49b"}} />
         </IconButton>
         <IconButton
           title={t("details.removeCandidate")}
@@ -294,7 +293,7 @@ const Details = (props) => {
             props.handleConfirmRemove(applicant.id);
           }}
         >
-          <CancelOutlined style={{ color: "#FF725F" }} />
+          <CancelOutlined style={{color: "#FF725F"}} />
         </IconButton>
       </StyledMenuItem>
     );
@@ -319,9 +318,9 @@ const Details = (props) => {
       const color = diff >= 0 ? "#75d49b" : "#FF725F";
       const checkBox =
         diff >= 0 ? (
-          <CheckCircleOutlineOutlined style={{ color: color }} />
+          <CheckCircleOutlineOutlined style={{color: color}} />
         ) : (
-          <CancelOutlined style={{ color: color }} />
+          <CancelOutlined style={{color: color}} />
         );
 
       //change the skill table cell depending in selection
@@ -342,7 +341,7 @@ const Details = (props) => {
             <Box className={classes.arrowWrap}>
               {skill.exp}
               <br />
-              <span className={classes.varianceVal} style={{ color: color }}>
+              <span className={classes.varianceVal} style={{color: color}}>
                 {Math.abs(diff)}
               </span>
               <ArrowDropDownCircleOutlined className={arrow} />
@@ -407,7 +406,7 @@ const Details = (props) => {
               (q.qPriorityPoint / totalQPriorityPoint) * 100,
               hideDetails
             )}
-            style={{ color: "#2233ff", cursor: "pointer" }}
+            style={{color: "#2233ff", cursor: "pointer"}}
           >
             <span className={classes.circleProgVal}>{ansScorePrc}%</span>
             <CircularProgress
@@ -440,7 +439,7 @@ const Details = (props) => {
     applicationMatrixPage.map((applicant, index) => {
       //for (let index = 0; index < applicationMatrixPage.length; index++) {
       //const applicant = applicationMatrixPage[index];
-      const { id, selectStatus, resumeId } = applicant;
+      const {id, selectStatus, resumeId} = applicant;
       loadApplicantSkills(applicant);
       loadApplicantQs(applicant);
 
@@ -625,7 +624,7 @@ const Details = (props) => {
         break;
       }
 
-      const { priority, question } = jobPost.jobscreeningqtns[index];
+      const {priority, question} = jobPost.jobscreeningqtns[index];
 
       questionHead.push(
         <TableCell className={classes.tableHeadBorder} title={question}>
@@ -651,14 +650,14 @@ const Details = (props) => {
     // Show expand icon only if count exceeds config
     if (jobPost.jobskills.length > skillShowCount) {
       expandSkillIcon = expandSkill ? (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
             className={classes.skillMoreBtn}
             onClick={handleToggleSkill}
           />
         </IconButton>
       ) : (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastRewindRounded
             className={classes.skillMoreBtn}
             onClick={handleToggleSkill}
@@ -671,14 +670,14 @@ const Details = (props) => {
     // Show expand icon only if count exceeds config
     if (jobPost.jobscreeningqtns.length > qnShowCount) {
       expandQnIcon = expandQn ? (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
             className={classes.screenMoreBtn}
             onClick={handleToggleQn}
           />
         </IconButton>
       ) : (
-        <IconButton style={{ float: "right", padding: 0 }}>
+        <IconButton style={{float: "right", padding: 0}}>
           <FastRewindRounded
             className={classes.screenMoreBtn}
             onClick={handleToggleQn}
@@ -688,7 +687,7 @@ const Details = (props) => {
     }
 
     return (
-      <TableHead className={classes.tableRow} style={{ borderRadius: 4 }}>
+      <TableHead className={classes.tableRow} style={{borderRadius: 4}}>
         <TableRow>
           <TableCell className={classes.tableHeadTL1} colSpan="2">
             <Select
