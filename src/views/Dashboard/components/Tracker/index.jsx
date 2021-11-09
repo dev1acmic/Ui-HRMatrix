@@ -304,9 +304,8 @@ const Tracker = (props) => {
           );
           newState.data[index].applicants = res.data;
           newState.data[index].applicantCount = res.total;
-          newState.data[
-            index
-          ].isPreferedPremiumAgency = isPreferedPremiumAgency;
+          newState.data[index].isPreferedPremiumAgency =
+            isPreferedPremiumAgency;
           page[item.id] = 0;
           newState.data[index].showCandidJourney = item.shortListedCount > 0;
         })
@@ -471,10 +470,8 @@ const Tracker = (props) => {
       true,
       isClosed
     );
-    const {
-      shortListedCount,
-      interviewedCount,
-    } = await props.getCandidateCountByRecruiterId(jobId, recruiterId);
+    const { shortListedCount, interviewedCount } =
+      await props.getCandidateCountByRecruiterId(jobId, recruiterId);
     const newState = { ...jobList };
     newState.data[idx].applicants = res.data;
     newState.data[idx].applicantCount = res.total;
@@ -496,6 +493,395 @@ const Tracker = (props) => {
     const newpage = { ...applicantPage };
     newpage[jobId] = 0;
     setApplicantPage(newpage);
+  };
+  const openJob = (job, index, status = false) => {
+    return (
+      <Grid
+        key={index}
+        container
+        className={classes.trackBoxWrap}
+        style={{
+          borderColor: getColorCode(job, type, job.isPreferedPremiumAgency),
+        }}
+      >
+        <Grid item xs="2" className={classes.trackBoxOne}>
+          <Typography variant="h1" className={classes.trackBoxId}>
+            {job.uniqueId}
+          </Typography>
+          {type === Types.Recruiter ? (
+            <Grid item xs="2" className={classes.trackBoxOne}>
+              <Typography className={classes.companyName}>
+                {job.user.organization.name}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                size="small"
+                style={{ marginTop: "20px", fontSize: "11px" }}
+                onClick={() => {
+                  viewJob(job);
+                }}
+              >
+                {t("tracker.view")}
+              </Button>
+            </Grid>
+          ) : (
+            role !== Roles.InterviewPanel &&
+            // (state.isRoleTA || !state.hasTA) &&
+            getButton(job.status, job.id)
+          )}
+        </Grid>
+        <Grid item xs="6" className={classes.trackBoxTwo}>
+          <Grid container item className={classes.trackBoxDetailsWrap}>
+            <Grid item xs="5" className={classes.trackBoxDetailsLeft}>
+              <Typography className={classes.trackBoxDetailsDesig}>
+                {job.title || "--"}
+              </Typography>
+              <Typography className={classes.trackBoxDetailsData}>
+                {job.addresses && job.addresses[0]
+                  ? getFullAddress(job.addresses[0])
+                  : "--"}
+                <br />
+                {t("common:startDate")}{" "}
+                {job.startDate ? moment(job.startDate).format("L") : "--"}
+                <br />
+              </Typography>
+              <Typography>
+                {job.status === 2
+                  ? t("trackerBar.pendingReview")
+                  : t(`${JobStatus.getNameByValue(job.status)}`)}
+              </Typography>
+              {type !== Types.Recruiter && (
+                <Typography className={classes.trackBoxDetailsData}>
+                  {t("tracker.postedBy")}{" "}
+                  {job.user && job.user.fname + " " + job.user.lname}
+                </Typography>
+              )}
+              <Typography className={classes.trackBoxDetailsData}>
+                {t("tracker.postedOn")}{" "}
+                {job.createdAt ? moment(job.createdAt).format("L") : "--"}
+              </Typography>
+            </Grid>
+            <Grid item xs="7" className={classes.trackBoxDetailsRight}>
+              <Box className={classes.counterBoxWrap}>
+                {type === Types.Employer && (
+                  <Box className={classes.counterBoxItem}>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.counterBoxTitle}
+                    >
+                      {t("tracker.agencies")}
+                    </Typography>
+                    <Typography
+                      variant="span"
+                      className={classes.counterBoxCounter}
+                    >
+                      {job.agencyCount || 0}
+                    </Typography>
+                  </Box>
+                )}
+                {role === Roles.AgencyAdmin && !job.selectedRecruiter && (
+                  <Box className={classes.counterBoxItem}>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.counterBoxTitle}
+                    >
+                      {t("tracker.recruiters")}
+                    </Typography>
+                    <Typography
+                      variant="span"
+                      className={classes.counterBoxCounter}
+                    >
+                      {job.recruiterCount || 0}
+                    </Typography>
+                  </Box>
+                )}
+                <Box className={classes.counterBoxItem}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.counterBoxTitle}
+                  >
+                    {t("tracker.applicants")}
+                  </Typography>
+                  <Typography
+                    variant="span"
+                    className={classes.counterBoxCounter}
+                  >
+                    {job.applicantCount || 0}
+                  </Typography>
+                </Box>
+                <Box className={classes.counterBoxItem}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.counterBoxTitle}
+                  >
+                    {t("summary.shortlisted")}
+                  </Typography>
+                  <Typography
+                    variant="span"
+                    className={classes.counterBoxCounter}
+                    style={{ color: "rgb(255, 166, 0)" }}
+                  >
+                    {job.shortListedCount || 0}
+                  </Typography>
+                </Box>
+                <Box className={classes.counterBoxItem}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.counterBoxTitle}
+                  >
+                    {t("summary.interviewed")}
+                  </Typography>
+                  <Typography
+                    variant="span"
+                    className={classes.counterBoxCounter}
+                  >
+                    {job.interviewedCount || 0}
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs="4" className={classes.trackBoxThree}>
+          <Box className={classes.avatarBoxWrap}>
+            {job.applicants && job.applicants.length > 0 ? (
+              <Box className={classes.avatarBoxTop}>
+                <IconButton
+                  className={classes.avatarArrowBtnLeft}
+                  disabled={applicantPage[job.id] === 0}
+                  onClick={() => handleChangeApplicantPage(job.id, index, -1)}
+                >
+                  <NavigateBeforeRounded
+                    style={{
+                      color: applicantPage[job.id] === 0 ? "#ccc" : "#717171",
+                    }}
+                    className={classes.avatarArrowBtnIcon}
+                  />
+                </IconButton>
+                <IconButton
+                  className={classes.avatarArrowBtnRight}
+                  disabled={
+                    job.applicantCount <=
+                    (applicantPage[job.id] + 1) * applicantsPerRow
+                  }
+                  onClick={() => handleChangeApplicantPage(job.id, index, 1)}
+                >
+                  <NavigateNextRounded
+                    style={{
+                      color:
+                        job.applicantCount <=
+                        (applicantPage[job.id] + 1) * applicantsPerRow
+                          ? "#ccc"
+                          : "#717171",
+                    }}
+                    className={classes.avatarArrowBtnIcon}
+                  />
+                </IconButton>
+                {job.applicants.map((applicant, index) => (
+                  <Box
+                    key={index}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      viewProfile(type, role, job, applicant);
+                      // type === Types.Recruiter
+                      //   ? job.isPreferedPremiumAgency
+                      //     ? applicant.status < 1
+                      //       ? jobApplication(job.id, applicant.id)
+                      //       : toJobApplReviewPage(applicant.id)
+                      //     : isStripeAdded
+                      //       ? applicant.status < 1
+                      //         ? jobApplication(job.id, applicant.id)
+                      //         : toJobApplReviewPage(applicant.id)
+                      //       : openAlert()
+                      //   : role === Roles.InterviewPanel
+                      //     ? interviewAssessment(applicant.id)
+                      //     : share.checkCanidatePremiumMembership(isStripeAdded,
+                      //       job.stripeUsageViewRecordId, applicant.isPremiumCandidate)
+                      //       ? candidateRecap(job.id, applicant.id)
+                      //       : openPremiumAlert();
+                    }}
+                  >
+                    <ProfilePic
+                      id={applicant.avatarId}
+                      className={classes.avatarImg}
+                      style={{
+                        borderColor: getCandidateColorCode(
+                          applicant.status,
+                          applicant.selectStatus,
+                          applicant.isPremiumCandidate,
+                          type
+                        ),
+                      }}
+                      getFile={props.getFile}
+                    />
+                    <Typography className={classes.avatarName}>
+                      {displayCandidateName(type, applicant, job)}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            ) : (
+              <Box className={classes.avatarBoxTop}>
+                <Avatar
+                  alt="Name"
+                  src={avatarimg}
+                  className={classes.avatarImg}
+                />
+                <Avatar
+                  alt="Name"
+                  src={avatarimg}
+                  className={classes.avatarImg}
+                />
+                <Avatar
+                  alt="Name"
+                  src={avatarimg}
+                  className={classes.avatarImg}
+                />
+              </Box>
+            )}
+
+            <Box className={classes.avatarBoxBottom}>
+              {/* {role === Roles.Recruiter && (
+          <IconButton
+            title="View"
+            disabled={job.status !== 3}
+            onClick={() => {
+              toJobPostReviewPage(job.id);
+            }}
+          >
+            <WorkOutline
+              style={{ color: job.status === 3 ? "#75d49b" : null }}
+            />
+          </IconButton>
+        )} */}
+              {(role === Roles.Admin ||
+                role === Roles.HiringManager ||
+                role === Roles.TalentAcquisitionTeam) &&
+                job.applicantCount > 0 && (
+                  <IconButton
+                    disabled={job.status === 6}
+                    title={t("tracker.skillMatrix")}
+                    // style={{
+                    //   visibility: job.status === 6 ? "visible" : "hidden",
+                    // }}
+                    onClick={() => {
+                      skillMatrix(job.id);
+                    }}
+                  >
+                    <DashboardOutlined
+                      style={{
+                        visibility: job.status !== 6 ? "visible" : "hidden",
+                        color: job.status === 3 ? "#75d49b" : null,
+                      }}
+                    />
+                  </IconButton>
+                )}
+              {type === Types.Employer &&
+                (role === Roles.Admin ||
+                  role === Roles.HiringManager ||
+                  role === Roles.TalentAcquisitionTeam) && (
+                  <>
+                    {job && job.showCandidJourney && (
+                      <IconButton
+                        disabled={job.status === 6}
+                        onClick={() => {
+                          journey(job.id);
+                        }}
+                        title={t("common:candidatejourney")}
+                      >
+                        <TransferWithinAStationOutlined
+                          //disabled={job && job.status !== 6}
+                          style={{
+                            color: "#75d49b",
+                            visibility: job.status !== 6 ? "visible" : "hidden",
+                          }}
+                        />
+                      </IconButton>
+                    )}
+                    <IconButton
+                      title={
+                        job.status > 2 ? t("tracker.view") : t("tracker.edit")
+                      }
+                      onClick={() => {
+                        job.status > 2
+                          ? toJobPostEmployerReview(job.id)
+                          : toJobPost(job.id);
+                      }}
+                    >
+                      {job.status > 2 ? (
+                        <Visibility style={{ color: "#75d49b" }} />
+                      ) : (
+                        <Edit style={{ color: "#75d49b" }} />
+                      )}
+                    </IconButton>
+
+                    <IconButton
+                      disabled={job.status === 6}
+                      title={job.status === 3 && t("tracker.close")}
+                      onClick={() => {
+                        openCloseAlert(job.id);
+                      }}
+                    >
+                      {job.status === 3 && (
+                        <Close style={{ color: "#75d49b" }} />
+                      )}
+                    </IconButton>
+                  </>
+                )}
+              {/* {(role === Roles.TalentAcquisitionTeam ||
+          role === Roles.Admin) && (
+          <IconButton
+            title="Send to recruiter"
+            small
+            disabled={job.status !== 3}
+            variant="contained"
+            onClick={() => {
+              inviteRecruiter(job.id);
+            }}
+          >
+            <ContactMail
+              style={{ color: job.status === 3 ? "#75d49b" : null }}
+            />
+          </IconButton>
+        )} */}
+              {type === Types.Recruiter && (
+                <IconButton
+                  title={t("tracker.addProfile")}
+                  disabled={
+                    !job.isPreferedPremiumAgency
+                      ? isStripeAdded || isTrialExist
+                        ? true
+                        : false
+                      : true
+                  }
+                  small
+                  disabled={job.status !== 3}
+                  onClick={() => {
+                    job.isPreferedPremiumAgency // if the job is sent to  preferred premium skip payment check
+                      ? jobApplication(job.id)
+                      : isStripeAdded || isTrialExist
+                      ? jobApplication(job.id)
+                      : openAlert();
+                  }}
+                >
+                  <PersonAdd
+                    style={{
+                      visibility: job.status !== 6 ? "visible" : "hidden",
+                      color: job.status === 3 ? "#75d49b" : null,
+                    }}
+                  />
+                </IconButton>
+              )}
+              {/* <IconButton>
+          <CancelOutlined style={{ color: "#ff725f" }} />
+        </IconButton> */}
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    );
   };
 
   const dialogue = () => {
@@ -610,7 +996,7 @@ const Tracker = (props) => {
 
   return (
     <Container className={classes.root} style={{ paddingTop: 0 }}>
-      {jobList.data && jobList.data.length > 0 ? (
+      {jobList && jobList.data && jobList.data.length > 0 ? (
         jobList.data.map((job, index) => (
           <div style={{ position: "relative", marginTop: "60px" }}>
             {role === Roles.AgencyAdmin && (
@@ -663,412 +1049,16 @@ const Tracker = (props) => {
                 </Select>
               </div>
             )}
-
-            <Grid
-              key={index}
-              container
-              className={classes.trackBoxWrap}
-              style={{
-                borderColor: getColorCode(
-                  job,
-                  type,
-                  job.isPreferedPremiumAgency
-                ),
-              }}
-            >
-              <Grid item xs="2" className={classes.trackBoxOne}>
-                <Typography variant="h1" className={classes.trackBoxId}>
-                  {job.uniqueId}
-                </Typography>
-                {type === Types.Recruiter ? (
-                  <Grid item xs="2" className={classes.trackBoxOne}>
-                    <Typography className={classes.companyName}>
-                      {job.user.organization.name}
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      size="small"
-                      style={{ marginTop: "20px", fontSize: "11px" }}
-                      onClick={() => {
-                        viewJob(job);
-                      }}
-                    >
-                      {t("tracker.view")}
-                    </Button>
-                  </Grid>
-                ) : (
-                  role !== Roles.InterviewPanel &&
-                  // (state.isRoleTA || !state.hasTA) &&
-                  getButton(job.status, job.id)
-                )}
-              </Grid>
-              <Grid item xs="6" className={classes.trackBoxTwo}>
-                <Grid container item className={classes.trackBoxDetailsWrap}>
-                  <Grid item xs="5" className={classes.trackBoxDetailsLeft}>
-                    <Typography className={classes.trackBoxDetailsDesig}>
-                      {job.title || "--"}
-                    </Typography>
-                    <Typography className={classes.trackBoxDetailsData}>
-                      {job.addresses && job.addresses[0]
-                        ? getFullAddress(job.addresses[0])
-                        : "--"}
-                      <br />
-                      {t("common:startDate")}{" "}
-                      {job.startDate ? moment(job.startDate).format("L") : "--"}
-                      <br />
-                    </Typography>
-                    <Typography>
-                      {job.status === 2
-                        ? t("trackerBar.pendingReview")
-                        : t(`${JobStatus.getNameByValue(job.status)}`)}
-                    </Typography>
-                    {type !== Types.Recruiter && (
-                      <Typography className={classes.trackBoxDetailsData}>
-                        {t("tracker.postedBy")}{" "}
-                        {job.user && job.user.fname + " " + job.user.lname}
-                      </Typography>
-                    )}
-                    <Typography className={classes.trackBoxDetailsData}>
-                      {t("tracker.postedOn")}{" "}
-                      {job.createdAt ? moment(job.createdAt).format("L") : "--"}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs="7" className={classes.trackBoxDetailsRight}>
-                    <Box className={classes.counterBoxWrap}>
-                      {type === Types.Employer && (
-                        <Box className={classes.counterBoxItem}>
-                          <Typography
-                            variant="subtitle1"
-                            className={classes.counterBoxTitle}
-                          >
-                            {t("tracker.agencies")}
-                          </Typography>
-                          <Typography
-                            variant="span"
-                            className={classes.counterBoxCounter}
-                          >
-                            {job.agencyCount || 0}
-                          </Typography>
-                        </Box>
-                      )}
-                      {role === Roles.AgencyAdmin && !job.selectedRecruiter && (
-                        <Box className={classes.counterBoxItem}>
-                          <Typography
-                            variant="subtitle1"
-                            className={classes.counterBoxTitle}
-                          >
-                            {t("tracker.recruiters")}
-                          </Typography>
-                          <Typography
-                            variant="span"
-                            className={classes.counterBoxCounter}
-                          >
-                            {job.recruiterCount || 0}
-                          </Typography>
-                        </Box>
-                      )}
-                      <Box className={classes.counterBoxItem}>
-                        <Typography
-                          variant="subtitle1"
-                          className={classes.counterBoxTitle}
-                        >
-                          {t("tracker.applicants")}
-                        </Typography>
-                        <Typography
-                          variant="span"
-                          className={classes.counterBoxCounter}
-                        >
-                          {job.applicantCount || 0}
-                        </Typography>
-                      </Box>
-                      <Box className={classes.counterBoxItem}>
-                        <Typography
-                          variant="subtitle1"
-                          className={classes.counterBoxTitle}
-                        >
-                          {t("summary.shortlisted")}
-                        </Typography>
-                        <Typography
-                          variant="span"
-                          className={classes.counterBoxCounter}
-                          style={{ color: "rgb(255, 166, 0)" }}
-                        >
-                          {job.shortListedCount || 0}
-                        </Typography>
-                      </Box>
-                      <Box className={classes.counterBoxItem}>
-                        <Typography
-                          variant="subtitle1"
-                          className={classes.counterBoxTitle}
-                        >
-                          {t("summary.interviewed")}
-                        </Typography>
-                        <Typography
-                          variant="span"
-                          className={classes.counterBoxCounter}
-                        >
-                          {job.interviewedCount || 0}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs="4" className={classes.trackBoxThree}>
-                <Box className={classes.avatarBoxWrap}>
-                  {job.applicants && job.applicants.length > 0 ? (
-                    <Box className={classes.avatarBoxTop}>
-                      <IconButton
-                        className={classes.avatarArrowBtnLeft}
-                        disabled={applicantPage[job.id] === 0}
-                        onClick={() =>
-                          handleChangeApplicantPage(job.id, index, -1)
-                        }
-                      >
-                        <NavigateBeforeRounded
-                          style={{
-                            color:
-                              applicantPage[job.id] === 0 ? "#ccc" : "#717171",
-                          }}
-                          className={classes.avatarArrowBtnIcon}
-                        />
-                      </IconButton>
-                      <IconButton
-                        className={classes.avatarArrowBtnRight}
-                        disabled={
-                          job.applicantCount <=
-                          (applicantPage[job.id] + 1) * applicantsPerRow
-                        }
-                        onClick={() =>
-                          handleChangeApplicantPage(job.id, index, 1)
-                        }
-                      >
-                        <NavigateNextRounded
-                          style={{
-                            color:
-                              job.applicantCount <=
-                              (applicantPage[job.id] + 1) * applicantsPerRow
-                                ? "#ccc"
-                                : "#717171",
-                          }}
-                          className={classes.avatarArrowBtnIcon}
-                        />
-                      </IconButton>
-                      {job.applicants.map((applicant, index) => (
-                        <Box
-                          key={index}
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            viewProfile(type, role, job, applicant);
-                            // type === Types.Recruiter
-                            //   ? job.isPreferedPremiumAgency
-                            //     ? applicant.status < 1
-                            //       ? jobApplication(job.id, applicant.id)
-                            //       : toJobApplReviewPage(applicant.id)
-                            //     : isStripeAdded
-                            //       ? applicant.status < 1
-                            //         ? jobApplication(job.id, applicant.id)
-                            //         : toJobApplReviewPage(applicant.id)
-                            //       : openAlert()
-                            //   : role === Roles.InterviewPanel
-                            //     ? interviewAssessment(applicant.id)
-                            //     : share.checkCanidatePremiumMembership(isStripeAdded,
-                            //       job.stripeUsageViewRecordId, applicant.isPremiumCandidate)
-                            //       ? candidateRecap(job.id, applicant.id)
-                            //       : openPremiumAlert();
-                          }}
-                        >
-                          <ProfilePic
-                            id={applicant.avatarId}
-                            className={classes.avatarImg}
-                            style={{
-                              borderColor: getCandidateColorCode(
-                                applicant.status,
-                                applicant.selectStatus,
-                                applicant.isPremiumCandidate,
-                                type
-                              ),
-                            }}
-                            getFile={props.getFile}
-                          />
-                          <Typography className={classes.avatarName}>
-                            {displayCandidateName(type, applicant, job)}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                  ) : (
-                    <Box className={classes.avatarBoxTop}>
-                      <Avatar
-                        alt="Name"
-                        src={avatarimg}
-                        className={classes.avatarImg}
-                      />
-                      <Avatar
-                        alt="Name"
-                        src={avatarimg}
-                        className={classes.avatarImg}
-                      />
-                      <Avatar
-                        alt="Name"
-                        src={avatarimg}
-                        className={classes.avatarImg}
-                      />
-                    </Box>
-                  )}
-
-                  <Box className={classes.avatarBoxBottom}>
-                    {/* {role === Roles.Recruiter && (
-                    <IconButton
-                      title="View"
-                      disabled={job.status !== 3}
-                      onClick={() => {
-                        toJobPostReviewPage(job.id);
-                      }}
-                    >
-                      <WorkOutline
-                        style={{ color: job.status === 3 ? "#75d49b" : null }}
-                      />
-                    </IconButton>
-                  )} */}
-                    {(role === Roles.Admin ||
-                      role === Roles.HiringManager ||
-                      role === Roles.TalentAcquisitionTeam) &&
-                      job.applicantCount > 0 && (
-                        <IconButton
-                          disabled={job.status === 6}
-                          title={t("tracker.skillMatrix")}
-                          // style={{
-                          //   visibility: job.status === 6 ? "visible" : "hidden",
-                          // }}
-                          onClick={() => {
-                            skillMatrix(job.id);
-                          }}
-                        >
-                          <DashboardOutlined
-                            style={{
-                              visibility:
-                                job.status !== 6 ? "visible" : "hidden",
-                              color: job.status === 3 ? "#75d49b" : null,
-                            }}
-                          />
-                        </IconButton>
-                      )}
-                    {type === Types.Employer &&
-                      (role === Roles.Admin ||
-                        role === Roles.HiringManager ||
-                        role === Roles.TalentAcquisitionTeam) && (
-                        <>
-                          {job && job.showCandidJourney && (
-                            <IconButton
-                              disabled={job.status === 6}
-                              onClick={() => {
-                                journey(job.id);
-                              }}
-                              title={t("common:candidatejourney")}
-                            >
-                              <TransferWithinAStationOutlined
-                                //disabled={job && job.status !== 6}
-                                style={{
-                                  color: "#75d49b",
-                                  visibility:
-                                    job.status !== 6 ? "visible" : "hidden",
-                                }}
-                              />
-                            </IconButton>
-                          )}
-                          <IconButton
-                            title={
-                              job.status > 2
-                                ? t("tracker.view")
-                                : t("tracker.edit")
-                            }
-                            onClick={() => {
-                              job.status > 2
-                                ? toJobPostEmployerReview(job.id)
-                                : toJobPost(job.id);
-                            }}
-                          >
-                            {job.status > 2 ? (
-                              <Visibility style={{ color: "#75d49b" }} />
-                            ) : (
-                              <Edit style={{ color: "#75d49b" }} />
-                            )}
-                          </IconButton>
-
-                          <IconButton
-                            disabled={job.status === 6}
-                            title={job.status === 3 && t("tracker.close")}
-                            onClick={() => {
-                              openCloseAlert(job.id);
-                            }}
-                          >
-                            {job.status === 3 && (
-                              <Close style={{ color: "#75d49b" }} />
-                            )}
-                          </IconButton>
-                        </>
-                      )}
-                    {/* {(role === Roles.TalentAcquisitionTeam ||
-                    role === Roles.Admin) && (
-                    <IconButton
-                      title="Send to recruiter"
-                      small
-                      disabled={job.status !== 3}
-                      variant="contained"
-                      onClick={() => {
-                        inviteRecruiter(job.id);
-                      }}
-                    >
-                      <ContactMail
-                        style={{ color: job.status === 3 ? "#75d49b" : null }}
-                      />
-                    </IconButton>
-                  )} */}
-                    {type === Types.Recruiter && (
-                      <IconButton
-                        title={t("tracker.addProfile")}
-                        disabled={
-                          !job.isPreferedPremiumAgency
-                            ? isStripeAdded || isTrialExist
-                              ? true
-                              : false
-                            : true
-                        }
-                        small
-                        disabled={job.status !== 3}
-                        onClick={() => {
-                          job.isPreferedPremiumAgency // if the job is sent to  preferred premium skip payment check
-                            ? jobApplication(job.id)
-                            : isStripeAdded || isTrialExist
-                            ? jobApplication(job.id)
-                            : openAlert();
-                        }}
-                      >
-                        <PersonAdd
-                          style={{
-                            visibility: job.status !== 6 ? "visible" : "hidden",
-                            color: job.status === 3 ? "#75d49b" : null,
-                          }}
-                        />
-                      </IconButton>
-                    )}
-                    {/* <IconButton>
-                    <CancelOutlined style={{ color: "#ff725f" }} />
-                  </IconButton> */}
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
+            {props.isOpenJob
+              ? job.status === 3 && openJob(job, index, true)
+              : openJob(job, index)}
           </div>
         ))
       ) : (
         <Typography>{msg}</Typography>
       )}
 
-      {jobList.data && jobList.data.length > 0 && (
+      {jobList && jobList.data && jobList.data.length > 0 && (
         <TablePagination
           backIconButtonProps={{
             "aria-label": t("common:previousPage"),
