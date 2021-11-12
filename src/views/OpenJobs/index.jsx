@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Container, withStyles, CircularProgress } from "@material-ui/core";
+import {
+  Container,
+  withStyles,
+  CircularProgress,
+  Typography,
+} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import { Dashboard as DashboardLayout } from "layouts";
-import {
-  Summary,
-  Analytics,
-  Tracker,
-  TrackerBar,
-  NoData,
-} from "views/Dashboard/components";
+import { Tracker, TrackerBar, NoData } from "views/Dashboard/components";
 import styles from "layouts/Dashboard/styles";
-
 import {
   isRoleAdmin,
   isRoleHM,
@@ -55,7 +52,7 @@ const OpenJobs = (props) => {
   const [summaryloading, setSummaryLoading] = useState(
     initialState.summaryloading
   );
-  const [jobList, setJobList] = useState(initialState.jobList);
+  const [openJobsList, setOpenJobsList] = useState(initialState.openJobsList);
   const [role, setRole] = useState();
   const [type, setType] = useState(props.profile.type);
   const [rowsPerPage, setRowsPerPage] = useState(initialState.rowsPerPage);
@@ -68,7 +65,7 @@ const OpenJobs = (props) => {
 
   const getJobsbyEmployer = (id, role) => {
     try {
-      props.getJobsbyEmployer(id, role, (OpenJobs = true));
+      props.getJobsbyEmployer(id, role, rowsPerPage, page, "", "", "", true);
     } catch (error) {
       setLoading(false);
     }
@@ -95,7 +92,7 @@ const OpenJobs = (props) => {
     } else if (isTypeRecruiter(type)) {
       setType(Types.Recruiter);
     }
-    getJobsbyEmployer(userId, userrole);
+    getJobsbyEmployer(userId, userrole, rowsPerPage, page, "", "", "", true);
     setRole(userrole);
     if (orgId) {
       props.getJobsSummary(orgId, userrole);
@@ -106,11 +103,11 @@ const OpenJobs = (props) => {
   }, []);
 
   useEffect(() => {
-    if (props.jobList) {
+    if (props.openJobsList) {
       setLoading(false);
-      setJobList(props.jobList);
+      setOpenJobsList(props.openJobsList);
     }
-  }, [props.jobList]);
+  }, [props.openJobsList]);
 
   useEffect(() => {
     if (props.jobSummary) {
@@ -122,7 +119,7 @@ const OpenJobs = (props) => {
   const handleChangePage = (rowsPerPage, page) => {
     setRowsPerPage(rowsPerPage);
     setPage(page);
-    props.getJobsbyEmployer(userId, role, rowsPerPage, page);
+    props.getJobsbyEmployer(userId, role, rowsPerPage, page, "", "", "", true);
   };
 
   const handleChangeFilter = (sortKey, searchKey, searchValue) => {
@@ -136,7 +133,8 @@ const OpenJobs = (props) => {
       page,
       sortKey,
       searchKey,
-      searchValue
+      searchValue,
+      true
     );
   };
 
@@ -162,8 +160,18 @@ const OpenJobs = (props) => {
       );
     }
 
-    if (jobList && jobList.data && jobList.data.length === 0 && !isSearchVal) {
-      return <NoData role={role} />;
+    if (
+      openJobsList &&
+      openJobsList.data &&
+      openJobsList.data.length === 0 &&
+      !isSearchVal
+    ) {
+      return (
+        <div>
+          <TrackerBar role={role} type={type} onChange={handleChangeFilter} />
+          <Typography style={{ margin: 30 }}>No Data Found</Typography>
+        </div>
+      );
     }
 
     return (
@@ -171,7 +179,7 @@ const OpenJobs = (props) => {
         <TrackerBar role={role} type={type} onChange={handleChangeFilter} />
         <Tracker
           onChange={handleChangePage}
-          jobList={jobList}
+          jobList={openJobsList}
           role={role}
           type={type}
           userId={userId}
@@ -202,9 +210,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state) => ({
-  jobList: (state.jobPost && state.jobPost.jobList) || null,
+  openJobsList: (state.jobPost && state.jobPost.openjobList) || null,
   profile: state.profile,
-  //orgId: state.profile && state.profile.orgId,
   jobSummary: state.jobPost && state.jobPost.summary,
 });
 

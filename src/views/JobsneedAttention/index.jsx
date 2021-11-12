@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Container, withStyles, CircularProgress } from "@material-ui/core";
+import {
+  Container,
+  withStyles,
+  CircularProgress,
+  Typography,
+} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-//import { Summary, Analytics, Tracker, TrackerBar, NoData } from "components";
-import {
-  Summary,
-  Analytics,
-  Tracker,
-  TrackerBar,
-  NoData,
-} from "views/Dashboard/components";
-//import styles from "./style";
-import styles from "views/Dashboard/style";
-
+import { Dashboard as DashboardLayout } from "layouts";
+import { Tracker, TrackerBar, NoData } from "views/Dashboard/components";
+import styles from "layouts/Dashboard/styles";
 import {
   isRoleAdmin,
   isRoleHM,
@@ -31,10 +28,9 @@ import { Roles, Types } from "util/enum";
 import {
   getJobsbyEmployer,
   clearJobPost,
-  getJobsSummary,
+  getJobsByAttention,
 } from "services/jobPost/action";
 import { clearJobApplication } from "services/jobApplication/action";
-import { Dashboard as DashboardLayout } from "layouts";
 
 /*******ACTIONS ENDS/*******/
 
@@ -56,7 +52,9 @@ const JobsneedAttention = (props) => {
   const [summaryloading, setSummaryLoading] = useState(
     initialState.summaryloading
   );
-  const [jobList, setJobList] = useState(initialState.jobList);
+  const [needAttentionJobsList, setNeedAttentionJobsList] = useState(
+    initialState.needAttentionJobsList
+  );
   const [role, setRole] = useState();
   const [type, setType] = useState(props.profile.type);
   const [rowsPerPage, setRowsPerPage] = useState(initialState.rowsPerPage);
@@ -69,7 +67,7 @@ const JobsneedAttention = (props) => {
 
   const getJobsbyEmployer = (id, role) => {
     try {
-      props.getJobsbyEmployer(id, role);
+      props.getJobsByAttention(id, role, true);
     } catch (error) {
       setLoading(false);
     }
@@ -99,7 +97,7 @@ const JobsneedAttention = (props) => {
     getJobsbyEmployer(userId, userrole);
     setRole(userrole);
     if (orgId) {
-      props.getJobsSummary(orgId, userrole);
+      props.getJobsByAttention(orgId, userrole, true);
     }
 
     props.clearJobPost();
@@ -107,11 +105,21 @@ const JobsneedAttention = (props) => {
   }, []);
 
   useEffect(() => {
-    if (props.jobList) {
+    if (
+      props.needAttentionJobsList &&
+      props.needAttentionJobsList.length === 0
+    ) {
       setLoading(false);
-      setJobList(props.jobList);
     }
-  }, [props.jobList]);
+    if (
+      props.needAttentionJobsList &&
+      props.needAttentionJobsList.data &&
+      props.needAttentionJobsList.data.length
+    ) {
+      setLoading(false);
+      setNeedAttentionJobsList(props.needAttentionJobsList);
+    }
+  }, [props.needAttentionJobsList]);
 
   useEffect(() => {
     if (props.jobSummary) {
@@ -123,41 +131,72 @@ const JobsneedAttention = (props) => {
   const handleChangePage = (rowsPerPage, page) => {
     setRowsPerPage(rowsPerPage);
     setPage(page);
-    props.getJobsbyEmployer(userId, role, rowsPerPage, page);
+    props.getJobsByAttention(userId, role, true);
   };
 
   const handleChangeFilter = (sortKey, searchKey, searchValue) => {
     if (searchValue && searchValue !== "") {
       setisSearchVal(true);
     }
-    props.getJobsbyEmployer(
-      userId,
-      role,
-      rowsPerPage,
-      page,
-      sortKey,
-      searchKey,
-      searchValue
-    );
+    props.getJobsByAttention(userId, role, true);
   };
 
   const handleClearJobApplication = () => {
     props.clearJobApplication();
   };
 
-  return (
-    <DashboardLayout>
+  const renderJobs = () => {
+    if (loading) {
+      return (
+        <div
+          className={classes.progressWrapper}
+          style={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+            marginBottom: 30,
+          }}
+        >
+          <CircularProgress style={{ height: 30, width: 30 }} />
+        </div>
+      );
+    }
+
+    if (!needAttentionJobsList) {
+      return (
+        <div>
+          <TrackerBar role={role} type={type} onChange={handleChangeFilter} />
+          <Typography style={{ margin: 30 }}>No Data Found</Typography>
+        </div>
+      );
+    }
+
+    return (
       <div>
         <TrackerBar role={role} type={type} onChange={handleChangeFilter} />
         <Tracker
           onChange={handleChangePage}
-          jobList={jobList}
+          jobList={needAttentionJobsList}
           role={role}
           type={type}
           userId={userId}
+          isOpenJob={false}
           clearJobApplication={handleClearJobApplication}
+          showPagination={false}
         />
       </div>
+    );
+  };
+
+  return (
+    <DashboardLayout title={t("common:dashboard")}>
+      <Container
+        className={classes.root}
+        style={{ backgroundColor: "#f3f3f3" }}
+      >
+        {renderJobs()}
+      </Container>
     </DashboardLayout>
   );
 };
@@ -166,13 +205,13 @@ const mapDispatchToProps = {
   getJobsbyEmployer: getJobsbyEmployer,
   clearJobPost: clearJobPost,
   clearJobApplication: clearJobApplication,
-  getJobsSummary: getJobsSummary,
+  getJobsByAttention: getJobsByAttention,
 };
 
 const mapStateToProps = (state) => ({
-  jobList: (state.jobPost && state.jobPost.jobList) || null,
+  needAttentionJobsList:
+    (state.jobPost && state.jobPost.needattentionjobList) || null,
   profile: state.profile,
-  //orgId: state.profile && state.profile.orgId,
   jobSummary: state.jobPost && state.jobPost.summary,
 });
 

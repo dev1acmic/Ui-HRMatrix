@@ -1,7 +1,7 @@
 import client from "../feathersApi";
 //import { services } from "../store";
-import {errorHandler} from "../error/action";
-import {Roles, JobApplicationSelectStatus} from "util/enum";
+import { errorHandler } from "../error/action";
+import { Roles, JobApplicationSelectStatus } from "util/enum";
 import moment from "moment";
 
 export const createJobPost = (data, errors) => async (dispatch) => {
@@ -245,208 +245,226 @@ export const deleteInterviewQuest = (id) => async (dispatch) => {
   return false;
 };
 
-export const getJobsbyEmployer = (
-  createdBy,
-  role,
-  limit = 10,
-  pageno = 0,
-  sortKey,
-  searchKey,
-  searchVal
-) => async (dispatch) => {
-  sortKey = sortKey ? sortKey : "createdAt";
-  let data = {
-    $limit: limit,
-    $skip: pageno * limit, //skip*limit
-    $sort: {
-      [sortKey]: -1,
-    },
-  };
-  if (searchKey && searchVal && searchVal !== "") {
-    if (searchKey === "createdAt") {
-      const startDate = moment.utc(searchVal).format();
-      const endDate = moment.utc(searchVal).add(1, "days").format();
+export const getJobsbyEmployer =
+  (
+    createdBy,
+    role,
+    limit = 10,
+    pageno = 0,
+    sortKey,
+    searchKey,
+    searchVal,
+    openJob = false
+  ) =>
+  async (dispatch) => {
+    sortKey = sortKey ? sortKey : "createdAt";
+    let data = {
+      $limit: limit,
+      $skip: pageno * limit, //skip*limit
+      $sort: {
+        [sortKey]: -1,
+      },
+    };
+    if (searchKey && searchVal && searchVal !== "") {
+      if (searchKey === "createdAt") {
+        const startDate = moment.utc(searchVal).format();
+        const endDate = moment.utc(searchVal).add(1, "days").format();
+        data = {
+          ...data,
+          $and: [
+            {
+              createdAt: {
+                $gte: startDate, //Format:"2019-10-16T00:00:00.000Z"
+              },
+            },
+            {
+              createdAt: {
+                $lte: endDate, //Format: "2019-10-17T00:00:00.000Z"
+              },
+            },
+          ],
+        };
+      } else {
+        data = {
+          ...data,
+          [searchKey]:
+            searchKey === "hiringManager"
+              ? searchVal
+              : { $like: "%" + searchVal + "%" },
+        };
+      }
+    } else if (searchVal && searchVal !== "") {
       data = {
         ...data,
-        $and: [
+        $or: [
           {
-            createdAt: {
-              $gte: startDate, //Format:"2019-10-16T00:00:00.000Z"
+            title: {
+              $like: "%" + searchVal + "%",
             },
           },
           {
-            createdAt: {
-              $lte: endDate, //Format: "2019-10-17T00:00:00.000Z"
+            uniqueId: {
+              $like: "%" + searchVal + "%",
             },
           },
         ],
       };
-    } else {
+    }
+    if (openJob) {
       data = {
         ...data,
-        [searchKey]:
-          searchKey === "hiringManager"
-            ? searchVal
-            : {$like: "%" + searchVal + "%"},
+        status: 3,
       };
     }
-  } else if (searchVal && searchVal !== "") {
-    data = {
-      ...data,
-      $or: [
-        {
-          title: {
-            $like: "%" + searchVal + "%",
-          },
-        },
-        {
-          uniqueId: {
-            $like: "%" + searchVal + "%",
-          },
-        },
-      ],
-    };
-  }
 
-  if (role === Roles.HiringManager) {
-    data = {...data, createdBy: createdBy};
-  } else if (role === Roles.Recruiter) {
-    data = {...data, $isRecruiter: true};
-  } else if (role === Roles.InterviewPanel) {
-    data = {...data, $isInterviewer: true};
-  } else if (role === Roles.AgencyAdmin) {
-    data = {...data, $isAgencyAdmin: true};
-  }
-  try {
-    const res = await client.service("jobposts").find({
-      query: data,
-    });
-    if (res) {
-      let newRes = {};
-      const {agencies, recruiters, shortListed, interviewed} = res;
-
-      newRes.data = res.data.map((obj) => ({
-        ...obj,
-        recruiterCount:
-          (recruiters &&
-            recruiters.length > 0 &&
-            recruiters.find((c) => c.jobPostId === obj.id).count) ||
-          0,
-        recruiterList:
-          (recruiters &&
-            recruiters.length > 0 &&
-            recruiters.find((c) => c.jobPostId === obj.id).list) ||
-          null,
-        agencyCount:
-          (agencies &&
-            agencies.length > 0 &&
-            agencies.find((c) => c.jobPostId === obj.id).count) ||
-          0,
-        shortListedCount:
-          (shortListed.length > 0 &&
-            shortListed.find((c) => c.jobPostId === obj.id).count) ||
-          0,
-        interviewedCount:
-          (interviewed.length > 0 &&
-            interviewed.find((c) => c.jobPostId === obj.id).count) ||
-          0,
-      }));
-
-      newRes.total = res.total;
-      dispatch({
-        type: "GET_ALLJOBS",
-        query: newRes,
-      });
-      return true;
+    if (role === Roles.HiringManager) {
+      data = { ...data, createdBy: createdBy };
+    } else if (role === Roles.Recruiter) {
+      data = { ...data, $isRecruiter: true };
+    } else if (role === Roles.InterviewPanel) {
+      data = { ...data, $isInterviewer: true };
+    } else if (role === Roles.AgencyAdmin) {
+      data = { ...data, $isAgencyAdmin: true };
     }
-    return false;
-  } catch (error) {
-    errorHandler(error);
-    return false;
-  }
-};
+    try {
+      const res = await client.service("jobposts").find({
+        query: data,
+      });
+      if (res) {
+        let newRes = {};
+        const { agencies, recruiters, shortListed, interviewed } = res;
 
-export const getJobApplicantsByJobPost = (
-  jobpostId,
-  createdBy,
-  role,
-  limit = 3,
-  pageno = 0,
-  isClosed = false,
-  filterByUser = false
-) => async (dispatch) => {
-  let data = {
-    $limit: limit,
-    $skip: pageno * limit,
-    jobpostId: jobpostId,
+        newRes.data = res.data.map((obj) => ({
+          ...obj,
+          recruiterCount:
+            (recruiters &&
+              recruiters.length > 0 &&
+              recruiters.find((c) => c.jobPostId === obj.id).count) ||
+            0,
+          recruiterList:
+            (recruiters &&
+              recruiters.length > 0 &&
+              recruiters.find((c) => c.jobPostId === obj.id).list) ||
+            null,
+          agencyCount:
+            (agencies &&
+              agencies.length > 0 &&
+              agencies.find((c) => c.jobPostId === obj.id).count) ||
+            0,
+          shortListedCount:
+            (shortListed.length > 0 &&
+              shortListed.find((c) => c.jobPostId === obj.id).count) ||
+            0,
+          interviewedCount:
+            (interviewed.length > 0 &&
+              interviewed.find((c) => c.jobPostId === obj.id).count) ||
+            0,
+        }));
+        newRes.total = res.total;
+        if (openJob) {
+          dispatch({
+            type: "GET_ALL_OPENJOBS",
+            query: newRes,
+          });
+        } else {
+          dispatch({
+            type: "GET_ALLJOBS",
+            query: newRes,
+          });
+        }
+
+        return true;
+      }
+      return false;
+    } catch (error) {
+      errorHandler(error);
+      return false;
+    }
   };
 
-  if (role === Roles.Recruiter) {
-    data = {
-      ...data,
-      createdBy: createdBy,
-      selectStatus: {
-        $ne: JobApplicationSelectStatus.Removed,
-      },
+export const getJobApplicantsByJobPost =
+  (
+    jobpostId,
+    createdBy,
+    role,
+    limit = 3,
+    pageno = 0,
+    isClosed = false,
+    filterByUser = false
+  ) =>
+  async (dispatch) => {
+    let data = {
+      $limit: limit,
+      $skip: pageno * limit,
+      jobpostId: jobpostId,
     };
-  } else if (role === Roles.AgencyAdmin) {
-    data = {
-      ...data,
-      $isAgencyAdmin: true,
-    };
-    if (filterByUser && createdBy > 0) {
+
+    if (role === Roles.Recruiter) {
       data = {
         ...data,
         createdBy: createdBy,
+        selectStatus: {
+          $ne: JobApplicationSelectStatus.Removed,
+        },
       };
-    }
-  } else if (role === Roles.InterviewPanel) {
-    if (isClosed) {
+    } else if (role === Roles.AgencyAdmin) {
       data = {
+        ...data,
+        $isAgencyAdmin: true,
+      };
+      if (filterByUser && createdBy > 0) {
+        data = {
+          ...data,
+          createdBy: createdBy,
+        };
+      }
+    } else if (role === Roles.InterviewPanel) {
+      if (isClosed) {
+        data = {
+          selectStatus: {
+            $or: [
+              { $eq: JobApplicationSelectStatus.Rejected },
+              { $eq: JobApplicationSelectStatus.Hired },
+            ],
+          },
+        };
+      }
+      data = { ...data, $isInterviewer: true };
+    } else {
+      data = {
+        ...data,
+        status: 1, //completed
         selectStatus: {
-          $or: [
-            {$eq: JobApplicationSelectStatus.Rejected},
-            {$eq: JobApplicationSelectStatus.Hired},
-          ],
+          $ne: JobApplicationSelectStatus.Removed,
         },
       };
     }
-    data = {...data, $isInterviewer: true};
-  } else {
-    data = {
-      ...data,
-      status: 1, //completed
-      selectStatus: {
-        $ne: JobApplicationSelectStatus.Removed,
-      },
-    };
-  }
-  try {
-    const res = await client.service("jobapplications").find({
-      query: data,
-    });
-    const shrtListCount = await client.service("jobapplications").find({
-      query: {
-        jobpostId: jobpostId,
-        selectStatus: {
-          $eq: JobApplicationSelectStatus.ShortListed,
+    try {
+      const res = await client.service("jobapplications").find({
+        query: data,
+      });
+      const shrtListCount = await client.service("jobapplications").find({
+        query: {
+          jobpostId: jobpostId,
+          selectStatus: {
+            $eq: JobApplicationSelectStatus.ShortListed,
+          },
         },
-      },
-    });
-    if (res) {
-      res.shortListedCount = shrtListCount.total;
-      // dispatch({
-      //   type: "GET_JOB_APPLICANTS_BY_JOBPOST",
-      //   query: res
-      // });
-      return res;
+      });
+      if (res) {
+        res.shortListedCount = shrtListCount.total;
+        // dispatch({
+        //   type: "GET_JOB_APPLICANTS_BY_JOBPOST",
+        //   query: res
+        // });
+        return res;
+      }
+      return false;
+    } catch (error) {
+      errorHandler(error);
+      return false;
     }
-    return false;
-  } catch (error) {
-    errorHandler(error);
-    return false;
-  }
-};
+  };
 
 //  to check whether the job is premium or not
 export const isPremiumJob = (recId, jobpostId) => async (dispatch) => {
@@ -469,33 +487,33 @@ export const isPremiumJob = (recId, jobpostId) => async (dispatch) => {
   }
 };
 
-export const fromPreferredPremium = (id, orgId, isRec = false) => async (
-  dispatch
-) => {
-  try {
-    let empRes;
-    if (isRec) {
-      empRes = await client.service("employerRecruiters").find({
-        query: {
-          empOrgId: id,
-          recOrgId: orgId,
-        },
-      });
-    } else {
-      empRes = await client.service("employerRecruiters").find({
-        query: {
-          contactUserId: id,
-          empOrgId: orgId,
-        },
-      });
-    }
+export const fromPreferredPremium =
+  (id, orgId, isRec = false) =>
+  async (dispatch) => {
+    try {
+      let empRes;
+      if (isRec) {
+        empRes = await client.service("employerRecruiters").find({
+          query: {
+            empOrgId: id,
+            recOrgId: orgId,
+          },
+        });
+      } else {
+        empRes = await client.service("employerRecruiters").find({
+          query: {
+            contactUserId: id,
+            empOrgId: orgId,
+          },
+        });
+      }
 
-    return empRes.data && empRes.data.length > 0;
-  } catch (error) {
-    errorHandler(error);
-    return false;
-  }
-};
+      return empRes.data && empRes.data.length > 0;
+    } catch (error) {
+      errorHandler(error);
+      return false;
+    }
+  };
 
 export const clearJobPost = () => (dispatch) => {
   dispatch({
@@ -515,11 +533,11 @@ export const isConfigDetailsExists = (orgId) => async (dispatch) => {
         // key: "FinEndDate",
         //  key: { $in: [{ $ne: null, $ne: "", $gt: 0 }] }
         $or: [
-          {key: "Level", value: {$gt: 0}},
-          {key: "FinStartMonth", value: {$ne: null, $gt: 0}},
+          { key: "Level", value: { $gt: 0 } },
+          { key: "FinStartMonth", value: { $ne: null, $gt: 0 } },
           {
             key: "FinEndMonth",
-            value: {$ne: null, $gt: 0},
+            value: { $ne: null, $gt: 0 },
           },
         ],
       },
@@ -621,141 +639,136 @@ export const getInterviewDetailsByJobPost = (jobPostId) => async (dispatch) => {
   }
 };
 
-export const getInterviewQstnsByJobPost = (panelId, jobPostId) => async (
-  dispatch
-) => {
-  try {
-    const res = await client.service("jobinterviewqtns").find({
-      query: {
-        panelId,
-        jobPostId,
-      },
-    });
-
-    if (res) {
-      dispatch({
-        type: "GET_INTERVIEW_QSTNS",
-        data: res,
+export const getInterviewQstnsByJobPost =
+  (panelId, jobPostId) => async (dispatch) => {
+    try {
+      const res = await client.service("jobinterviewqtns").find({
+        query: {
+          panelId,
+          jobPostId,
+        },
       });
-      return true;
+
+      if (res) {
+        dispatch({
+          type: "GET_INTERVIEW_QSTNS",
+          data: res,
+        });
+        return true;
+      }
+    } catch (error) {
+      errorHandler(error);
+      return false;
     }
-  } catch (error) {
-    errorHandler(error);
-    return false;
-  }
-};
+  };
 //Send message to Recruiter
 
-export const sendMsgtoRecruiter = (
-  semail,
-  msg,
-  orgName,
-  candidateName,
-  jobId
-) => async (dispatch) => {
-  const email = {
-    to: semail,
-    orgname: orgName,
-    candidateName: candidateName,
-    message: msg,
-    isSendMsg: true,
-    jobId: jobId,
+export const sendMsgtoRecruiter =
+  (semail, msg, orgName, candidateName, jobId) => async (dispatch) => {
+    const email = {
+      to: semail,
+      orgname: orgName,
+      candidateName: candidateName,
+      message: msg,
+      isSendMsg: true,
+      jobId: jobId,
+    };
+
+    await client
+      .service("mailer")
+      .create(email)
+      .then(function (result) {
+        console.log("Sent email", result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // try {
+    //   const res = await client.service("custom").update({
+    //     sendMail: true,
+    //     email: email,
+    //     message: msg
+    //   });
+
+    //   // if (res) {
+    //   //   dispatch({
+    //   //     type: "GET_INTERVIEW_QSTNS",
+    //   //     data: res
+    //   //   });
+    //   //   return true;
+    //   // }
+    // } catch (error) {
+    //   errorHandler(error);
+    //   return false;
+    // }
+  };
+export const getCandidateCountByRecruiterId =
+  (jobId, recruiterId) => async (dispatch) => {
+    try {
+      const res = await client
+        .service("custom")
+        .get(jobId, { query: { $filterByUser: true, createdBy: recruiterId } });
+      if (res) {
+        return res;
+      }
+      return false;
+    } catch (error) {
+      errorHandler(error);
+      return false;
+    }
   };
 
-  await client
-    .service("mailer")
-    .create(email)
-    .then(function (result) {
-      console.log("Sent email", result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  // try {
-  //   const res = await client.service("custom").update({
-  //     sendMail: true,
-  //     email: email,
-  //     message: msg
-  //   });
-
-  //   // if (res) {
-  //   //   dispatch({
-  //   //     type: "GET_INTERVIEW_QSTNS",
-  //   //     data: res
-  //   //   });
-  //   //   return true;
-  //   // }
-  // } catch (error) {
-  //   errorHandler(error);
-  //   return false;
-  // }
-};
-export const getCandidateCountByRecruiterId = (jobId, recruiterId) => async (
-  dispatch
-) => {
-  try {
-    const res = await client
-      .service("custom")
-      .get(jobId, {query: {$filterByUser: true, createdBy: recruiterId}});
-    if (res) {
-      return res;
-    }
-    return false;
-  } catch (error) {
-    errorHandler(error);
-    return false;
-  }
-};
-
 //Reportsfor super admin
-export const getReportSummary = (
-  role,
-  orgId = 0,
-  stripeCusId = null,
-  isSuperAdminAgency = false,
-  startDt,
-  endDt
-) => async (dispatch) => {
-  let startdate, enddate, tz;
+export const getReportSummary =
+  (
+    role,
+    orgId = 0,
+    stripeCusId = null,
+    isSuperAdminAgency = false,
+    startDt,
+    endDt
+  ) =>
+  async (dispatch) => {
+    let startdate, enddate, tz;
 
-  startdate = startDt && moment(startDt).format("YYYY-MM-DD HH:mm:ss"); //Convert date format to match with the server converted time
-  enddate = endDt && moment(endDt).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-  tz = getTimezoneOffset(); //  get the timezone offset ie. +05:30
+    startdate = startDt && moment(startDt).format("YYYY-MM-DD HH:mm:ss"); //Convert date format to match with the server converted time
+    enddate = endDt && moment(endDt).endOf("day").format("YYYY-MM-DD HH:mm:ss");
+    tz = getTimezoneOffset(); //  get the timezone offset ie. +05:30
 
-  if (!startDt && !endDt) {
-    //  if start date and end date is not selected, the report will fetched based on the current year;
-    let firstDateOfCurrentYear = new Date(new Date().getFullYear(), 0, 1);
-    let lastDateOfCurrentYear = new Date(new Date().getFullYear(), 11, 31);
-    startdate = moment(firstDateOfCurrentYear).format("YYYY-MM-DD HH:mm:ss");
-    enddate = moment(lastDateOfCurrentYear)
-      .endOf("day")
-      .format("YYYY-MM-DD HH:mm:ss");
-  }
-
-  try {
-    const res = await client.service("reports").find({
-      query: {
-        role,
-        orgId,
-        customerId: stripeCusId,
-        isSuperAdminAgency,
-        startdate,
-        enddate,
-        tz,
-      },
-    });
-
-    if (res) {
-      dispatch({
-        type: "GET_REPORT_SUMMARY",
-        data: res,
-      });
+    if (!startDt && !endDt) {
+      //  if start date and end date is not selected, the report will fetched based on the current year;
+      let firstDateOfCurrentYear = new Date(new Date().getFullYear(), 0, 1);
+      let lastDateOfCurrentYear = new Date(new Date().getFullYear(), 11, 31);
+      startdate = moment(firstDateOfCurrentYear).format("YYYY-MM-DD HH:mm:ss");
+      enddate = moment(lastDateOfCurrentYear)
+        .endOf("day")
+        .format("YYYY-MM-DD HH:mm:ss");
     }
-  } catch (error) {
-    errorHandler(error);
-    return false;
-  }
-};
+
+    try {
+      const res = await client.service("reports").find({
+        query: {
+          role,
+          orgId,
+          customerId: stripeCusId,
+          isSuperAdminAgency,
+          startdate,
+          enddate,
+          tz,
+        },
+      });
+
+      if (res) {
+        dispatch({
+          type: "GET_REPORT_SUMMARY",
+          data: res,
+        });
+      }
+    } catch (error) {
+      errorHandler(error);
+      return false;
+    }
+  };
 
 function getTimezoneOffset() {
   function z(n) {
@@ -769,4 +782,46 @@ function getTimezoneOffset() {
 
 const getUTCDate = (Date) => {
   return moment.utc(Date).format();
+};
+
+export const getJobsByAttention = (orgId, role) => async (dispatch) => {
+  debugger;
+  try {
+    const res = await client.service("custom").find({
+      query: {
+        organizationId: orgId,
+        role: role,
+        isJobsNeedAttention: true,
+      },
+    });
+
+    if (
+      res &&
+      res.needAttentionJobs &&
+      res.needAttentionJobs.data &&
+      res.needAttentionJobs.data.length
+    ) {
+      dispatch({
+        type: "GET_ALL_JOBSBYATTENTION",
+        data: res,
+      });
+      return true;
+    }
+    if (
+      res &&
+      res.needAttentionJobs &&
+      res.needAttentionJobs.data &&
+      res.needAttentionJobs.data.length === 0
+    ) {
+      dispatch({
+        type: "GET_ALL_JOBSBYATTENTION",
+        data: [],
+      });
+      return true;
+    }
+    return false;
+  } catch (error) {
+    errorHandler(error);
+    return false;
+  }
 };
