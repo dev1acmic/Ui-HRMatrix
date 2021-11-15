@@ -58,7 +58,16 @@ import { getFile } from "services/jobApplication/action";
 import { loadOrganization } from "services/organization/action";
 import styles from "../style";
 const Tracker = (props) => {
-  const { classes, role, type, isSearch, userId, orgId, summary } = props;
+  const {
+    classes,
+    role,
+    type,
+    isSearch,
+    userId,
+    orgId,
+    summary,
+    showPagination,
+  } = props;
   const { t } = useTranslation(["dashboard", "enum", "common"]);
   const initialState = {
     loading: true,
@@ -304,9 +313,8 @@ const Tracker = (props) => {
           );
           newState.data[index].applicants = res.data;
           newState.data[index].applicantCount = res.total;
-          newState.data[
-            index
-          ].isPreferedPremiumAgency = isPreferedPremiumAgency;
+          newState.data[index].isPreferedPremiumAgency =
+            isPreferedPremiumAgency;
           page[item.id] = 0;
           newState.data[index].showCandidJourney = item.shortListedCount > 0;
         })
@@ -471,10 +479,8 @@ const Tracker = (props) => {
       true,
       isClosed
     );
-    const {
-      shortListedCount,
-      interviewedCount,
-    } = await props.getCandidateCountByRecruiterId(jobId, recruiterId);
+    const { shortListedCount, interviewedCount } =
+      await props.getCandidateCountByRecruiterId(jobId, recruiterId);
     const newState = { ...jobList };
     newState.data[idx].applicants = res.data;
     newState.data[idx].applicantCount = res.total;
@@ -610,7 +616,7 @@ const Tracker = (props) => {
 
   return (
     <Container className={classes.root} style={{ paddingTop: 0 }}>
-      {jobList.data && jobList.data.length > 0 ? (
+      {jobList && jobList.data && jobList.data.length > 0 ? (
         jobList.data.map((job, index) => (
           <div style={{ position: "relative", marginTop: "60px" }}>
             {role === Roles.AgencyAdmin && (
@@ -921,18 +927,18 @@ const Tracker = (props) => {
 
                   <Box className={classes.avatarBoxBottom}>
                     {/* {role === Roles.Recruiter && (
-                    <IconButton
-                      title="View"
-                      disabled={job.status !== 3}
-                      onClick={() => {
-                        toJobPostReviewPage(job.id);
-                      }}
-                    >
-                      <WorkOutline
-                        style={{ color: job.status === 3 ? "#75d49b" : null }}
-                      />
-                    </IconButton>
-                  )} */}
+          <IconButton
+            title="View"
+            disabled={job.status !== 3}
+            onClick={() => {
+              toJobPostReviewPage(job.id);
+            }}
+          >
+            <WorkOutline
+              style={{ color: job.status === 3 ? "#75d49b" : null }}
+            />
+          </IconButton>
+        )} */}
                     {(role === Roles.Admin ||
                       role === Roles.HiringManager ||
                       role === Roles.TalentAcquisitionTeam) &&
@@ -1012,21 +1018,21 @@ const Tracker = (props) => {
                         </>
                       )}
                     {/* {(role === Roles.TalentAcquisitionTeam ||
-                    role === Roles.Admin) && (
-                    <IconButton
-                      title="Send to recruiter"
-                      small
-                      disabled={job.status !== 3}
-                      variant="contained"
-                      onClick={() => {
-                        inviteRecruiter(job.id);
-                      }}
-                    >
-                      <ContactMail
-                        style={{ color: job.status === 3 ? "#75d49b" : null }}
-                      />
-                    </IconButton>
-                  )} */}
+          role === Roles.Admin) && (
+          <IconButton
+            title="Send to recruiter"
+            small
+            disabled={job.status !== 3}
+            variant="contained"
+            onClick={() => {
+              inviteRecruiter(job.id);
+            }}
+          >
+            <ContactMail
+              style={{ color: job.status === 3 ? "#75d49b" : null }}
+            />
+          </IconButton>
+        )} */}
                     {type === Types.Recruiter && (
                       <IconButton
                         title={t("tracker.addProfile")}
@@ -1056,8 +1062,8 @@ const Tracker = (props) => {
                       </IconButton>
                     )}
                     {/* <IconButton>
-                    <CancelOutlined style={{ color: "#ff725f" }} />
-                  </IconButton> */}
+          <CancelOutlined style={{ color: "#ff725f" }} />
+        </IconButton> */}
                   </Box>
                 </Box>
               </Grid>
@@ -1068,25 +1074,28 @@ const Tracker = (props) => {
         <Typography>{msg}</Typography>
       )}
 
-      {jobList.data && jobList.data.length > 0 && (
-        <TablePagination
-          backIconButtonProps={{
-            "aria-label": t("common:previousPage"),
-          }}
-          component="div"
-          className={classes.paginationWrap}
-          count={jobList.total}
-          nextIconButtonProps={{
-            "aria-label": t("common:nextPage"),
-          }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-          rowsPerPageLabel="Rows"
-        />
-      )}
+      {jobList &&
+        jobList.data &&
+        jobList.data.length > 0 &&
+        showPagination !== false && (
+          <TablePagination
+            backIconButtonProps={{
+              "aria-label": t("common:previousPage"),
+            }}
+            component="div"
+            className={classes.paginationWrap}
+            count={jobList.total}
+            nextIconButtonProps={{
+              "aria-label": t("common:nextPage"),
+            }}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageLabel="Rows"
+          />
+        )}
 
       {dialogue()}
       {p_dialogue()}

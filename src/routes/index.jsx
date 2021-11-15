@@ -41,6 +41,8 @@ import ChangePassword from "views/ChangePassword";
 import Reports from "views/Reports";
 import ScrollToTop from "./scrollToTop";
 import Journey from "views/Journey";
+import OpenJobs from "views/OpenJobs";
+import JobsneedAttention from "views/JobsneedAttention";
 
 export default class Routes extends Component {
   render() {
@@ -76,6 +78,7 @@ export default class Routes extends Component {
             {/* <UnprotectedRoute component={Reset} exact path="/reset/:token/" /> */}
             {/* protected routes */}
             <ProtectedRoute component={Dashboard} exact path="/rc/dashboard" />
+
             <ProtectedRoute
               component={Matrix}
               exact
@@ -132,6 +135,7 @@ export default class Routes extends Component {
               exact
               path="/rc/job-application-review"
             />
+
             {/* <ProtectedRoute
               component={JobPost}
               exact
@@ -139,6 +143,12 @@ export default class Routes extends Component {
             /> */}
             <ProtectedRoute component={TrackJob} exact path="/rc/track-job" />
             <ProtectedRoute component={Dashboard} exact path="/rc/dashboard" />
+            <ProtectedRoute component={OpenJobs} exact path="/rc/openjobs" />
+            <ProtectedRoute
+              component={JobsneedAttention}
+              exact
+              path="/rc/jobsneedattention"
+            />
             <ProtectedRoute component={Search} exact path="/rc/search" />
             <ProtectedRoute
               component={ManageUser}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Box, withStyles, Typography } from "@material-ui/core";
-
+import { Link } from "react-router-dom";
 import classNames from "classnames";
 import {
   WorkOutline,
@@ -27,11 +27,13 @@ const Summary = (props) => {
             <Box className={classNames(classes.summaryBoxCol, classes.col1)}>
               <Box className={classes.iconHead}>
                 <WorkOutline className={classes.iconLeft} />
-                <Typography className={classes.iconText}>
-                  {t("summary.open")}
-                  <br />
-                  {t("summary.jobs")}
-                </Typography>
+                <Link to="/rc/openjobs">
+                  <Typography className={classes.iconText}>
+                    {t("summary.open")}
+                    <br />
+                    {t("summary.jobs")}
+                  </Typography>
+                </Link>
               </Box>
               <Box>
                 <Typography className={classes.iconNumber}>
@@ -104,11 +106,13 @@ const Summary = (props) => {
             <Box className={classes.summaryBoxRight}>
               <Box className={classes.iconHead}>
                 <ErrorOutlineOutlined className={classes.iconLeft} />
-                <Typography className={classes.iconText}>
-                  {t("summary.jobs")},
-                  <br />
-                  {t("summary.needAttention")}
-                </Typography>
+                <Link to="/rc/jobsneedattention">
+                  <Typography className={classes.iconText}>
+                    {t("summary.jobs")},
+                    <br />
+                    {t("summary.needAttention")}
+                  </Typography>
+                </Link>
               </Box>
               <Box>
                 <Typography className={classes.iconNumber}>

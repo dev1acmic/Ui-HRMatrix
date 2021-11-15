@@ -78,10 +78,15 @@ class Topbar extends Component {
   };
 
   toJobPost = async (id, category) => {
-    if (category) {
+    if (category === "JP") {
       this.props.history.push({
         pathname: "/rc/job-post",
         state: {id: id, empReview: true},
+      });
+    } else if (category === "JA") {
+      this.props.history.push({
+        pathname: "/rc/job-application-review",
+        state: {jobAppId: id},
       });
     } else {
       const res = await this.props.getJobApplicationsById(id, true);

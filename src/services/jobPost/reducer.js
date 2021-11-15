@@ -93,6 +93,18 @@ export default (state = {}, action) => {
         ...state,
         jobList: { ...action.query },
       };
+    case "GET_ALL_OPENJOBS":
+      return {
+        ...state,
+        openjobList: { ...action.query },
+      };
+
+    case "GET_ALL_JOBSBYATTENTION":
+      return {
+        ...state,
+        needattentionjobList:
+          (action.data && action.data.needAttentionJobs) || [],
+      };
 
     case "CLEAR_JOBPOST":
       return {
