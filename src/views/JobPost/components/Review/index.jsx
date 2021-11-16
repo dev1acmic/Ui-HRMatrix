@@ -104,6 +104,10 @@ class Review extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.jobId !== prevState.values.id)
+    {
+      nextProps.getJobPost(nextProps.jobId);
+    }
     if (nextProps.jobPost && nextProps.jobPost.data) {
       return { values: nextProps.jobPost.data };
     }
