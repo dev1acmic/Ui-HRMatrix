@@ -784,8 +784,7 @@ const getUTCDate = (Date) => {
   return moment.utc(Date).format();
 };
 
-export const getJobsByAttention = (orgId, role) => async (dispatch) => {
-  debugger;
+export const getJobsByAttention = (orgId, role) => async (dispatch) => { 
   try {
     const res = await client.service("custom").find({
       query: {

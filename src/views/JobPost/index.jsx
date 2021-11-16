@@ -134,7 +134,7 @@ const theme = createMuiTheme({
 });
 
 class PostJ extends Component {
-  constructor(props) {
+  constructor(props) { 
     super(props);
     this.state = {
       jobId:
@@ -206,7 +206,21 @@ class PostJ extends Component {
     }
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {  
+  let jobId = 
+  nextProps.history.location &&
+  nextProps.history.location.state &&
+  nextProps.history.location.state.id
+          ? nextProps.history.location.state.id 
+          : 0;
+    let activeStep = 
+        (nextProps.location &&
+          nextProps.location.state &&
+          nextProps.location.state.empReview)
+          ? 2
+          : 0;
+
+    
     if (nextProps.jobPost && !prevState.flag) {
       const splitTabs =
         (nextProps.jobPost.tab.length > 0 &&
@@ -221,7 +235,11 @@ class PostJ extends Component {
         });
       }
 
-      return { completed: completed, flag: true };
+      return { completed: completed, flag: true};
+    }
+    if(jobId && activeStep)
+    {
+      return { jobId:jobId ,activeStep:activeStep };
     }
   }
 
