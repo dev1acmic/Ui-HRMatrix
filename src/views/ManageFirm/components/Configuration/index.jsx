@@ -924,7 +924,7 @@ const Configuration = (props) => {
 
         <Grid container item xs={12} sm={9}>
           <FormLabel className={classes.formHeader}>
-            {t("interviewLevelsPanel")}
+            {t("interviewLevels")}
           </FormLabel>
           <Box
             display="flex"
@@ -943,7 +943,7 @@ const Configuration = (props) => {
             >
               <Slider
                 rootStyle={sliderStyle}
-                domain={[1, 10]}
+                domain={[10, 25]}
                 step={1}
                 mode={2}
                 values={[values.level]}
@@ -984,7 +984,7 @@ const Configuration = (props) => {
               </Slider>
             </Box>
           </Box>
-          <Paper style={{ width: "100%" }}>
+          {/* <Paper style={{ width: "100%" }}>
             <PerfectScrollbar>
               <Table size="small">
                 <TableHead>
@@ -1044,8 +1044,8 @@ const Configuration = (props) => {
                 </TableBody>
               </Table>
             </PerfectScrollbar>
-          </Paper>
-          <Grid xs={12} style={{ textAlign: "right", paddingTop: 10 }}>
+          </Paper> */}
+          {/* <Grid xs={12} style={{ textAlign: "right", paddingTop: 10 }}>
             <Button
               variant="contained"
               color="secondary"
@@ -1055,7 +1055,7 @@ const Configuration = (props) => {
             >
               {t("add")}
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid container item xs={12} sm={9}>
           <Grid item xs={12} sm={12}>

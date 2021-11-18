@@ -251,6 +251,7 @@ class Competancy extends Component {
         {
           question: "",
           panelId: "0",
+          level: "0",
         },
       ],
       screeningRows: [],
@@ -708,6 +709,7 @@ class Competancy extends Component {
           {
             question: "",
             panelId: "0",
+            level: "0",
           },
         ],
         showInterQuestPopup: false,
@@ -1789,7 +1791,7 @@ class Competancy extends Component {
             </Grid>
           </Grid>
 
-          <Grid container xs={12} sm={10}>
+          {/* <Grid container xs={12} sm={10}>
             <Grid container item xs={12}>
               <FormLabel className={classes.formHeader}>
                 {t("interviewers")}
@@ -1983,7 +1985,7 @@ class Competancy extends Component {
                 </Grid>
               )}
             </Grid>
-          </Grid>
+          </Grid> */}
 
           <Grid container xs={12} sm={10}>
             <Grid container item xs={12}>
@@ -2002,7 +2004,7 @@ class Competancy extends Component {
                           {t("competency.questions")}
                         </TableCell>
                         <TableCell className={classes.tableHead}>
-                          {t("interviewer")}
+                          {t("competency.level")}
                         </TableCell>
                         <TableCell
                           className={classes.tableHead}
@@ -2044,12 +2046,12 @@ class Competancy extends Component {
                           <TableCell>
                             <Select
                               fullWidth
-                              value={item.panelId}
+                              value={item.level}
                               margin="dense"
                               input={
                                 <OutlinedInput
                                   labelWidth="0"
-                                  name="panelId"
+                                  name="level"
                                   id="outlined-age-simple"
                                 />
                               }
@@ -2059,19 +2061,28 @@ class Competancy extends Component {
                                 errors.interQuestRows &&
                                 errors.interQuestRows[0][idx] &&
                                 getMsg(
-                                  errors.interQuestRows[0][idx].error.panelId,
+                                  errors.interQuestRows[0][idx].error.level,
                                   t
                                 )
                               }
                             >
                               <MenuItem value="0">
-                                {" "}
                                 {t("common:select")}
                               </MenuItem>
-                              {selectedPanels &&
-                                selectedPanels.map((item, index) => (
+                              {levels &&
+                                levels.map((item, index) => (
                                   <MenuItem key={index} value={item.id}>
-                                    {item.name}
+                                    {t(
+                                      `${
+                                        "competency." +
+                                        item.name
+                                          .split(".")[1]
+                                          .replace(/TRANSLATION./g, "")
+                                          .split(" ")[0]
+                                      }`
+                                    ) +
+                                      " " +
+                                      item.name.split(" ")[1]}
                                   </MenuItem>
                                 ))}
                             </Select>

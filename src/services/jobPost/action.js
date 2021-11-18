@@ -75,40 +75,42 @@ export const updateJobPost = (data, errors) => async (dispatch) => {
 
 export const getJobPost = (id) => async (dispatch) => {
   try {
-    const res = await client.service("jobposts").get(id);
-    if (res) {
-      var _ = require("underscore");
-      const iteratees = (obj) => -obj.mandatory;
-      res.jobskills = _.sortBy(res.jobskills, iteratees);
-      // res.jobskills = _.sortBy(res.jobskills, function (skill) {
-      //   return [skill.mandatory, skill.priority, skill.competency, skill.years].join("_");
-      // });
-      //res.jobskills = _.sortBy((res.jobskills, 'mandatory'));
-
-      // res.jobskills = _(res.jobskills).chain().sortBy(function (skill) {
-      //   return skill.mandatory;
-      //   // }).sortBy(function (skill) {
-      //   //   return skill.competency;
-      //   // }).sortBy(function (skill) {
-      //   //   return skill.years;
-      // }).value();
-
-      if (res.jobskills && res.jobskills.length > 0) {
-        const jobskills = res.jobskills.map((t) => ({
-          ...t,
-          name: (t.skill && t.skill.name) || "",
-        }));
-        res.jobskills = jobskills;
-      }
-      if (res.addresses && res.addresses.length > 0) {
-        res.addressId = res.addresses[0].id;
-      }
+    if (id) {
+      const res = await client.service("jobposts").get(id);
       if (res) {
-        dispatch({
-          type: "GET_JOBPOST",
-          data: res,
-        });
-        return true;
+        var _ = require("underscore");
+        const iteratees = (obj) => -obj.mandatory;
+        res.jobskills = _.sortBy(res.jobskills, iteratees);
+        // res.jobskills = _.sortBy(res.jobskills, function (skill) {
+        //   return [skill.mandatory, skill.priority, skill.competency, skill.years].join("_");
+        // });
+        //res.jobskills = _.sortBy((res.jobskills, 'mandatory'));
+
+        // res.jobskills = _(res.jobskills).chain().sortBy(function (skill) {
+        //   return skill.mandatory;
+        //   // }).sortBy(function (skill) {
+        //   //   return skill.competency;
+        //   // }).sortBy(function (skill) {
+        //   //   return skill.years;
+        // }).value();
+
+        if (res.jobskills && res.jobskills.length > 0) {
+          const jobskills = res.jobskills.map((t) => ({
+            ...t,
+            name: (t.skill && t.skill.name) || "",
+          }));
+          res.jobskills = jobskills;
+        }
+        if (res.addresses && res.addresses.length > 0) {
+          res.addressId = res.addresses[0].id;
+        }
+        if (res) {
+          dispatch({
+            type: "GET_JOBPOST",
+            data: res,
+          });
+          return true;
+        }
       }
     }
     return false;
@@ -784,7 +786,7 @@ const getUTCDate = (Date) => {
   return moment.utc(Date).format();
 };
 
-export const getJobsByAttention = (orgId, role) => async (dispatch) => { 
+export const getJobsByAttention = (orgId, role) => async (dispatch) => {
   try {
     const res = await client.service("custom").find({
       query: {

@@ -104,8 +104,7 @@ class Review extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.jobId !== prevState.values.id)
-    {
+    if (nextProps.jobId !== prevState.values.id) {
       nextProps.getJobPost(nextProps.jobId);
     }
     if (nextProps.jobPost && nextProps.jobPost.data) {
@@ -777,7 +776,7 @@ class Review extends Component {
           </Grid>
           <br />
 
-          <Grid
+          {/* <Grid
             container
             item
             spacing={3}
@@ -833,7 +832,7 @@ class Review extends Component {
 
             <br />
           </Grid>
-          <br />
+          <br /> */}
 
           <Grid
             container
@@ -855,7 +854,10 @@ class Review extends Component {
                 <TableHead>
                   <TableRow>
                     <TableCell>{t("question")}</TableCell>
-                    <TableCell align="center"> {t("interviewer")}</TableCell>
+                    <TableCell align="center">
+                      {" "}
+                      {t("competency.level")}
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -866,9 +868,7 @@ class Review extends Component {
                         <TableRow>
                           <TableCell>{item.question || "--"}</TableCell>
                           <TableCell align="center">
-                            {item.panelId && item.interviewpanel
-                              ? item.interviewpanel.name
-                              : "--"}
+                            {item.level ? "Level " + item.level : "--"}
                           </TableCell>
                         </TableRow>
                       );
