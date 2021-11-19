@@ -30,7 +30,7 @@ import {
 import { Edit, DeleteOutlined } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { withRouter, Prompt } from "react-router-dom";
-import { Slider, Rail, Handles, Tracks } from "react-compound-slider";
+import { Slider, Rail, Handles, Tracks, Ticks } from "react-compound-slider";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { AddLocation, AddPanel } from "../../../Modals";
 //import DatePicker from "react-datepicker";
@@ -86,8 +86,8 @@ export function Handle({ handle: { id, value, percent }, getHandleProps }) {
         marginLeft: -5,
         marginTop: 10,
         zIndex: 2,
-        width: 15,
-        height: 15,
+        width: 12,
+        height: 12,
         //border: 0,
         textAlign: "center",
         cursor: "pointer",
@@ -122,6 +122,36 @@ function Track({ source, target, getTrackProps }) {
       }}
       {...getTrackProps()} // this will set up events if you want it to be clickeable (optional)
     />
+  );
+}
+function Tick({ tick, count }) {
+  // your own tick component
+  return (
+    <div>
+      <div
+        style={{
+          position: "absolute",
+          marginTop: 17,
+          width: 1,
+          height: 10,
+          backgroundColor: "rgb(200,200,200)",
+          left: `${tick.percent}%`,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          marginTop: 20,
+          fontSize: 10,
+          textAlign: "center",
+          marginLeft: `${-(100 / count) / 2}%`,
+          width: `${100 / count}%`,
+          left: `${tick.percent}%`,
+        }}
+      >
+        {tick.value}
+      </div>
+    </div>
   );
 }
 
@@ -377,16 +407,16 @@ const Configuration = (props) => {
     let errorMsg = "";
     let errorHeaderMsg = "";
 
-    if (
-      !errors &&
-      (!values.interviewPanels || values.interviewPanels.length === 0)
-    ) {
-      if (!errors) {
-        errors = {};
-      }
-      errors.interviewPanels = [""];
-      errorMsg = "Interview Panel is empty.";
-    }
+    // if (
+    //   !errors &&
+    //   (!values.interviewPanels || values.interviewPanels.length === 0)
+    // ) {
+    //   if (!errors) {
+    //     errors = {};
+    //   }
+    //   errors.interviewPanels = [""];
+    //   errorMsg = "Interview Panel is empty.";
+    // }
 
     if (
       !errors &&
@@ -1171,6 +1201,19 @@ const Configuration = (props) => {
                                 </div>
                               )}
                             </Tracks>
+                            <Ticks count={5}>
+                              {({ ticks }) => (
+                                <div className="slider-ticks">
+                                  {ticks.map((tick) => (
+                                    <Tick
+                                      key={tick.id}
+                                      tick={tick}
+                                      count={ticks.length}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </Ticks>
                           </Slider>
                         </Grid>
                       </Grid>
@@ -1255,6 +1298,19 @@ const Configuration = (props) => {
                                 </div>
                               )}
                             </Tracks>
+                            <Ticks count={5}>
+                              {({ ticks }) => (
+                                <div className="slider-ticks">
+                                  {ticks.map((tick) => (
+                                    <Tick
+                                      key={tick.id}
+                                      tick={tick}
+                                      count={ticks.length}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </Ticks>
                           </Slider>
                         </Grid>
                       </Grid>
@@ -1412,6 +1468,19 @@ const Configuration = (props) => {
                                 </div>
                               )}
                             </Tracks>
+                            <Ticks count={5}>
+                              {({ ticks }) => (
+                                <div className="slider-ticks">
+                                  {ticks.map((tick) => (
+                                    <Tick
+                                      key={tick.id}
+                                      tick={tick}
+                                      count={ticks.length}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </Ticks>
                           </Slider>
                         </Grid>
                       </Grid>
@@ -1496,6 +1565,19 @@ const Configuration = (props) => {
                                 </div>
                               )}
                             </Tracks>
+                            <Ticks count={5}>
+                              {({ ticks }) => (
+                                <div className="slider-ticks">
+                                  {ticks.map((tick) => (
+                                    <Tick
+                                      key={tick.id}
+                                      tick={tick}
+                                      count={ticks.length}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </Ticks>
                           </Slider>
                         </Grid>
                       </Grid>

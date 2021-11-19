@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Dashboard as DashboardLayout } from "layouts";
-import { Tracker, TrackerBar, NoData } from "views/Dashboard/components";
+import { Tracker, TrackerBar } from "views/Dashboard/components";
 import styles from "layouts/Dashboard/styles";
 import {
   isRoleAdmin,
@@ -169,7 +169,9 @@ const OpenJobs = (props) => {
       return (
         <div>
           <TrackerBar role={role} type={type} onChange={handleChangeFilter} />
-          <Typography style={{ margin: 30 }}>No Data Found</Typography>
+          <Typography style={{ margin: 30 }}>
+            {t("common:nodatafound")}
+          </Typography>
         </div>
       );
     }

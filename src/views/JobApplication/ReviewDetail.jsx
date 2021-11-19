@@ -24,7 +24,7 @@ const ReviewDetail = (props) => {
     ) {
       setjobAppId(props.location.state.jobAppId);
     }
-  }, []);
+  }, [props.location.state]);
 
   useEffect(() => {
     if (jobAppId) {

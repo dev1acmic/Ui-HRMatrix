@@ -40,6 +40,7 @@
     "select": "Choisir",
     "dashboard": "Tableau de bord",
     "nodata": "Pas De Données",
+    "nodatafound":" Aucune donnée disponible",
     "reject": "Rejeter",
     "continueAlert": "Souhaitez-vous continuer?",
     "no": "Non",
