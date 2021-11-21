@@ -796,6 +796,8 @@ const Matrix = (props) => {
         onClose={handleClosePanel}
       >
         <AssignInterviewer
+          jobPost={props.jobPost}
+          jobApplication={props.jobApplications}
           jobpostId={state.jobPostId}
           applicantId={state.applicantId}
           applicantName={state.applicantName}

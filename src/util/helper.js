@@ -1,3 +1,6 @@
+import moment from 'moment';
+import _ from 'lodash'
+
 export function getFullAddress(address) {
   const fulladdress = [
     address.line1,
@@ -247,7 +250,7 @@ export function getApplicatSkillMatrix(
           Math.round(
             ((totalSkillPerc * skillFactor) / 100 +
               (totalAnsScorePrc * preQFactor) / 100) *
-              10
+            10
           ) / 10;
 
         // Find max values for skill and question scores
@@ -441,7 +444,7 @@ export function getApplicatAssesmentSkillMatrix(
             Math.round(
               ((totalSkillPerc * skillFactor) / 100 +
                 (totalAssesmentScorePrc * assesmentFactor) / 100) *
-                10
+              10
             ) / 10;
         } else {
           overAllScore =
@@ -571,3 +574,77 @@ export function translateMessage(message, t) {
   }
   return message;
 }
+
+export const loadTimeSlots = () => {
+  let time = [{ key: 'Select', value: '0' }];
+  for (let i = 480; i <= 1200; i += 15) {
+    let hours, minutes, ampm;
+    hours = Math.floor(i / 60);
+    minutes = i % 60;
+    if (minutes < 10) {
+      minutes = '0' + minutes; // adding leading zero
+    }
+    ampm = hours % 24 < 12 ? 'AM' : 'PM';
+    hours = hours % 12;
+    if (hours === 0) {
+      hours = 12;
+    }
+    let slot = hours + ':' + minutes + ' ' + ampm;
+    time.push({ key: slot, value: slot });
+  }
+  return time;
+};
+
+export const compareTime = (str1, str2) => {
+  var a = str1;
+  var b = str2;
+
+  var aDate = new Date(a).getTime();
+  var bDate = new Date(b).getTime();
+
+  if (aDate < bDate) {
+    return -1
+  } else if (aDate > bDate) {
+    return 1
+  } else {
+    return 1
+  }
+}
+
+export const getInterviewSchedule = (data) => {
+let schedules = []
+  data.map(item => {
+    let startDt = new Date(item.fromtime);
+    let endDt = new Date(item.totime);
+    let startHr = moment(item.fromtime).format('HH');
+      let startMin = moment(item.fromtime).format('mm');
+      let endHr = moment(item.totime).format('HH');
+      let endMin = moment(item.totime).format('mm');
+  let start = new Date(
+      startDt.getFullYear(),
+      startDt.getMonth(),
+      startDt.getDate(),
+      startHr,
+      startMin
+  );
+  let end =
+      new Date(
+          endDt.getFullYear(),
+          endDt.getMonth(),
+          endDt.getDate(),
+          endHr,
+          endMin
+      ); 
+      schedules.push({
+        title: truncate(item.subject) || "", start, end , applicantid : item.jobapplicantid, jobid:item.jobid
+      })
+
+  }) 
+  return _.uniqBy(schedules, function(elem) {
+    return JSON.stringify(_.pick(elem, ['start', 'end']));
+});
+}
+
+export const truncate =(input) => {   
+  return input.length > 50 ? `${input.substring(0, 50)}...` : input;;
+};

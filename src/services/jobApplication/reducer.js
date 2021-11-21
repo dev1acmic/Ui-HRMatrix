@@ -87,6 +87,16 @@ export default (state = {}, action) => {
         ...state,
         panelMembers: action.data
       };
+    case "GET_INTERVIEW_SCHEDULE":
+      return {
+        ...state,
+        interviewSchedule: action.data
+      };
+    case "GET_CANIDTATE_SCHEDULE":
+      return {
+        ...state,
+        candidateSchedule: action.data
+      };
     case "GET_APPLICANT_INTERVIEWERS":
       return {
         ...state,

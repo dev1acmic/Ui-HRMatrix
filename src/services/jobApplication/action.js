@@ -1,6 +1,7 @@
 import client from "../feathersApi";
-import {errorHandler} from "../error/action";
-import {JobApplicationStatus, JobApplicationSelectStatus} from "util/enum";
+import { errorHandler } from "../error/action";
+import { JobApplicationStatus, JobApplicationSelectStatus } from "util/enum";
+import _ from 'lodash'
 
 export const getJobApplicationsByJobPost =
   (
@@ -9,56 +10,56 @@ export const getJobApplicationsByJobPost =
     limit = 10
     //pageno = 0
   ) =>
-  async (dispatch) => {
-    try {
-      const res = await client.service("jobapplications").find({
-        query: {
-          $limit: limit,
-          $sort: {
-            createdAt: -1,
+    async (dispatch) => {
+      try {
+        const res = await client.service("jobapplications").find({
+          query: {
+            $limit: limit,
+            $sort: {
+              createdAt: -1,
+            },
+            jobpostId: jobpostId,
+            status: JobApplicationStatus.Completed, //status=completed
+            selectStatus: {
+              $nin: excludeSelectStatuses, // this should be an array
+            },
           },
-          jobpostId: jobpostId,
-          status: JobApplicationStatus.Completed, //status=completed
-          selectStatus: {
-            $nin: excludeSelectStatuses, // this should be an array
-          },
-        },
-      });
-      if (res) {
-        dispatch({
-          type: "QUERY_JOBAPPLICANTIONS",
-          query: res,
         });
-        return true;
+        if (res) {
+          dispatch({
+            type: "QUERY_JOBAPPLICANTIONS",
+            query: res,
+          });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        errorHandler(error);
+        return false;
       }
-      return false;
-    } catch (error) {
-      errorHandler(error);
-      return false;
-    }
-  };
+    };
 
 export const getJobApplicationsById =
   (jobapplicationId, skipDispatch = false) =>
-  async (dispatch) => {
-    try {
-      const res = await client.service("jobapplications").get(jobapplicationId);
-      if (skipDispatch) {
-        return res;
+    async (dispatch) => {
+      try {
+        const res = await client.service("jobapplications").get(jobapplicationId);
+        if (skipDispatch) {
+          return res;
+        }
+        if (res) {
+          dispatch({
+            type: "GET_JOBAPPLICATION",
+            data: res,
+          });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        errorHandler(error);
+        return false;
       }
-      if (res) {
-        dispatch({
-          type: "GET_JOBAPPLICATION",
-          data: res,
-        });
-        return true;
-      }
-      return false;
-    } catch (error) {
-      errorHandler(error);
-      return false;
-    }
-  };
+    };
 
 export const loadStates = () => async (dispatch) => {
   try {
@@ -151,7 +152,7 @@ export const uploadFile = (files, folder) => async (dispatch) => {
     let arrFiles = [];
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
-      const {name, type, size} = file;
+      const { name, type, size } = file;
       arrFiles.push({
         name: name,
         type: type,
@@ -172,20 +173,20 @@ export const uploadFile = (files, folder) => async (dispatch) => {
       }
     );
     //console.log(res);
-    return {status: true, result: {...res}};
+    return { status: true, result: { ...res } };
   } catch (error) {
     errorHandler(error);
-    return {status: false};
+    return { status: false };
   }
 };
 
 export const getFile = (id) => async (dispatch) => {
   try {
     const res = await client.service("files").get(id);
-    return {status: true, result: {...res}};
+    return { status: true, result: { ...res } };
   } catch (error) {
     errorHandler(error);
-    return {status: false};
+    return { status: false };
   }
 };
 
@@ -236,28 +237,28 @@ export const getApplicantsAssessmentsByIds =
     // Get all Apllicant assesments for the given array of ids
     applicantIds // this should be an array
   ) =>
-  async (dispatch) => {
-    try {
-      const res = await client.service("applicantassessments").find({
-        query: {
-          jobapplicationId: {
-            $in: applicantIds,
+    async (dispatch) => {
+      try {
+        const res = await client.service("applicantassessments").find({
+          query: {
+            jobapplicationId: {
+              $in: applicantIds,
+            },
           },
-        },
-      });
-      if (res && res.data.length > 0) {
-        // dispatch({
-        //   type: "GET_APPLICANT_ASSESSMENT",
-        //   data: res.data[0]
-        // });
-        return res.data;
+        });
+        if (res && res.data.length > 0) {
+          // dispatch({
+          //   type: "GET_APPLICANT_ASSESSMENT",
+          //   data: res.data[0]
+          // });
+          return res.data;
+        }
+        return null;
+      } catch (error) {
+        errorHandler(error);
+        return false;
       }
-      return null;
-    } catch (error) {
-      errorHandler(error);
-      return false;
-    }
-  };
+    };
 
 export const clearApplicantAssessment = () => (dispatch) => {
   dispatch({
@@ -318,6 +319,63 @@ export const getApplicantAssessmentLevelsAndScore =
     }
   };
 
+export const getCandidateSchedulebyJob = (jobapplicantid, jobid) => async (dispatch) => {
+  try {
+    let data = {}
+    data.jobapplicantid = jobapplicantid;
+    data.jobid = jobid;
+    data.isRemoved = false;
+
+    const res = await client.service("interviewschedule").find({
+      query: data,
+    });
+    if (res) {
+      dispatch({
+        type: "GET_CANIDTATE_SCHEDULE",
+        data: res.data,
+      });
+      return true;
+    }
+    return false;
+  } catch (error) {
+    errorHandler(error);
+    return false;
+  }
+};
+
+
+export const getInterviewersSchedulebyDate = (interviewersid, interviewdate) => async (dispatch) => {
+  try {
+    let params = [];
+    let data = {}
+    data.interviewdate = interviewdate;
+    data.isRemoved = false;
+    interviewersid.map(c => {
+      params.push({ interviewerid: c });
+    })
+
+    data = {
+      ...data,
+      $or: params
+    }
+
+    const res = await client.service("interviewschedule").find({
+      query: data,
+    });
+    if (res) {
+      dispatch({
+        type: "GET_INTERVIEW_SCHEDULE",
+        data: res.data,
+      });
+      return true;
+    }
+    return false;
+  } catch (error) {
+    errorHandler(error);
+    return false;
+  }
+};
+
 export const getInterviewersByPanel = (panelId) => async (dispatch) => {
   try {
     const res = await client.service("panelmembers").find({
@@ -342,71 +400,101 @@ export const getInterviewersByPanel = (panelId) => async (dispatch) => {
 export const saveApplicantInterviewers = (data) => async (dispatch) => {
   let res;
   try {
-    data.users.map(async (m) => {
-      if (!m.applicantinterviewerId || m.applicantinterviewerId === 0) {
-        client.service("applicantinterviewers").create({
-          level: data.level,
-          jobapplicationId: data.applicantId,
-          jobpostId: data.jobpostId,
-          userId: m.id,
-        });
-        const res = await client.service("panelmembers").find({
-          query: {
-            panelId: data.panelId,
-            userId: m.id,
-          },
-        });
-        if (res.total === 0) {
-          client.service("panelmembers").create({
-            panelId: data.panelId,
-            userId: m.id,
-          });
+    let interviewers = data.users.filter(m => !m.applicantinterviewerId || m.applicantinterviewerId === 0)
+    let ischedule = [];
+    interviewers.map(c => {
+      let user = { ...data, interviewerid: c.id };
+      ischedule.push(user)
+    })
+    if (data.ids) { 
+      let res = await client.service("interviewschedule").patch(null, {
+        subject: ischedule[0].subject,
+        message: ischedule[0].message,
+        interviewdate: ischedule[0].interviewdate,
+        fromtime: ischedule[0].fromtime,
+        totime: ischedule[0].totime,
+        isRemoved :false,
+        users: interviewers
+      }, { query: { id: { $in: data.ids } } });
+
+      if (res.length !== interviewers.length) {
+        const newInvite = interviewers.filter(o1 => !res.some(o2 => o1.id === o2.interviewerid))
+
+        if (newInvite && newInvite.length > 0) {
+          const newInterviewers = ischedule.filter(o1 => newInvite.some(o2 => o1.interviewerid === o2.id))
+          newInterviewers.map(c => {
+            c.users = newInvite;
+            c.skipEmail = true
+          }) 
+          const res = await client.service("interviewschedule").create(newInterviewers);
+          if (res) {
+            return true
+          }
         }
       }
-    });
-    if (res) {
-      return true;
+      if (res) {
+        return true
+      }
+    } else {
+      const res = await client.service("interviewschedule").create(ischedule);
+      if (res) {
+        return true
+      }
     }
   } catch (error) {
     errorHandler(error);
     return false;
   }
 };
+
 export const getInterviewersByApplicantId =
   (applicantId, level = null) =>
-  async (dispatch) => {
-    try {
-      let queryParams = {
-        jobapplicationId: applicantId,
-      };
-      if (level) {
-        queryParams = {
-          ...queryParams,
-          level: level,
+    async (dispatch) => {
+      try {
+        let queryParams = {
+          jobapplicationId: applicantId,
         };
-      }
-      const res = await client.service("applicantinterviewers").find({
-        query: queryParams,
-      });
-      if (res) {
-        dispatch({
-          type: "GET_APPLICANT_INTERVIEWERS",
-          data: res.data,
+        if (level) {
+          queryParams = {
+            ...queryParams,
+            level: level,
+          };
+        }
+        const res = await client.service("applicantinterviewers").find({
+          query: queryParams,
         });
-        return true;
+        if (res) {
+          dispatch({
+            type: "GET_APPLICANT_INTERVIEWERS",
+            data: res.data,
+          });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        errorHandler(error);
+        return false;
       }
-      return false;
-    } catch (error) {
-      errorHandler(error);
-      return false;
-    }
-  };
+    };
 
 export const deleteApplicantInterviewers =
   (applicantinterviewerId) => async (dispatch) => {
     let res;
     try {
       client.service("applicantinterviewers").remove(applicantinterviewerId);
+      if (res) {
+        return true;
+      }
+    } catch (error) {
+      errorHandler(error);
+      return false;
+    }
+  };
+
+  export const removeApplicantInterviewers = (id) => async (dispatch) => {
+    let res;
+    try {
+      await client.service("interviewschedule").remove(id);
       if (res) {
         return true;
       }
