@@ -919,7 +919,14 @@ const AssignInterviewer = (props) => {
                             defaultDate={new Date()}
                             date={state && state.day && new Date(state.day)}
                             eventPropGetter={(event, start, end, isSelected) => {
-
+                                return {
+                                    style: {
+                                      backgroundColor:'#60ce8c',
+                                      borderColor :'#60ce8c', 
+                                      color:'#000'
+                                    }
+                                  };
+                              
                             }}
                             onNavigate={date => {
                                setState({...state, day:date})
