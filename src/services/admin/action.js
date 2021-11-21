@@ -59,7 +59,7 @@ export const addUser = (user) => async (dispatch) => {
     if (res) {
       dispatch({
         type: "ADD_USER",
-        data: { id: res.id, fname: res.fname, lname: res.lname },
+        data: { id: res.id, fname: res.fname, lname: res.lname, email: res.email },
       });
       //  return true;
       return true;

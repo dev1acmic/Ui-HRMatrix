@@ -56,7 +56,7 @@ import {
 } from "util/enum";
 import moment from "moment";
 import {AssignInterviewer} from "../../../Modals";
-import {loadUsers} from "services/admin/action";
+import {loadUsers} from "services/admin/action"; 
 
 const theme = createMuiTheme({
   overrides: {
@@ -1145,6 +1145,7 @@ const PostInterview = (props) => {
           onClose={handleClosePanel}
         >
           <AssignInterviewer
+            jobPost={jobPost} 
             jobpostId={jobPost.id}
             interviewers={values.interviewers}
             applicantId={values.applicantId}

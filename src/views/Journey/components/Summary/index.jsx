@@ -836,6 +836,8 @@ const Summary = (props) => {
           onClose={handleClosePanel}
         >
           <AssignInterviewer
+            jobPost={jobPost}
+            jobApplications={jobApplications}
             jobpostId={jobPost && jobPost.id}
             interviewers={values.interviewers}
             applicantId={values.applicantId}
