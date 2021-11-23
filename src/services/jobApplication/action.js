@@ -319,11 +319,12 @@ export const getApplicantAssessmentLevelsAndScore =
     }
   };
 
-export const getCandidateSchedulebyJob = (jobapplicantid, jobid) => async (dispatch) => {
+export const getCandidateSchedulebyJob = (jobapplicantid, jobid, level) => async (dispatch) => {
   try {
     let data = {}
     data.jobapplicantid = jobapplicantid;
     data.jobid = jobid;
+    data.interviewlevel = level;
     data.isRemoved = false;
 
     const res = await client.service("interviewschedule").find({

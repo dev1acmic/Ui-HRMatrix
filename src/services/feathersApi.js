@@ -9,7 +9,7 @@ import AuthManagement from "feathers-authentication-management/lib/client";
 
 const client = feathers();
 //this is the server url
-const socket = io("http://uat.secondopinionexpert.com:3030");
+const socket = io(process.env.REACT_APP_API_BASE_URL);
 
 client.configure(socketio(socket, { timeout: 15000 }));
 client.configure(

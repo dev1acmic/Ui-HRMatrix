@@ -451,7 +451,7 @@ const Matrix = (props) => {
       });
 
       // Get interview levels
-      const levels = jobPost.jobinterviewers.map((iv) => {
+      const levels = jobPost.jobinterviewqtns.map((iv) => {
         return iv.level;
       });
 
@@ -790,6 +790,7 @@ const Matrix = (props) => {
       state.interviewers && state.interviewers.filter((i) => i.status === 1);
     return (
       <Modal
+        onBackdropClick="false"
         aria-labelledby={t("postInterview.assignInterviewer")}
         aria-describedby={t("postInterview.assignInterviewer")}
         open={state.interviewerModal}
@@ -812,7 +813,8 @@ const Matrix = (props) => {
   };
 
   const handleOpenPanel = (level, applicantId, applicantName) => {
-    const interviewDetails = jobPost.jobinterviewers.find(
+    debugger
+    const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
     setState({
@@ -823,7 +825,7 @@ const Matrix = (props) => {
       applicantName: applicantName,
       interviewDetails: interviewDetails,
       interviewerModal: true,
-      totalLevels: jobPost.jobinterviewers.length,
+      totalLevels: jobPost.jobinterviewqtns.length,
     });
   };
 
