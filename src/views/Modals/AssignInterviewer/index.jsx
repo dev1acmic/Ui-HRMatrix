@@ -228,29 +228,24 @@ const AssignInterviewer = (props) => {
         }  
     }, [state.interviewtype, state.totime , state.fromtime])
 
-    // useEffect(() => {
-    //     if (props.interviewDetails) {
-    //         const interviewDetails = props.interviewDetails;
-    //         let orgName = props.jobPost && props.jobPost.user && props.jobPost.user.organization && props.jobPost.user.organization.name
-    //         let jobTitle = props.jobPost && props.jobPost.title
+    useEffect(() => {
+        if (props.interviewDetails) {
+             
+            const interviewDetails = props.interviewDetails;
+            let orgName = props.jobPost && props.jobPost.user && props.jobPost.user.organization && props.jobPost.user.organization.name
+            let jobTitle = props.jobPost && props.jobPost.title
             
-    //         setState({
-    //             ...state,
-    //             level: interviewDetails.level,
-    //             mode: interviewDetails.mode,
-    //             panelId: interviewDetails.panelId,
-    //             panelName:
-    //                 (interviewDetails.interviewpanel &&
-    //                     interviewDetails.interviewpanel.name) ||
-    //                 "",
-    //                 subject: `Interview Invitation with ${orgName} for the ${jobTitle} position`,
-    //                 day: new Date()
-                    
-    //         }); 
-    //         props.getInterviewersByPanel(interviewDetails.panelId);
-    //         props.getInterviewersByApplicantId(applicantId, interviewDetails.level);
-    //     }
-    // }, [props.interviewDetails]);
+            setState({ 
+                level: interviewDetails.level,
+                mode: interviewDetails.mode,  
+                subject: `Interview Invitation with ${orgName} for the ${jobTitle} position`,
+                day: new Date() 
+            }); 
+            // props.getInterviewersByPanel(interviewDetails.panelId);
+            props.getCandidateSchedulebyJob(applicantId, props.jobPost && props.jobPost.id, interviewDetails.level)
+            // props.getInterviewersByApplicantId(applicantId, interviewDetails.level);
+        }
+    }, [props.interviewDetails]);
 
     useEffect(()=>{ 
         if(props.interviewSchedule && props.interviewSchedule.length > 0 && values.users)
@@ -262,11 +257,7 @@ const AssignInterviewer = (props) => {
         {  
             setTimeslot([]); 
         }
-    },[props.interviewSchedule])
-
-    useEffect(()=>{
-        props.getCandidateSchedulebyJob(applicantId, props.jobPost && props.jobPost.id)
-    },[])
+    },[props.interviewSchedule]) 
 
     useEffect(()=>{
         if(props.candidateSchedule && props.candidateSchedule.length>0)
@@ -306,24 +297,19 @@ const AssignInterviewer = (props) => {
             let orgName = props.jobPost && props.jobPost.user && props.jobPost.user.organization && props.jobPost.user.organization.name
             let jobTitle = props.jobPost && props.jobPost.title
             
-            setState({
-                ...state,
-                level: interviewDetails.level,
-                mode: interviewDetails.mode,
-                panelId: interviewDetails.panelId,
-                panelName:
-                    (interviewDetails.interviewpanel &&
-                        interviewDetails.interviewpanel.name) ||
-                    "",
+            if(interviewDetails)
+            {
+                setState({ 
+                    level: interviewDetails.level,
+                    mode: interviewDetails.mode,  
                     subject: `Interview Invitation with ${orgName} for the ${jobTitle} position`,
-                    day: new Date()
-                    
-            });  
-            setValues({ ...values, users }); 
-            setTimeslot([])
-          
-        }
-
+                    day: new Date(),
+                    message:''
+                });  
+                setValues({ ...values, users }); 
+                setTimeslot([])
+            }
+  } 
     },[props.candidateSchedule])
 
     useEffect(() => {

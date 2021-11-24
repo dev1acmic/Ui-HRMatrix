@@ -194,7 +194,8 @@ const PostInterview = (props) => {
   };
 
   const handleOpenPanel = (level, applicantId, applicantName) => {
-    const interviewDetails = jobPost.jobinterviewers.find(
+    debugger
+    const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
     setValues({
@@ -202,7 +203,7 @@ const PostInterview = (props) => {
       applicantId: applicantId,
       applicantName: applicantName,
       interviewDetails: interviewDetails,
-      totalLevels: jobPost.jobinterviewers.length,
+      totalLevels: jobPost.jobinterviewqtns.length,
     });
     setInterviewerModal(true);
   };
@@ -535,7 +536,7 @@ const PostInterview = (props) => {
     );
   };
 
-  const loadApplicantQs = (applicant) => {
+  const loadApplicantQs = (applicant) => { 
     applicantQs = [];
     //let totalAnsScorePrc = 0;
     let prevLevelCompleted = false;
@@ -885,15 +886,15 @@ const PostInterview = (props) => {
     //   const point = prioritySet[q.priority].points;
     //   return total + point;
     // }, 0);
-    if (jobPost.jobinterviewers && jobPost.jobinterviewers.length > 0) {
-      jobPost.jobinterviewers.sort((a, b) => a.level - b.level);
+    if (jobPost.jobinterviewqtns && jobPost.jobinterviewqtns.length > 0) {
+      jobPost.jobinterviewqtns.sort((a, b) => a.level - b.level);
     }
-    for (let index = 0; index < jobPost.jobinterviewers.length; index++) {
+    for (let index = 0; index < jobPost.jobinterviewqtns.length; index++) {
       if (expandQn && index === qnShowCount) {
         break;
       }
 
-      const {level} = jobPost.jobinterviewers[index];
+      const {level} = jobPost.jobinterviewqtns[index];
       questionHead.push(
         <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
       );
@@ -943,7 +944,7 @@ const PostInterview = (props) => {
 
     let expandQnIcon = null;
     // Show expand icon only if count exceeds config
-    if (jobPost.jobinterviewers.length > qnShowCount) {
+    if (jobPost.jobinterviewqtns.length > qnShowCount) {
       expandQnIcon = expandQn ? (
         <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
@@ -1139,6 +1140,7 @@ const PostInterview = (props) => {
           />
         </div>
         <Modal
+          onBackdropClick="false"
           aria-labelledby={t("postInterview.assignInterviewer")}
           aria-describedby={t("postInterview.assignInterviewer")}
           open={interviewerModal}

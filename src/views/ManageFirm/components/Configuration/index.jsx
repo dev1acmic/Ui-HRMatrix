@@ -1129,8 +1129,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={6}
-                          lg={6}
+                          md={4}
+                          lg={4}
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -1146,8 +1146,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={4}
-                          lg={4}
+                          md={6}
+                          lg={6}
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -1223,8 +1223,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={6}
-                          lg={6}
+                          md={4}
+                          lg={4}
                           className={classes.columnBox}
                           style={{
                             display: "flex",
@@ -1242,8 +1242,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={4}
-                          lg={4}
+                          md={6}
+                          lg={6}
                           className={classes.columnBox}
                           style={{
                             display: "flex",
@@ -1396,8 +1396,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={6}
-                          lg={6}
+                          md={4}
+                          lg={4}
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -1413,8 +1413,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={4}
-                          lg={4}
+                          md={6}
+                          lg={6}
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -1490,8 +1490,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={6}
-                          lg={6}
+                          md={4}
+                          lg={4}
                           className={classes.columnBox}
                           style={{
                             display: "flex",
@@ -1509,8 +1509,8 @@ const Configuration = (props) => {
                         <Grid
                           item
                           xs={12}
-                          md={4}
-                          lg={4}
+                          md={6}
+                          lg={6}
                           className={classes.columnBox}
                           style={{
                             display: "flex",
