@@ -566,12 +566,7 @@ export const isConfigDetailsExists = (orgId) => async (dispatch) => {
       },
     });
 
-    if (
-      levelCount.total === 3 &&
-      deptCount.total > 0 &&
-      iPanelCount.total > 0 &&
-      addrCount.total > 0
-    ) {
+    if (levelCount.total === 3 && deptCount.total > 0 && addrCount.total > 0) {
       return true;
     }
     return false;

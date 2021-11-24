@@ -1,18 +1,18 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 // Externals
 import PropTypes from "prop-types";
 
 // Material helpers
-import {withStyles, Button} from "@material-ui/core";
-import {withRouter} from "react-router-dom";
+import { withStyles, Button } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 // Material components
-import {Grid, Typography, CircularProgress} from "@material-ui/core";
-import {withTranslation, Trans} from "react-i18next";
+import { Grid, Typography, CircularProgress } from "@material-ui/core";
+import { withTranslation, Trans } from "react-i18next";
 
-import {verifyUser} from "services/user/action";
+import { verifyUser } from "services/user/action";
 import ResetPassword from "./components/ResetPassword";
 
 import hrLogo from "assets/images/logo-hMatrix.png";
@@ -56,6 +56,14 @@ class Verify extends Component {
           uid: res.uid,
           isReset: true,
         });
+      }
+      if (!res && reset) {
+        this.setState({
+          hideLoading: true,
+          uid: res.uid,
+          isReset: true,
+          expired: true,
+        });
       } else {
         this.setState({
           hideLoading: true,
@@ -81,10 +89,10 @@ class Verify extends Component {
   };
 
   render() {
-    const {classes, t} = this.props;
+    const { classes, t } = this.props;
 
     return (
-      <div className={classes.root} style={{overflow: "auto"}}>
+      <div className={classes.root} style={{ overflow: "auto" }}>
         {!this.state.hideLoading ? (
           <Grid container justify="center" spacing={4}>
             <Grid item lg={6} xs={12}>
@@ -103,7 +111,7 @@ class Verify extends Component {
             container
             spacing={3}
             xs={12}
-            style={{width: "80%", margin: "6% auto 0"}}
+            style={{ width: "80%", margin: "6% auto 0" }}
             className={classes.reviewItemWrap}
           >
             <Grid item spacing={2} xs={12} md={3} lg={3}></Grid>
@@ -163,7 +171,7 @@ class Verify extends Component {
                   </Typography>
                 )}
                 <br></br>
-                <Grid item xs={12} md={12} style={{padding: "0"}}>
+                <Grid item xs={12} md={12} style={{ padding: "0" }}>
                   <Button
                     //component={Link}
                     className={classes.gradeBtn}
