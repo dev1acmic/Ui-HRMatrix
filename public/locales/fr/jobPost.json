@@ -22,8 +22,8 @@
     "removeCert": "Supprimer le certificat",
     "removeIntwQa": "Supprimer la question de l'entretien",
     "removeIntwQaAlert": "Voulez-vous vraiment supprimer la question de l'entretien?",
-    "mandatoryConfigAlert": "Il semble que les configurations obligatoires incluant le lieu, les départements, le panel d'entretien et l'exercice financier restent à définir pour votre entreprise. Veuillez remplir toutes les informations dans les paramètres de gestion",
-    "mandatoryConfigAdminAlert": "Il semble que les configurations obligatoires, y compris l'emplacement, les services, le panneau d'entretien et l'exercice financier, doivent encore être définies par votre utilisateur administrateur. Veuillez contacter l'utilisateur administrateur pour définir ces paramètres avant de commencer à publier des offres.",
+    "mandatoryConfigAlert": "Il semble que les configurations obligatoires incluant la localisation, les services et l'exercice restent à définir pour votre cabinet. Veuillez remplir toutes les informations dans les paramètres de gestion.",
+    "mandatoryConfigAdminAlert": "Il semble que les configurations obligatoires comprenant l'emplacement, les départements et l'exercice financier restent à définir par votre utilisateur administrateur. Veuillez contacter l'utilisateur admin pour définir ces paramètres avant de commencer à publier des offres d'emploi.",
     "deleteItem": "Voulez-vous supprimer cet élément?",
     "competency": {
         "competencies": "Compétences",
