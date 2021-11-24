@@ -170,7 +170,7 @@ const Configuration = (props) => {
   const configState = {
     values: {
       orgId: profile.orgId,
-      level: 1,
+      level: 10,
       FinStartMonth: "",
       FinEndMonth: "",
       addr: [],

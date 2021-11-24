@@ -262,9 +262,11 @@ class Details extends Component {
       delete errors.duration;
     }
 
-    if (values.type === "1" && errors && errors.endDate) {
+    if (
+      values.type === 1 ||
+      (values.type === "1" && errors && errors.endDate)
+    ) {
       delete errors.endDate;
-      delete values.endDate;
     }
 
     newState.errors = errors || {};

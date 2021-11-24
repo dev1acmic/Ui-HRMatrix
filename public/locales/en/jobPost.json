@@ -19,8 +19,8 @@
   "removeCert": "Remove Certificate",
   "removeIntwQa": "Remove Interview Question",
   "removeIntwQaAlert": " Are you sure you want to delete the interview question?",
-  "mandatoryConfigAlert": "It seems that the mandatory configurations including the location,departments, interview panel and financial year are yet to be defined for your firm. Please fill all the information in manage settings",
-  "mandatoryConfigAdminAlert": "It seems that the mandatory configurations including the location,departments, interview panel and financial year are yet to be defined by your admin user. Please contact the admin user to define these parameters before starting to post jobs.",
+  "mandatoryConfigAlert": "It seems that the mandatory configurations including the location,departments and financial year are yet to be defined for your firm. Please fill all the information in manage settings.",
+  "mandatoryConfigAdminAlert": "It seems that the mandatory configurations including the location,departments and financial year are yet to be defined by your admin user. Please contact the admin user to define these parameters before starting to post jobs.",
   "deleteItem": "Do you want to delete this item?",
   "competency": {
     "competencies": "Competencies",
