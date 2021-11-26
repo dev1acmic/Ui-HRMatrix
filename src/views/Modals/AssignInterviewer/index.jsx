@@ -426,8 +426,7 @@ const AssignInterviewer = (props) => {
         if (validateForm()) {
             setLoading(true); 
            
-            let data = values;
-            debugger
+            let data = values; 
             if(state.ids)
             {
                 data.ids = state.ids.map(c=>c.id); 
