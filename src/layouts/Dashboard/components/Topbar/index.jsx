@@ -102,7 +102,7 @@ class Topbar extends Component {
     } else {
       const res = await this.props.getJobApplicationsById(id, true);
       this.props.history.push({
-        pathname: "/rc/recap/" + res.jobAppId,
+        pathname: "/rc/recap/" + res.jobpostId,
         state: { jobApplId: id },
       });
     }
