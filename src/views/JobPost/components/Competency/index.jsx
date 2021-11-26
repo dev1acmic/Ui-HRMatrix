@@ -1382,8 +1382,8 @@ class Competancy extends Component {
                 {/* </PerfectScrollbar> */}
               </Paper>
               {!hideBtn ? (
-                <Grid xs={12} style={{ textAlign: "right", paddingTop: 10 }}>
-                  <Button
+                <Grid xs={12} style={{ textAlign: "right", paddingTop: 30 }}>
+                  {/* <Button
                     className={classes.inlineBtn}
                     variant="contained"
                     color="secondary"
@@ -1391,7 +1391,7 @@ class Competancy extends Component {
                     onClick={this.handleAddSkillRow}
                   >
                     {t("competency.add")}
-                  </Button>
+                  </Button> */}
                 </Grid>
               ) : (
                 <Grid xs={12} style={{ textAlign: "right", paddingTop: 30 }}>

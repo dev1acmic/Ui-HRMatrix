@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Box, withStyles, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import classNames from "classnames";
 import {
   WorkOutline,
@@ -11,29 +12,39 @@ import {
 } from "@material-ui/icons";
 import { useTranslation } from "react-i18next";
 import { Types } from "util/enum";
-
-import moment from "moment";
 import styles from "../style";
 
 const Summary = (props) => {
-  const { classes, summary, type, jobList } = props;
+  const { classes, summary, type, history } = props;
   const { t } = useTranslation("dashboard");
+
+  const handleClickOpenjobs = () => {
+    history.push("/rc/openjobs");
+  };
+
+  const handleClickNeedattentionjobs = () => {
+    history.push("/rc/jobsneedattention");
+  };
 
   if (summary) {
     return (
       <Container className={classes.root} style={{ paddingBottom: 0 }}>
         <Box className={classes.summaryBoxWrap}>
           <Box className={classes.summaryBoxLeft}>
-            <Box className={classNames(classes.summaryBoxCol, classes.col1)}>
+            <Box
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                handleClickOpenjobs();
+              }}
+              className={classNames(classes.summaryBoxCol, classes.col1)}
+            >
               <Box className={classes.iconHead}>
                 <WorkOutline className={classes.iconLeft} />
-                <Link to="/rc/openjobs">
-                  <Typography className={classes.iconText}>
-                    {t("summary.open")}
-                    <br />
-                    {t("summary.jobs")}
-                  </Typography>
-                </Link>
+                <Typography className={classes.iconText}>
+                  {t("summary.open")}
+                  <br />
+                  {t("summary.jobs")}
+                </Typography>
               </Box>
               <Box>
                 <Typography className={classes.iconNumber}>
@@ -103,16 +114,18 @@ const Summary = (props) => {
             </Box>
           </Box>
           {type !== Types.Recruiter && (
-            <Box className={classes.summaryBoxRight}>
+            <Box
+              style={{ cursor: "pointer" }}
+              onClick={handleClickNeedattentionjobs}
+              className={classes.summaryBoxRight}
+            >
               <Box className={classes.iconHead}>
                 <ErrorOutlineOutlined className={classes.iconLeft} />
-                <Link to="/rc/jobsneedattention">
-                  <Typography className={classes.iconText}>
-                    {t("summary.jobs")},
-                    <br />
-                    {t("summary.needAttention")}
-                  </Typography>
-                </Link>
+                <Typography className={classes.iconText}>
+                  {t("summary.jobs")},
+                  <br />
+                  {t("summary.needAttention")}
+                </Typography>
               </Box>
               <Box>
                 <Typography className={classes.iconNumber}>
@@ -127,4 +140,4 @@ const Summary = (props) => {
   }
 };
 
-export default withStyles(styles)(Summary);
+export default withRouter(connect(null, null)(withStyles(styles)(Summary)));
