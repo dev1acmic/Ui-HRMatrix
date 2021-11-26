@@ -54,7 +54,7 @@ const RecReview = (props) => {
     if (props.match.params && props.match.params.jobPostId) {
       props.getJobPost(props.match.params.jobPostId);
     }
-  }, []);
+  }, [props.match.params]);
 
   useEffect(() => {
     if (props.jobPost) {
@@ -163,7 +163,9 @@ const RecReview = (props) => {
               fontSize="28"
               className={classes.reviewTitle}
             >
-              {values.type > 0 ? t(`${JobType.getNameByValue(values.type)}`) : "NA"}
+              {values.type > 0
+                ? t(`${JobType.getNameByValue(values.type)}`)
+                : "NA"}
             </Typography>
             <Typography variant="body1" className={classes.reviewLabel}>
               {t("jobtype")}
@@ -192,7 +194,7 @@ const RecReview = (props) => {
               {values.position || t("common:noDataAvailable")}
             </Typography>
             <Typography variant="body1" className={classes.reviewLabel}>
-             {t("ofpositions")}
+              {t("ofpositions")}
             </Typography>
             <Divider className={classes.dividerVer} />
           </Grid>
@@ -266,7 +268,7 @@ const RecReview = (props) => {
               color="secondary"
               className={classes.titleIcon}
             />{" "}
-              {t("jobresponsibilities")}
+            {t("jobresponsibilities")}
           </Typography>
 
           <Typography
@@ -302,7 +304,9 @@ const RecReview = (props) => {
                     {t("competency.skillToolDomain")}
                   </TableCell>
 
-                  <TableCell align="center">{t("competency.mandatory")}?</TableCell>
+                  <TableCell align="center">
+                    {t("competency.mandatory")}?
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -392,7 +396,9 @@ const RecReview = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>{t("competency.certification")}</TableCell>
-                  <TableCell align="center">{t("competency.mandatory")}</TableCell>
+                  <TableCell align="center">
+                    {t("competency.mandatory")}
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
