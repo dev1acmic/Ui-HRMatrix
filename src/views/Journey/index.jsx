@@ -116,13 +116,13 @@ const Journey = (props) => {
       // Get interview levels
       const levels =
         jobPost &&
-        jobPost.jobinterviewers.map((iv) => {
+        jobPost.jobinterviewqtns.map((iv) => {
           return iv.level;
         });
       // panel name is used to display in the interview score column, ie not used in skill matrix
       const panels =
         jobPost &&
-        jobPost.jobinterviewers.map((iv) => {
+        jobPost.jobinterviewqtns.map((iv) => {
           return iv;
         });
 
@@ -132,7 +132,7 @@ const Journey = (props) => {
         const skillFactor = PostIntvSkillScore ? PostIntvSkillScore * 1 : 50;
         const postQFactor = PostIntvPreScreeningScore
           ? PostIntvPreScreeningScore * 1
-          : 50;
+          : 50; 
 
         getApplicatAssesmentSkillMatrix(
           shortListedApps,
@@ -336,7 +336,7 @@ const Journey = (props) => {
   };
 
   const handleOpenPanel = (level, applicantId, applicantName) => {
-    const interviewDetails = jobPost.jobinterviewers.find(
+    const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
     setState({
@@ -347,7 +347,7 @@ const Journey = (props) => {
       applicantName: applicantName,
       interviewDetails: interviewDetails,
       interviewerModal: true,
-      totalLevels: jobPost.jobinterviewers.length,
+      totalLevels: jobPost.jobinterviewqtns.length,
     });
   };
 

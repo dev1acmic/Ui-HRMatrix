@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from "react";
-import {withRouter} from "react-router-dom";
+import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 
 // Externals
 import classNames from "classnames";
@@ -30,24 +30,25 @@ import {
 
 import avatarimg from "../../../../assets/images/user.png";
 // Custom components
-import {NotificationList, SearchBar, UserList} from "./components";
+import { NotificationList, SearchBar, UserList } from "./components";
 
 // Component styles
 import styles from "./styles";
-import {withTranslation} from "react-i18next";
-import {getMsg} from "util/helper";
+import { withTranslation } from "react-i18next";
+import { getMsg } from "util/helper";
 
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 // Actions
-import {removeError} from "services/error/action";
-import {logout} from "services/user/action";
+import { removeError } from "services/error/action";
+import { logout } from "services/user/action";
 import {
   getNotifications,
   setNotificationToRead,
   setAllNotificationToRead,
   clearNewNotification,
 } from "services/notifications/action";
-import {getJobApplicationsById} from "services/jobApplication/action";
+import { getJobApplicationsById } from "services/jobApplication/action";
+import { Roles } from "util/enum";
 
 class Topbar extends Component {
   signal = true;
@@ -67,7 +68,7 @@ class Topbar extends Component {
   }
 
   handleMoreNotification = () => {
-    const {id} = this.props.profile;
+    const { id } = this.props.profile;
     const pageNo = this.state.pageNo + 1;
     this.props.getNotifications(id, pageNo).then(() => {
       this.setState({
@@ -79,20 +80,30 @@ class Topbar extends Component {
 
   toJobPost = async (id, category) => {
     if (category === "JP") {
-      this.props.history.push({
-        pathname: "/rc/job-post",
-        state: {id: id, empReview: true},
-      });
+      if (
+        this.props.profile.roles[0].id === Roles.AgencyAdmin ||
+        Roles.Recruiter
+      ) {
+        this.props.history.push({
+          pathname: "/rc/job-review/" + id,
+          state: { id: id },
+        });
+      } else {
+        this.props.history.push({
+          pathname: "/rc/job-post",
+          state: { id: id, empReview: true },
+        });
+      }
     } else if (category === "JA") {
       this.props.history.push({
         pathname: "/rc/job-application-review",
-        state: {jobAppId: id},
+        state: { jobAppId: id },
       });
     } else {
       const res = await this.props.getJobApplicationsById(id, true);
       this.props.history.push({
         pathname: "/rc/recap/" + res.jobpostId,
-        state: {jobApplId: id},
+        state: { jobApplId: id },
       });
     }
   };
@@ -102,7 +113,7 @@ class Topbar extends Component {
       notificationsEl: event.currentTarget,
       isNotificationLoading: true,
     });
-    const {id} = this.props.profile;
+    const { id } = this.props.profile;
     const pageNo = 1;
     this.props.getNotifications(id, pageNo).then(() => {
       this.setState({
@@ -153,7 +164,7 @@ class Topbar extends Component {
 
     return notifications && notifications.newMessage ? (
       <Snackbar
-        style={{paddingTop: 30}}
+        style={{ paddingTop: 30 }}
         TransitionComponent={SlideTransition}
         ContentProps={{
           classes: {
@@ -174,7 +185,7 @@ class Topbar extends Component {
             onClick={this.dissMissNotificationPopup}
             color="inherit"
             key="undo"
-            style={{opacity: 0.5}}
+            style={{ opacity: 0.5 }}
           >
             <Clear />
           </IconButton>,
@@ -198,9 +209,9 @@ class Topbar extends Component {
       notifications,
       t,
     } = this.props;
-    const {notifyCount} = this.props.profile;
+    const { notifyCount } = this.props.profile;
 
-    const {notificationsEl, userListEl, isNotificationLoading} = this.state;
+    const { notificationsEl, userListEl, isNotificationLoading } = this.state;
 
     const rootClassName = classNames(classes.root, className);
     const showNotifications = Boolean(notificationsEl);

@@ -195,7 +195,7 @@ const Summary = (props) => {
   };
 
   const handleOpenPanel = (level, applicantId, applicantName) => {
-    const interviewDetails = jobPost.jobinterviewers.find(
+    const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
     setValues({
@@ -203,7 +203,7 @@ const Summary = (props) => {
       applicantId: applicantId,
       applicantName: applicantName,
       interviewDetails: interviewDetails,
-      totalLevels: jobPost.jobinterviewers.length,
+      totalLevels: jobPost.jobinterviewqtns.length,
     });
     setInterviewerModal(true);
   };
@@ -734,15 +734,15 @@ const Summary = (props) => {
     //   return total + point;
     // }, 0);
     if (jobPost) {
-      if (jobPost.jobinterviewers && jobPost.jobinterviewers.length > 0) {
-        jobPost.jobinterviewers.sort((a, b) => a.level - b.level);
+      if (jobPost.jobinterviewqtns && jobPost.jobinterviewqtns.length > 0) {
+        jobPost.jobinterviewqtns.sort((a, b) => a.level - b.level);
       }
-      for (let index = 0; index < jobPost.jobinterviewers.length; index++) {
+      for (let index = 0; index < jobPost.jobinterviewqtns.length; index++) {
         if (expandQn && index === qnShowCount) {
           break;
         }
 
-        const { level } = jobPost.jobinterviewers[index];
+        const { level } = jobPost.jobinterviewqtns[index];
         questionHead.push(
           <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
         );
