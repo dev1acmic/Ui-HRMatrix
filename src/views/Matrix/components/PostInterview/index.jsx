@@ -193,8 +193,7 @@ const PostInterview = (props) => {
     setApplicationMatrixPage(paginate(applicationMatrix, pageSize, pageNo));
   };
 
-  const handleOpenPanel = (level, applicantId, applicantName) => {
-    debugger
+  const handleOpenPanel = (level, applicantId, applicantName) => {  
     const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );

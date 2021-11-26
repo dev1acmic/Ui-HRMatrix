@@ -812,9 +812,8 @@ const Matrix = (props) => {
     );
   };
 
-  const handleOpenPanel = (level, applicantId, applicantName) => {
-    debugger
-    const interviewDetails = jobPost.jobinterviewqtns.find(
+  const handleOpenPanel = (level, applicantId, applicantName) => {  
+        const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
     setState({
