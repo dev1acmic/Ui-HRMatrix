@@ -575,24 +575,53 @@ export function translateMessage(message, t) {
   return message;
 }
 
-export const loadTimeSlots = () => {
-  let time = [{ key: 'Select', value: '0' }];
-  for (let i = 480; i <= 1200; i += 15) {
-    let hours, minutes, ampm;
-    hours = Math.floor(i / 60);
-    minutes = i % 60;
-    if (minutes < 10) {
-      minutes = '0' + minutes; // adding leading zero
+
+function isInBreak(slotTime, breakTimes) {
+  return breakTimes.some((br) => {
+    return slotTime >= moment(br[0], "hh:mm A") && slotTime < moment(br[1], "hh:mm A");
+});
     }
-    ampm = hours % 24 < 12 ? 'AM' : 'PM';
-    hours = hours % 12;
-    if (hours === 0) {
-      hours = 12;
-    }
-    let slot = hours + ':' + minutes + ' ' + ampm;
-    time.push({ key: slot, value: slot });
+
+function isToday(date) {
+  // Create date from input value
+  var inputDate = new Date(date);
+
+  // Get today's date
+  var todaysDate = new Date();
+
+  // call setHours to take the time out of the comparison
+  if (inputDate.setHours(0, 0, 0, 0) == todaysDate.setHours(0, 0, 0, 0)) {
+    return true
   }
-  return time;
+  return false
+}
+
+export const loadTimeSlots = (date) => {
+  const ROUNDING = 30 * 60 * 1000; /*ms*/
+  let start = moment();
+  start = moment(Math.ceil((+start) / ROUNDING) * ROUNDING);
+  start.format("hh:mm A");
+
+  const x = {
+    nextSlot: 30,
+    breakTime: [
+      // ['11:00', '14:00'], ['16:00', '18:00']
+    ],
+    // startTime: moment(new Date().getHours()).add(30, 'm').toDate(),
+    endTime: '21'
+  };
+
+  let slotTime = isToday(date)? start: moment(8, "hh:mm A");
+  const endTime = moment(x.endTime, "hh:mm A");
+
+  let times = ['Select'];
+  while (slotTime < endTime) {
+    if (!isInBreak(slotTime, x.breakTime)) {
+      times.push(slotTime.format("hh:mm A"));
+    }
+    slotTime = slotTime.add(x.nextSlot, 'minutes');
+  }
+  return times
 };
 
 export const compareTime = (str1, str2) => {
@@ -644,6 +673,8 @@ let schedules = []
     return JSON.stringify(_.pick(elem, ['start', 'end']));
 });
 }
+
+ 
 
 export const truncate =(input) => {   
   return input.length > 50 ? `${input.substring(0, 50)}...` : input;;
