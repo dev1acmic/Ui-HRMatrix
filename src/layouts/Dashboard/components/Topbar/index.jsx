@@ -90,10 +90,7 @@ class Topbar extends Component {
 
   toJobPost = async (id, category) => {
     if (category === "JP") {
-      if (
-        this.props.profile.roles[0].id === this.state.isRoleAgencyAdmin ||
-        this.state.isRoleRecruiter
-      ) {
+      if (this.state.isRoleAgencyAdmin || this.state.isRoleRecruiter) {
         this.props.history.push({
           pathname: "/rc/job-review/" + id,
           state: { id: id },
