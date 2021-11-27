@@ -1,10 +1,7 @@
 export default {
   subject: {
     presence: { allowEmpty: false }
-  },
-  message: {
-    presence: { allowEmpty: false }
-  },
+  }, 
   fromtime: {
     presence: { allowEmpty: false }
   },

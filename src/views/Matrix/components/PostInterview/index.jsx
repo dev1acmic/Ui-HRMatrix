@@ -1144,6 +1144,7 @@ const PostInterview = (props) => {
           aria-describedby={t("postInterview.assignInterviewer")}
           open={interviewerModal}
           onClose={handleClosePanel}
+          style={{height:700}}
         >
           <AssignInterviewer
             jobPost={jobPost} 
