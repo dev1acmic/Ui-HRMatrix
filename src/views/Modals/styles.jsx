@@ -15,9 +15,11 @@ export default theme => ({
     overflow: "hidden"
   },
   modalContent: {
-    padding: 20
-  },
-  modalHeadWrap: {
+    padding: 20,
+    '& .ps__rail-x': {
+      display: 'none'
+    }
+  }, modalHeadWrap: {
     justifyContent: "center"
   },
   modalHead: {

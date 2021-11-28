@@ -27,6 +27,7 @@ import {
   InfoOutlined,
   Clear,
 } from "@material-ui/icons";
+import * as roleUtil from "util/roleUtil";
 
 import avatarimg from "../../../../assets/images/user.png";
 // Custom components
@@ -57,11 +58,20 @@ class Topbar extends Component {
     notificationsEl: null,
     isNotificationLoading: false,
     pageNo: 1,
+    isRoleRecruiter: false,
+    isRoleAgencyAdmin: false,
   };
 
   componentDidMount() {
     this.signal = true;
   }
+
+  componentDidMount = () => {
+    this.setState(() => ({
+      isRoleRecruiter: roleUtil.isRoleRecruiter(this.props.profile.roles),
+      isRoleAgencyAdmin: roleUtil.isRoleAgencyAdmin(this.props.profile.roles),
+    }));
+  };
 
   componentWillUnmount() {
     this.signal = false;
@@ -80,10 +90,7 @@ class Topbar extends Component {
 
   toJobPost = async (id, category) => {
     if (category === "JP") {
-      if (
-        this.props.profile.roles[0].id === Roles.AgencyAdmin ||
-        Roles.Recruiter
-      ) {
+      if (this.state.isRoleAgencyAdmin || this.state.isRoleRecruiter) {
         this.props.history.push({
           pathname: "/rc/job-review/" + id,
           state: { id: id },
