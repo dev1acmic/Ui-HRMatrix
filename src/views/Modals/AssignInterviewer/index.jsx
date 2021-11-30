@@ -449,12 +449,12 @@ const AssignInterviewer = (props) => {
           message: "",
         });
         setValues({ ...values, users });
-        const tags =
-          suggestions &&
-          suggestions.filter(function (val) {
-            return users && users.findIndex((c) => c.id === val.id) === -1;
-          });
-        setSuggestions(tags);
+        // const tags =
+        //   suggestions &&
+        //   suggestions.filter(function (val) {
+        //     return users && users.findIndex((c) => c.id === val.id) === -1;
+        //   });
+        // setSuggestions(tags);
         setTimeslot([]);
       }
     }
