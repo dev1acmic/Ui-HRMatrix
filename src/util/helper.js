@@ -226,6 +226,7 @@ export function getApplicatSkillMatrix(
           id,
           fname,
           lname,
+          email,
           exp,
           availDate,
           payRate,
@@ -269,6 +270,7 @@ export function getApplicatSkillMatrix(
           rank: undefined,
           fname,
           lname,
+          email,
           exp,
           availDate,
           payRate,
@@ -425,6 +427,7 @@ export function getApplicatAssesmentSkillMatrix(
           exp,
           fname,
           lname,
+          email,
           jobpostId,
           id,
           payRate,
@@ -469,6 +472,7 @@ export function getApplicatAssesmentSkillMatrix(
           exp,
           fname,
           lname,
+          email,
           jobpostId,
           resumeId,
           avatarId,
@@ -655,7 +659,7 @@ let schedules = []
       startDt.getDate(),
       startHr,
       startMin
-  );
+  ); 
   let end =
       new Date(
           endDt.getFullYear(),
@@ -665,7 +669,7 @@ let schedules = []
           endMin
       ); 
       schedules.push({
-        title: truncate(item.subject) || "", start, end , applicantid : item.jobapplicantid, jobid:item.jobid
+        title: `Interview for ${item.applicantname}`, start, end , applicantid : item.jobapplicantid, jobid:item.jobid
       })
 
   }) 

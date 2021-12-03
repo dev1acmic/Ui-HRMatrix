@@ -76,6 +76,10 @@ export default theme => ({
     paddingTop: "0px!important"
   },
   //////////////////////For Tags -- Start/////////////////////
+  progress: {
+    top: 15,
+    position: 'relative',
+  },
   tagsWrap: {
     padding: "5px 10px",
     border: "1px solid rgba(0, 0, 0, .23)",

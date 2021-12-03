@@ -1157,7 +1157,7 @@ const Configuration = (props) => {
                           <Slider
                             rootStyle={sliderStyle}
                             domain={[0, 100]}
-                            step={1}
+                            step={20}
                             mode={2}
                             values={[values.preIntvSkillScore]}
                             onSlideEnd={(event) =>
@@ -1254,7 +1254,7 @@ const Configuration = (props) => {
                           <Slider
                             rootStyle={sliderStyle}
                             domain={[0, 100]}
-                            step={1}
+                            step={20}
                             mode={2}
                             values={[values.preIntvPreScreeningScore]}
                             onSlideEnd={(event) =>
@@ -1424,7 +1424,7 @@ const Configuration = (props) => {
                           <Slider
                             rootStyle={sliderStyle}
                             domain={[0, 100]}
-                            step={1}
+                            step={20}
                             mode={2}
                             values={[values.postIntvSkillScore]}
                             onSlideEnd={(event) =>
@@ -1521,7 +1521,7 @@ const Configuration = (props) => {
                           <Slider
                             rootStyle={sliderStyle}
                             domain={[0, 100]}
-                            step={1}
+                            step={20}
                             mode={2}
                             values={[values.postIntvPreScreeningScore]}
                             onSlideEnd={(event) =>
