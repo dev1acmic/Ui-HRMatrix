@@ -417,7 +417,7 @@ const AssignInterviewer = (props) => {
         fromtime: moment(props.candidateSchedule[0].fromtime).format("hh:mm A"),
         day: new Date(props.candidateSchedule[0].interviewdate),
       });
-      setTime(loadTimeSlots(new Date(props.candidateSchedule[0].interviewdate)));
+      setTime(loadTimeSlots(new Date(props.candidateSchedule[0].interviewdate))); 
       let users = [];
       props.candidateSchedule &&
         props.candidateSchedule.map((c) => {
