@@ -193,7 +193,7 @@ const PostInterview = (props) => {
     setApplicationMatrixPage(paginate(applicationMatrix, pageSize, pageNo));
   };
 
-  const handleOpenPanel = (level, applicantId, applicantName) => {  
+  const handleOpenPanel = (level, applicantId, applicantName, applicantEmail) => {  
     const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
@@ -201,6 +201,7 @@ const PostInterview = (props) => {
       ...values,
       applicantId: applicantId,
       applicantName: applicantName,
+      applicantEmail:applicantEmail,
       interviewDetails: interviewDetails,
       totalLevels: jobPost.jobinterviewqtns.length,
     });
@@ -599,7 +600,8 @@ const PostInterview = (props) => {
                     handleOpenPanel(
                       q.level,
                       applicant.id,
-                      applicant.fname + " " + applicant.lname
+                      applicant.fname + " " + applicant.lname,
+                      applicant.email
                     );
                   }}
                 >
@@ -1152,6 +1154,7 @@ const PostInterview = (props) => {
             interviewers={values.interviewers}
             applicantId={values.applicantId}
             applicantName={values.applicantName}
+            applicantEmail={values.applicantEmail}
             interviewDetails={values.interviewDetails}
             organizationId={values.orgId}
             onCancel={handleClosePanel}
