@@ -60,7 +60,7 @@ import {
   convertFromHTML,
   ContentState,
 } from "draft-js";
-import {
+import { 
   getInterviewersByPanel,
   getInterviewersByApplicantId,
   saveApplicantInterviewers,
@@ -125,6 +125,7 @@ const AssignInterviewer = (props) => {
     organizationId,
     applicantId,
     applicantName,
+    applicantEmail,
     jobpostId,
     totalLevels,
     jobApplications,
@@ -139,8 +140,7 @@ const AssignInterviewer = (props) => {
     },
     values: {
       name: "",
-      users: [],
-      //users: []
+      users: [], 
     },
     errors: {
       users: null,
@@ -163,10 +163,10 @@ const AssignInterviewer = (props) => {
         lname: t.lname,
         email: t.username,
       })),
-  };
+  }; 
   const { t } = useTranslation(["common", "enum"]);
   const [state, setState] = useState({});
-  const [timeSlots, setTimeSlots] = useState(loadTimeSlots(new Date()));
+  const [time, setTime] = useState(loadTimeSlots(new Date()));
   let [values, setValues] = useState(panel.values);
   let [newuser, setNewuser] = useState(panel.newuser);
   const [suggestions, setSuggestions] = useState(panel.suggestions);
@@ -182,7 +182,25 @@ const AssignInterviewer = (props) => {
   const [key, setKey] = useState(0);
   const [errMsg, setErrMsg] = useState(false);
 
-  const handleChange = (value, field) => {
+  const getHours = () => {
+    let hours;
+    if (state.fromtime && state.totime && state.day) {
+      let startDt = new Date(
+        `${state.day.toLocaleDateString()} ${state.fromtime}`
+      );
+      let endDt = new Date(
+        `${state.day.toLocaleDateString()} ${state.totime}`
+      );
+      let duration = moment.duration(moment(endDt).diff(moment(startDt)));
+      hours =
+        duration.asHours() < 1
+          ? duration.asMinutes() + " mins"
+          : duration.asHours() + " hour";
+    }
+    return hours || ''
+  }
+
+  const handleChange = (value, field) => { 
     if (field === "fromtime") {
       let valid =
         state.totime &&
@@ -222,38 +240,30 @@ const AssignInterviewer = (props) => {
       if (html !== "<p><br></p>") {
         setState({ ...state, [field]: html });
       }
-    } else if (field === "interviewtype") {
-      let hours;
-      if (state.fromtime && state.totime && state.day) {
-        let startDt = new Date(
-          `${state.day.toLocaleDateString()} ${state.fromtime}`
-        );
-        let endDt = new Date(
-          `${state.day.toLocaleDateString()} ${state.totime}`
-        );
-        let duration = moment.duration(moment(endDt).diff(moment(startDt)));
-        hours =
-          duration.asHours() < 1
-            ? duration.asMinutes() + " mins"
-            : duration.asHours() + " hour";
-      }
-
+    } else if (field === "interviewtype") { 
+      const hours = getHours() 
       const message = getMessage(value, hours);
       setMessage(message);
       setKey(key ? key + 1 : 1);
       setState({ ...state, [field]: value });
     } else {
       if (field === "day") {
-        setTimeSlots(loadTimeSlots(new Date(value)));
+        setTime(loadTimeSlots(new Date(value)));
+      } 
+      const hours = getHours() 
+      if(hours)
+      { 
+        const message = getMessage(value, hours);
+        setMessage(message);
+        setKey(key ? key + 1 : 1);
       }
-
       setState({ ...state, [field]: value });
     }
   };
 
   useEffect(() => {
     let hours;
-    if (state && state.fromtime && state.totime && state.day) {
+    if (state && state.fromtime && state.totime && state.day) { 
       let startDt = new Date(
         `${state.day.toLocaleDateString()} ${state.fromtime}`
       );
@@ -276,7 +286,7 @@ const AssignInterviewer = (props) => {
         endHr,
         endMin
       );
-      let slot = [];
+      let slot = []; 
       let newSlot;
       if (timeslot && timeslot.length > 0) {
         newSlot = timeslot.filter(
@@ -287,7 +297,7 @@ const AssignInterviewer = (props) => {
       if (newSlot && newSlot.length > 0) {
         newSlot[0].start = start;
         newSlot[0].end = end;
-        newSlot[0].title = state && truncate(state.subject);
+        newSlot[0].title = `Interview for ${applicantName}`;
         slot = _.map(timeslot, function (obj) {
           return _.assign(obj, _.find(newSlot, { id: obj.id }));
         });
@@ -295,7 +305,7 @@ const AssignInterviewer = (props) => {
         slot = [
           ...timeslot,
           {
-            title: (state && truncate(state.subject)) || "",
+            title: `Interview for ${applicantName}` || "",
             start,
             end,
             applicantid: applicantId,
@@ -312,13 +322,13 @@ const AssignInterviewer = (props) => {
     }
 
     if (state.interviewtype) {
-      const message = getMessage(state.interviewtype, hours, true);
+      const message = getMessage(state.interviewtype, hours);
       setMessage(message);
       setKey(key ? key + 1 : 1);
     }
   }, [state.totime, state.fromtime]);
 
-  const getMessage = (interviewtype, hours, set = false) => {
+  const getMessage = (interviewtype, hours) => {
     let orgName =
       props.jobPost &&
       props.jobPost.user &&
@@ -331,60 +341,69 @@ const AssignInterviewer = (props) => {
       `${InterviewMode.getNameByValue(parseInt(interviewtype))}`
     );
     let timeslot = hours ? hours : "(to be updated)";
-    let msg = `Hi ${applicantName},<br>Thank you for applying to the ${jobTitle} position at ${orgName}. After reviewing your application, we are excited to move forward with the interview process. We would like to schedule a ${timeslot} ${modeofinterview.toLocaleLowerCase()} interview.<br>Please feel free to reply directly to this email if you have any questions.<br>Thank you,<br>${name}<br>${email}`;
+    let msg = `Hi ${applicantName},<br><br>Thank you for applying to the ${jobTitle} position at ${orgName}. After reviewing your application, we are excited to move forward with the interview process. We would like to schedule a ${timeslot} ${modeofinterview.toLocaleLowerCase()} interview.<br><br>Please feel free to reply directly to this email if you have any questions.<br><br>Thank you,<br>${name},<br>${email}`;
+    setState({...state, message:msg})
     const contentHTML = convertFromHTML(msg);
-    const state = ContentState.createFromBlockArray(
+    const html = ContentState.createFromBlockArray(
       contentHTML.contentBlocks,
       contentHTML.entityMap
     );
-    const content = JSON.stringify(convertToRaw(state));
+    const content = JSON.stringify(convertToRaw(html));
     return content;
   };
 
-  useEffect(() => {
-    if (props.interviewDetails) {
+  useEffect(() => { 
+    if (props.interviewDetails ) {
       const interviewDetails = props.interviewDetails;
       let orgName =
         props.jobPost &&
         props.jobPost.user &&
         props.jobPost.user.organization &&
         props.jobPost.user.organization.name;
-      let jobTitle = props.jobPost && props.jobPost.title;
-
+      let jobTitle = props.jobPost && props.jobPost.title; 
       setState({
         level: interviewDetails.level,
         mode: interviewDetails.mode,
         subject: `Interview Invitation with ${orgName} for the ${jobTitle} position`,
         day: new Date(),
       });
-      // props.getInterviewersByPanel(interviewDetails.panelId);
-      props.getCandidateSchedulebyJob(
-        applicantId,
-        props.jobPost && props.jobPost.id,
-        interviewDetails.level
-      );
-      // props.getInterviewersByApplicantId(applicantId, interviewDetails.level);
+      if(props.interviewDetails.level !== state.level)
+      {
+        props.getCandidateSchedulebyJob(
+          applicantId,
+          props.jobPost && props.jobPost.id,
+          interviewDetails.level
+        );
+        setMessage('')
+        setKey(0)
+      } 
     }
   }, [props.interviewDetails]);
 
-  useEffect(() => {
-    if (
-      props.interviewSchedule &&
-      props.interviewSchedule.length > 0 &&
-      values.users
-    ) {
-      const res = getInterviewSchedule(props.interviewSchedule);
-      setTimeslot(res);
+  useEffect(() => { 
+    async function fetch(interviewSchedule, users) {
+      if (
+         interviewSchedule &&
+        interviewSchedule.length > 0 &&
+         users
+      ) { 
+        const res = getInterviewSchedule(interviewSchedule);
+        setTimeslot(res);
+      } 
+      if (
+        (interviewSchedule && interviewSchedule.length === 0) ||
+        ! users
+      ) {
+        setTimeslot([]); 
+      }  
     }
-    if (
-      (props.interviewSchedule && props.interviewSchedule.length === 0) ||
-      !values.users
-    ) {
-      setTimeslot([]);
-    }
+    fetch(props.interviewSchedule,values.users);
+    
   }, [props.interviewSchedule]);
 
   useEffect(() => {
+    if(props.interviewDetails.level === state.level)
+    {
     if (props.candidateSchedule && props.candidateSchedule.length > 0) {
       setState({
         ids: props.candidateSchedule.map((c) => {
@@ -393,14 +412,12 @@ const AssignInterviewer = (props) => {
         level: props.candidateSchedule[0].interviewlevel,
         interviewtype: props.candidateSchedule[0].interviewtype,
         subject: props.candidateSchedule[0].subject,
-        message: props.candidateSchedule[0].message.replace(
-          /<br\s*[\/]?>/gi,
-          "\n"
-        ),
+        message: props.candidateSchedule[0].message,
         totime: moment(props.candidateSchedule[0].totime).format("hh:mm A"),
         fromtime: moment(props.candidateSchedule[0].fromtime).format("hh:mm A"),
         day: new Date(props.candidateSchedule[0].interviewdate),
       });
+      setTime(loadTimeSlots(new Date(props.candidateSchedule[0].interviewdate)));
       let users = [];
       props.candidateSchedule &&
         props.candidateSchedule.map((c) => {
@@ -449,35 +466,22 @@ const AssignInterviewer = (props) => {
           message: "",
         });
         setValues({ ...values, users });
-        const tags =
+        if(users && users.length>0)
+        {
+          const tags =
           suggestions &&
           suggestions.filter(function (val) {
             return users && users.findIndex((c) => c.id === val.id) === -1;
           });
+           
         setSuggestions(tags);
+        }
+        
         setTimeslot([]);
       }
     }
+  }
   }, [props.candidateSchedule]);
-
-  useEffect(() => {
-    if (props.panelMembers && props.panelMembers.length > 0) {
-      const users = props.panelMembers.map((t) => ({
-        id: t.userId,
-        fname: t.user.fname,
-        lname: t.user.lname,
-        email: t.user.username,
-      }));
-
-      setValues({ ...values, users });
-      const tags =
-        suggestions &&
-        suggestions.filter(function (val) {
-          return users && users.findIndex((c) => c.id === val.id) === -1;
-        });
-      setSuggestions(tags);
-    }
-  }, [props.panelMembers]);
 
   useEffect(() => {
     if (props.applicantInterviewers && props.applicantInterviewers.length > 0) {
@@ -498,7 +502,7 @@ const AssignInterviewer = (props) => {
   }, [props.applicantInterviewers]);
 
   useEffect(() => {
-    if (values.users && values.users.length > 0) {
+    if (values.users && values.users.length > 0) { 
       let userids = values.users.map((c) => c.id);
       if (userids) {
         props.getInterviewersSchedulebyDate(
@@ -593,23 +597,31 @@ const AssignInterviewer = (props) => {
       errors.users = ["Interviewers is required"];
       setErrMsg("Interviewers is required");
     }
+    if(!valid)
+    {
+
+      setLoading(false)
+    }
     setErrors(errors || {});
     return valid;
   }
 
   function handleSubmit() {
+    setLoading(true)
     if (validateForm()) {
       setLoading(true);
 
       let data = values;
       if (state.ids) {
         data.ids = state.ids.map((c) => c.id);
-      }
+      } 
+      data.candidate={};
+      data.candidate = {name:applicantName, email:applicantEmail, isCandidate:true}
       data.interviewlevel = state.level;
       data.jobapplicantid = applicantId;
       data.jobid = jobpostId;
       data.subject = state.subject;
-      data.message = state.message;
+      data.message = state.message.replace(/(?:\r\n|\r|\n)/g, '<br>');;
       data.interviewdate = moment(state.day, "YYYY-MM-DD").format();
       data.fromtime = moment(
         new Date(`${state.day.toLocaleDateString()} ${state.fromtime}`),
@@ -653,7 +665,7 @@ const AssignInterviewer = (props) => {
 
     setValues({ ...values, users: users });
     if (users.length === 0) {
-      setTimeslot([]);
+        setTimeslot([]);
     }
     //suggestions = suggestions.concat(user);
     setSuggestions(suggestions.concat(tag));
@@ -1050,8 +1062,8 @@ const AssignInterviewer = (props) => {
                         value={(state && state.fromtime) || "Select"}
                         error={getMsg(errors.fromtime, t)}
                       >
-                        {timeSlots &&
-                          timeSlots.map((item, index) => (
+                        {time &&
+                          time.map((item, index) => (
                             <MenuItem selected key={index} value={item}>
                               {item}
                             </MenuItem>
@@ -1081,8 +1093,8 @@ const AssignInterviewer = (props) => {
                           />
                         }
                       >
-                        {timeSlots &&
-                          timeSlots.map((item, index) => (
+                        {time &&
+                          time.map((item, index) => (
                             <MenuItem selected key={index} value={item}>
                               {item}
                             </MenuItem>
@@ -1190,16 +1202,19 @@ const AssignInterviewer = (props) => {
             {t("cancel")}
           </Button>{" "}
           &nbsp;
-          <Button
-            onClick={() => {
-              handleSubmit();
-            }}
-            variant="contained"
-            //color="secondary"
-            className={classes.modalBtnPrimary}
-          >
-            Save
-          </Button>
+          {
+            loading ? <CircularProgress className={classes.progress} /> : <Button
+              onClick={() => { 
+                handleSubmit();
+              }}
+              variant="contained"
+              //color="secondary"
+              className={classes.modalBtnPrimary}
+            >
+              Send
+            </Button>
+          }
+
         </Grid>
         <MessageBox
           open={success}
@@ -1229,7 +1244,7 @@ const mapDispatchToProps = {
   getCandidateSchedulebyJob,
   deleteApplicantInterviewers,
   removeApplicantInterviewers,
-  loadUsers,
+  loadUsers, 
 };
 
 const mapStateToProps = (state) => ({

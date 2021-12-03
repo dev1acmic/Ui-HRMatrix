@@ -171,7 +171,7 @@ class Verify extends Component {
                   </Typography>
                 )}
                 <br></br>
-                <Grid item xs={12} md={12} style={{ padding: "0" }}>
+                {!this.state.expired &&  <Grid item xs={12} md={12} style={{ padding: "0" }}>
                   <Button
                     //component={Link}
                     className={classes.gradeBtn}
@@ -189,7 +189,7 @@ class Verify extends Component {
                       ? t("verifyresetpassword")
                       : t("verifycontinuetologin")}
                   </Button>
-                </Grid>
+                </Grid> }
               </div>
             </Grid>
             <Grid item spacing={2} xs={12} md={3} lg={3}></Grid>

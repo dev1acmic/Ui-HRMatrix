@@ -407,6 +407,7 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
       let user = { ...data, interviewerid: c.id };
       ischedule.push(user)
     })
+    interviewers.push(data.candidate)
     if (data.ids) { 
       let res = await client.service("interviewschedule").patch(null, {
         subject: ischedule[0].subject,
@@ -419,7 +420,7 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
       }, { query: { id: { $in: data.ids } } });
 
       if (res.length !== interviewers.length) {
-        const newInvite = interviewers.filter(o1 => !res.some(o2 => o1.id === o2.interviewerid))
+        const newInvite = interviewers.filter(o1 => !res.some(o2 => o1.id === o2.interviewerid) && !o1.isCandidate)
 
         if (newInvite && newInvite.length > 0) {
           const newInterviewers = ischedule.filter(o1 => newInvite.some(o2 => o1.interviewerid === o2.id))
