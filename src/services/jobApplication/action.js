@@ -403,9 +403,11 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
   try {
     let interviewers = data.users.filter(m => !m.applicantinterviewerId || m.applicantinterviewerId === 0)
     let ischedule = [];
+    let applicantinterviewers = [];
     interviewers.map(c => {
-      let user = { ...data, interviewerid: c.id };
+      let user = { ...data, interviewerid: c.id }; 
       ischedule.push(user)
+      applicantinterviewers.push({ level: data.interviewlevel,jobapplicationId: data.jobapplicantid, jobpostId: data.jobpostId,  userId: c.id,})
     })
     interviewers.push(data.candidate)
     if (data.ids) { 
@@ -423,12 +425,16 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
         const newInvite = interviewers.filter(o1 => !res.some(o2 => o1.id === o2.interviewerid) && !o1.isCandidate)
 
         if (newInvite && newInvite.length > 0) {
+          const newApplicants = [];
           const newInterviewers = ischedule.filter(o1 => newInvite.some(o2 => o1.interviewerid === o2.id))
           newInterviewers.map(c => {
             c.users = newInvite;
-            c.skipEmail = true
-          }) 
+            c.skipEmail = true;
+            newApplicants.push({ level: data.interviewlevel,jobapplicationId: data.jobapplicantid, jobpostId: data.jobpostId,  userId: c.interviewerid,})
+          })  
+           
           const res = await client.service("interviewschedule").create(newInterviewers);
+          await client.service("applicantinterviewers").create(newApplicants);
           if (res) {
             return true
           }
@@ -439,6 +445,7 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
       }
     } else {
       const res = await client.service("interviewschedule").create(ischedule);
+     await client.service("applicantinterviewers").create(applicantinterviewers);
       if (res) {
         return true
       }
