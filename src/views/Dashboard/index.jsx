@@ -90,7 +90,7 @@ const Test = (props) => {
       setType(Types.Recruiter);
     }
     getJobsbyEmployer(userId, userrole);
-    setRole(userrole);
+    setRole(userrole); 
     if (orgId) {
       props.getJobsSummary(orgId, userrole);
     }
