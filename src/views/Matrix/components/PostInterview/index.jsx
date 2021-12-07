@@ -959,10 +959,10 @@ const PostInterview = (props) => {
 
     let expandQnIcon = null;
     // Show expand icon only if count exceeds config
-    let jonQnLength = _.uniqBy(jobPost.jobinterviewqtns, function (e) {
+    let jobQnLength = _.uniqBy(jobPost.jobinterviewqtns, function (e) {
       return e.level;
     }); 
-    if (jonQnLength.length > qnShowCount) {
+    if (jobQnLength.length > qnShowCount) {
       expandQnIcon = expandQn ? (
         <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
