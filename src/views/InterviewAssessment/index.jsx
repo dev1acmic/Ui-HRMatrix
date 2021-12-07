@@ -55,8 +55,8 @@ import {
   ArrowForwardOutlined,
   ArrowBackIosOutlined,
   ArrowForwardIosOutlined,
-} from "@material-ui/icons";
-
+} from "@material-ui/icons"; 
+import _ from 'lodash'
 import {
   getJobsbyEmployer,
   getJobApplicantsByJobPost,
@@ -100,7 +100,7 @@ const InterviewAssessment = (props) => {
 
   useEffect(() => {
     if (applicantId > 0) {
-      props.getInterviewersByApplicantId(applicantId);
+      props.getInterviewersByApplicantId(applicantId, levelNo);
     }
   }, [levelNo, applicantId]);
 
@@ -383,9 +383,11 @@ const InterviewAssessment = (props) => {
       let interviewLevel = props.interviewLevel;
       if (interviewLevel) {
         level = interviewLevel.data.find((c) => c.level === levelNumber) || {};
-        level.totalLevel = interviewLevel.data.length;
+        level.totalLevel =_.uniqBy(interviewLevel.data, function (e) {
+          return e.level;
+        }).length;
         level.interviewDate = state.interviewDate;
-        props.getInterviewQstnsByJobPost(level.panelId, state.jobpostId);
+        props.getInterviewQstnsByJobPost(state.jobpostId,levelNumber);
         setLevelNo(levelNumber);
         canEdit =
           canEdit &&
@@ -496,7 +498,7 @@ const InterviewAssessment = (props) => {
       /*------QUESTIONNAIRE -----*/
       let assessmentQuest = [];
       interviewQstns.data.map((item) => {
-        if (interviewLevel && item.panelId === interviewLevel.panelId) {
+        if (interviewLevel && item.level === interviewLevel.level && item.jobpostId === interviewLevel.jobpostId) {
           const jobinterviewqtns =
             assessment &&
             assessment.jobapplicationId === applicantId &&
@@ -971,6 +973,7 @@ const InterviewAssessment = (props) => {
             <Profile
               applicant={applicant}
               interviewLevel={interviewLevel}
+              interviewschedule={props.interviewschedule}
               getFile={props.getFile}
               assessment={props.assessment}
               profile={props.profile}
@@ -1237,6 +1240,7 @@ const mapStateToProps = (state) => ({
   applicantInterviewers:
     state.jobApplication && state.jobApplication.applicantInterviewers,
   jobList: state.jobPost && state.jobPost.jobList,
+  interviewschedule:state.jobApplication && state.jobApplication.interviewSchedule
 });
 
 export default connect(

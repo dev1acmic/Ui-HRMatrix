@@ -43,7 +43,7 @@ export const getJobApplicationsById =
   (jobapplicationId, skipDispatch = false) =>
     async (dispatch) => {
       try {
-        const res = await client.service("jobapplications").get(jobapplicationId);
+        const res = await client.service("jobapplications").get(jobapplicationId); 
         if (skipDispatch) {
           return res;
         }
@@ -468,11 +468,21 @@ export const getInterviewersByApplicantId =
             ...queryParams,
             level: level,
           };
-        }
+        } 
         const res = await client.service("applicantinterviewers").find({
           query: queryParams,
         });
-        if (res) {
+        const interviewdetails = await client.service("interviewschedule").find({
+          query: {jobapplicantid:applicantId, interviewlevel:level},
+        }); 
+        
+        if (res) { 
+          if (interviewdetails) {
+            dispatch({
+              type: "GET_INTERVIEW_SCHEDULE",
+              data: interviewdetails.data,
+            });
+          }
           dispatch({
             type: "GET_APPLICANT_INTERVIEWERS",
             data: res.data,

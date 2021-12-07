@@ -24,14 +24,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
+} from "@material-ui/core"; 
+import _ from 'lodash'
 import classNames from "classnames";
 import {
   CancelOutlined,
   CheckCircleOutline,
+  AddOutlined,
   PersonAddOutlined,
   CheckCircle,
+  FastForwardRounded,
+  FastRewindRounded,
 } from "@material-ui/icons";
 import { useTranslation } from "react-i18next";
 import { getFile } from "services/jobApplication/action";
@@ -44,13 +47,14 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { loadUsers } from "services/admin/action";
 import moment from "moment";
+import {updateJobPost} from 'services/jobPost/action'
 import {
   JobType,
   JobApplicationSelectStatus,
   InterviewAssessmentStatus,
   JobStatus,
 } from "util/enum";
-import { AssignInterviewer } from "../../../Modals";
+import { AssignInterviewer,AddMoreLevel } from "../../../Modals";
 const grey = "#ccc";
 const green = "#60CE8C";
 const orange = "#F9C51D";
@@ -125,6 +129,7 @@ const Summary = (props) => {
   const [jobPost, setJobPost] = React.useState(null);
   const [maxValues, setMaxValues] = React.useState(null);
 
+  const [openLevel, setOpenLevel] = React.useState(false)
   const { anchorEl, expandSkill, expandQn } = state;
   const [interviewerModal, setInterviewerModal] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -163,6 +168,14 @@ const Summary = (props) => {
       });
     }
   }, [interviewers]);
+
+  const handleToggleSkill = () => {
+    setState({...state, expandSkill: !expandSkill});
+  };
+
+  const handleToggleQn = () => {
+    setState({...state, expandQn: !expandQn});
+  };
 
   useEffect(() => {
     //console.log(props.applicationMatrix);
@@ -319,7 +332,7 @@ const Summary = (props) => {
                 (c) => c.applicantStatus === InterviewAssessmentStatus.Rejected
               ).length > 0;
 
-            const q = applicant.assesmentLevels[index];
+            const q = applicant.assesmentLevels[index]; 
             const ansScorePrc = q.assesmentScore
               ? Math.round(q.assesmentScore * 10) / 10
               : null;
@@ -369,14 +382,14 @@ const Summary = (props) => {
                         {interviewdBy &&
                           interviewdBy.fname + " " + interviewdBy.lname}
                       </Typography>
-                      <Typography variant="h6">{panelname}</Typography>
+                      {/* <Typography variant="h6">{panelname}</Typography> */}
                     </Box>
                   </TableCell>
                 </>
               );
               prevLevelHired =
                 q.assesmentStatus === InterviewAssessmentStatus.Hired;
-            } else {
+            } else {  
               applicantQs.push(
                 <>
                   <TableCell className={classNames(classes.tableBodyScore)}>
@@ -417,11 +430,11 @@ const Summary = (props) => {
                         classes.ageName,
                         classes.ageNameSmall
                       )}
-                    >
+                    > 
                       <Typography variant="h6">
                         {isDisableAssignAgency
                           ? t("na")
-                          : applicant.assignedInterviewer
+                          : applicant.assignedInterviewer &&  applicant.assignedInterviewer.filter(c=>c.level===q.level).length>0
                           ? t("assigned")
                           : t("notAssigned")}
                       </Typography>
@@ -436,6 +449,28 @@ const Summary = (props) => {
       }
     }
   };
+
+  const handleAddLevel=(level) => { 
+    setOpenLevel(true) 
+  } 
+
+  const handleModalClose = () => {
+    setOpenLevel(false) 
+  }
+
+  const handleSubmitLevel = async(data) => { 
+    const job = {id:jobPost.id, interQuestRows:[{...data}]}
+   const res = await props.updateJobPost(job,null, true)
+   const copyJob = {...jobPost};
+   copyJob.jobinterviewqtns.push(res[0])
+   _.uniqBy(copyJob.jobinterviewqtns, function (e) {
+     return e.level;
+   }); 
+   setJobPost(copyJob)
+   props.loadSkillMatrix() 
+   setOpenLevel(false) 
+   }
+ 
 
   const getColor = (status) => {
     if (status === JobApplicationSelectStatus.Hired) {
@@ -734,17 +769,20 @@ const Summary = (props) => {
     //   return total + point;
     // }, 0);
     if (jobPost) {
-      if (jobPost.jobinterviewqtns && jobPost.jobinterviewqtns.length > 0) {
-        jobPost.jobinterviewqtns.sort((a, b) => a.level - b.level);
+      let jobinterviewqtns = _.uniqBy(jobPost.jobinterviewqtns, function (e) {
+        return e.level;
+      });  
+      if (jobinterviewqtns && jobinterviewqtns.length > 0) {
+        jobinterviewqtns.sort((a, b) => a.level - b.level);
       }
-      for (let index = 0; index < jobPost.jobinterviewqtns.length; index++) {
+      for (let index = 0; index < jobinterviewqtns.length; index++) {
         if (expandQn && index === qnShowCount) {
           break;
         }
 
-        const { level } = jobPost.jobinterviewqtns[index];
+        const { level } = jobinterviewqtns[index];
         questionHead.push(
-          <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
+          <TableCell className={classes.tableHeadBorder}>{level} {index === jobinterviewqtns.length-1 && <IconButton onClick={()=>{handleAddLevel(level+1)}}> <AddOutlined /></IconButton>}</TableCell>
         );
 
         //   const qPriorityPerc =
@@ -755,6 +793,52 @@ const Summary = (props) => {
 
   const loadHtmlTableHeadRow = () => {
     loadHtmlQuestionHead();
+
+    
+    let expandSkillIcon = null;
+    // Show expand icon only if count exceeds config
+    if (jobPost.jobskills.length > skillShowCount) {
+      expandSkillIcon = expandSkill ? (
+        <IconButton style={{float: "right", padding: 0}}>
+          <FastForwardRounded
+            className={classes.skillMoreBtn}
+            onClick={handleToggleSkill}
+          />
+        </IconButton>
+      ) : (
+        <IconButton style={{float: "right", padding: 0}}>
+          <FastRewindRounded
+            className={classes.skillMoreBtn}
+            onClick={handleToggleSkill}
+          />
+        </IconButton>
+      );
+    }
+
+    let expandQnIcon = null;
+    // Show expand icon only if count exceeds config
+    let jobQnLength = _.uniqBy(jobPost.jobinterviewqtns, function (e) {
+      return e.level;
+    }); 
+    if (jobQnLength.length > qnShowCount) {
+      expandQnIcon = expandQn ? (
+        <IconButton style={{float: "right", padding: 0}}>
+          <FastForwardRounded
+            className={classes.screenMoreBtn}
+            onClick={handleToggleQn}
+          />
+        </IconButton>
+      ) : (
+        <IconButton style={{float: "right", padding: 0}}>
+          <FastRewindRounded
+            className={classes.screenMoreBtn}
+            onClick={handleToggleQn}
+          />
+        </IconButton>
+      );
+    }
+
+
     return (
       <TableHead className={classes.tableRow} style={{ borderRadius: 4 }}>
         <TableRow>
@@ -776,6 +860,7 @@ const Summary = (props) => {
             colSpan={questionHead.length}
           >
             {t("intrwAssessment")}
+            {expandQnIcon}
           </TableCell>
           <TableCell className={classes.tableHead} rowSpan="2">
             &nbsp;
@@ -828,6 +913,17 @@ const Summary = (props) => {
             rowsPerPageOptions={[]}
           />
         </div>
+        <Modal 
+            aria-labelledby={t("common:addScreeningQ")}
+            aria-describedby={t("common:addScreeningQ")}
+            open={openLevel}
+            onClose={handleModalClose}
+          >
+            <AddMoreLevel 
+              onSubmit={handleSubmitLevel}
+              onCancel={handleModalClose} 
+            />
+          </Modal>
 
         <Modal
           aria-labelledby={t("assignInterviewer")}
@@ -853,7 +949,7 @@ const Summary = (props) => {
   );
 };
 
-const mapDispatchToProps = { loadUsers, getFile };
+const mapDispatchToProps = { loadUsers, getFile,updateJobPost };
 const mapStateToProps = (state) => ({
   profile: state.profile,
   interviewers: state.admin && state.admin.users,

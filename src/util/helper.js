@@ -284,7 +284,7 @@ export function getApplicatSkillMatrix(
           totalSkillPerc,
           totalAnsScorePrc,
           overAllScore,
-          assignedInterviewer: app.applicantinterviewers.length > 0,
+          assignedInterviewer: app.applicantinterviewers, 
         });
       })
     );
@@ -371,7 +371,7 @@ export function getApplicatAssesmentSkillMatrix(
           };
         });
 
-        //Get assesment levels
+        //Get assesment levels 
         let assesmentLevels =
           levels &&
           levels.map((level) => {
