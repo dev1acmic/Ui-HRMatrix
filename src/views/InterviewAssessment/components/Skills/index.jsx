@@ -162,8 +162,8 @@ const Skills = (props) => {
     setChecked(event.target.checked);
   };
   const handleOverride = (event) => {
-    let newState = [...skills];
-    newState.map((skill) => (skill.score = 0));
+    let newState = skills && [...skills];
+    newState && newState.map((skill) => (skill.score = 0));
     setSkills(newState);
     setOverride(event.target.checked);
     props.setSkillScore(newState, 0, true);

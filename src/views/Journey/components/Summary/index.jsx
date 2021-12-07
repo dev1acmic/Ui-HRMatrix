@@ -319,7 +319,7 @@ const Summary = (props) => {
                 (c) => c.applicantStatus === InterviewAssessmentStatus.Rejected
               ).length > 0;
 
-            const q = applicant.assesmentLevels[index];
+            const q = applicant.assesmentLevels[index]; 
             const ansScorePrc = q.assesmentScore
               ? Math.round(q.assesmentScore * 10) / 10
               : null;
@@ -369,14 +369,14 @@ const Summary = (props) => {
                         {interviewdBy &&
                           interviewdBy.fname + " " + interviewdBy.lname}
                       </Typography>
-                      <Typography variant="h6">{panelname}</Typography>
+                      {/* <Typography variant="h6">{panelname}</Typography> */}
                     </Box>
                   </TableCell>
                 </>
               );
               prevLevelHired =
                 q.assesmentStatus === InterviewAssessmentStatus.Hired;
-            } else {
+            } else {  
               applicantQs.push(
                 <>
                   <TableCell className={classNames(classes.tableBodyScore)}>
@@ -417,11 +417,11 @@ const Summary = (props) => {
                         classes.ageName,
                         classes.ageNameSmall
                       )}
-                    >
+                    > 
                       <Typography variant="h6">
                         {isDisableAssignAgency
                           ? t("na")
-                          : applicant.assignedInterviewer
+                          : applicant.assignedInterviewer &&  applicant.assignedInterviewer.filter(c=>c.level===q.level).length>0
                           ? t("assigned")
                           : t("notAssigned")}
                       </Typography>
