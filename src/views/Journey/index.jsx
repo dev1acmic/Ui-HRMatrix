@@ -3,10 +3,9 @@ import { Container, withStyles, LinearProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Dashboard as DashboardLayout } from "layouts";
 import { Summary, Info } from "./components";
-import styles from "./style";
-
-import { JobApplicationSelectStatus, Roles } from "util/enum";
-
+import styles from "./style"; 
+import { JobApplicationSelectStatus, Roles } from "util/enum"; 
+import _ from 'lodash'
 import {
   getApplicatSkillMatrix,
   getApplicatAssesmentSkillMatrix,
@@ -97,9 +96,9 @@ const Journey = (props) => {
     }
   }, [props.jobPost]);
 
-  useEffect(() => {
-    // Find the short listed applicant and get thier assesment details
-    if (applicationMatrix) {
+  const loadSkillMatrix = () => {
+     // Find the short listed applicant and get thier assesment details
+     if (applicationMatrix) {
       const shortListedIds = [];
       const shortListedApps = applicationMatrix.filter((app) => {
         if (
@@ -114,11 +113,12 @@ const Journey = (props) => {
       });
 
       // Get interview levels
-      const levels =
+      const questionlevels =
         jobPost &&
         jobPost.jobinterviewqtns.map((iv) => {
           return iv.level;
         });
+        const levels = [...new Set(questionlevels)]; 
       // panel name is used to display in the interview score column, ie not used in skill matrix
       const panels =
         jobPost &&
@@ -160,6 +160,10 @@ const Journey = (props) => {
         });
       });
     }
+  }
+
+  useEffect(() => {
+    loadSkillMatrix()
   }, [applicationMatrix, jobPost]);
 
   useEffect(() => {
@@ -391,6 +395,7 @@ const Journey = (props) => {
           applicationSkillMatrix={applicationMatrix}
           maxValues={maxPostInrvValues}
           jobApplications={jobApplications}
+          loadSkillMatrix={loadSkillMatrix}
           //handleConfirmRemove={handleConfirmRemove}
           scoreRef={ref}
           handleSelect={handlePostIntervSelect}

@@ -43,7 +43,7 @@ import {
   CheckBoxOutlined,
   CheckBoxOutlineBlank,
 } from "@material-ui/icons";
-
+import _ from 'lodash'
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import styles from "../style";
@@ -612,7 +612,7 @@ const Details = (props) => {
     }
   };
   let totalQPriorityPoint = 0;
-  const loadHtmlQuestionHead = () => {
+  const loadHtmlQuestionHead = () => { 
     //calculate total priority points on questions to show on header
     totalQPriorityPoint = jobPost.jobscreeningqtns.reduce((total, q) => {
       const point = prioritySet[q.priority].points;
@@ -668,7 +668,10 @@ const Details = (props) => {
 
     let expandQnIcon = null;
     // Show expand icon only if count exceeds config
-    if (jobPost.jobscreeningqtns.length > qnShowCount) {
+    let jobQnLength = _.uniqBy(jobPost.jobscreeningqtns, function (e) {
+      return e.level;
+    }); 
+    if (jobQnLength.length > qnShowCount) {
       expandQnIcon = expandQn ? (
         <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded

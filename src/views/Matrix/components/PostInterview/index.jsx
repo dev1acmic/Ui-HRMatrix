@@ -34,14 +34,15 @@ import {
   CancelOutlined,
   ArrowDropDownCircleOutlined,
   MoreHorizRounded,
+  AddOutlined,
   FastForwardRounded,
   FastRewindRounded,
   AccountCircleOutlined,
   CheckCircleOutlineOutlined,
 } from "@material-ui/icons";
-
+import _ from 'lodash'
 import PerfectScrollbar from "react-perfect-scrollbar";
-
+import {updateJobPost} from 'services/jobPost/action'
 import styles from "../style";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
@@ -55,9 +56,8 @@ import {
   JobStatus,
 } from "util/enum";
 import moment from "moment";
-import {AssignInterviewer} from "../../../Modals";
-import {loadUsers} from "services/admin/action"; 
-
+import {AssignInterviewer, AddMoreLevel} from "../../../Modals";
+import {loadUsers} from "services/admin/action";  
 const theme = createMuiTheme({
   overrides: {
     MuiTable: {
@@ -126,6 +126,7 @@ const PostInterview = (props) => {
     orgId: profile.orgId,
     showJobClosedModal: false,
   });
+  const [openLevel, setOpenLevel] = React.useState(false)
   const skillShowCount = 10;
   const qnShowCount = 5;
   const pageSize = 5;
@@ -155,7 +156,7 @@ const PostInterview = (props) => {
   useEffect(() => {
     //console.log(props.applicationMatrix);
     //console.log(props.maxValues);
-    if (props.applicationMatrix) {
+    if (props.applicationMatrix) { 
       setMaxValues(props.maxValues);
       setApplicationMatrix(props.applicationMatrix);
 
@@ -587,6 +588,7 @@ const PostInterview = (props) => {
         applicantQs.push(
           <TableCell className={classes.tableBodyBorderL}>
             {/* Link to assign interviewer */}
+            
             {prevLevelHired && (
               <Box className={classes.circleProgWrap}>
                 <IconButton
@@ -617,7 +619,7 @@ const PostInterview = (props) => {
                   value={100}
                   color="red"
                   thickness={5}
-                />
+                /> 
               </Box>
             )}
           </TableCell>
@@ -881,23 +883,35 @@ const PostInterview = (props) => {
     }
   };
 
+  const handleAddLevel=(level) => { 
+    setOpenLevel(true) 
+  } 
+
+  const handleModalClose = () => {
+    setOpenLevel(false) 
+  }
+
   const loadHtmlQuestionHead = () => {
     //calculate total priority points on questions to show on header
     // const totalQPriorityPoint = jobPost.jobscreeningqtns.reduce((total, q) => {
     //   const point = prioritySet[q.priority].points;
     //   return total + point;
-    // }, 0);
-    if (jobPost.jobinterviewqtns && jobPost.jobinterviewqtns.length > 0) {
-      jobPost.jobinterviewqtns.sort((a, b) => a.level - b.level);
+    // }, 0); 
+    let jobinterviewqtns = _.uniqBy(jobPost.jobinterviewqtns, function (e) {
+      return e.level;
+    }); 
+
+    if (jobinterviewqtns && jobinterviewqtns.length > 0) {
+      jobinterviewqtns.sort((a, b) => a.level - b.level);
     }
-    for (let index = 0; index < jobPost.jobinterviewqtns.length; index++) {
+    for (let index = 0; index < jobinterviewqtns.length; index++) {
       if (expandQn && index === qnShowCount) {
         break;
-      }
+      } 
 
-      const {level} = jobPost.jobinterviewqtns[index];
+      const {level} = jobinterviewqtns[index];
       questionHead.push(
-        <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
+        <TableCell className={classes.tableHeadBorder}>{level}  {index === jobinterviewqtns.length-1 && <IconButton onClick={()=>{handleAddLevel(level+1)}}> <AddOutlined /></IconButton>}</TableCell>
       );
 
       //   const qPriorityPerc =
@@ -945,7 +959,10 @@ const PostInterview = (props) => {
 
     let expandQnIcon = null;
     // Show expand icon only if count exceeds config
-    if (jobPost.jobinterviewqtns.length > qnShowCount) {
+    let jobQnLength = _.uniqBy(jobPost.jobinterviewqtns, function (e) {
+      return e.level;
+    }); 
+    if (jobQnLength.length > qnShowCount) {
       expandQnIcon = expandQn ? (
         <IconButton style={{float: "right", padding: 0}}>
           <FastForwardRounded
@@ -1093,6 +1110,19 @@ const PostInterview = (props) => {
     );
   };
 
+  const handleSubmitLevel = async(data) => { 
+   const job = {id:jobPost.id, interQuestRows:[{...data}]}
+  const res = await props.updateJobPost(job,null, true)
+  const copyJob = {...jobPost};
+  copyJob.jobinterviewqtns.push(res[0])
+  _.uniqBy(copyJob.jobinterviewqtns, function (e) {
+    return e.level;
+  }); 
+  setJobPost(copyJob)
+  props.loadSkillMatrix() 
+  setOpenLevel(false) 
+  }
+
   const StyledMenuItem = withStyles({
     root: {
       paddingTop: 0,
@@ -1140,6 +1170,18 @@ const PostInterview = (props) => {
             rowsPerPageOptions={[]}
           />
         </div>
+        <Modal 
+            aria-labelledby={t("common:addScreeningQ")}
+            aria-describedby={t("common:addScreeningQ")}
+            open={openLevel}
+            onClose={handleModalClose}
+          >
+            <AddMoreLevel 
+              onSubmit={handleSubmitLevel}
+              onCancel={handleModalClose} 
+            />
+          </Modal>
+
         <Modal
           onBackdropClick="false"
           aria-labelledby={t("postInterview.assignInterviewer")}
@@ -1185,7 +1227,7 @@ const PostInterview = (props) => {
   }
 };
 
-const mapDispatchToProps = {loadUsers};
+const mapDispatchToProps = {loadUsers,updateJobPost};
 const mapStateToProps = (state) => ({
   profile: state.profile,
   interviewers: state.admin && state.admin.users,

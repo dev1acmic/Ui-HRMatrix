@@ -40,11 +40,15 @@ export const createJobPost = (data, errors) => async (dispatch) => {
   }
 };
 
-export const updateJobPost = (data, errors) => async (dispatch) => {
+export const updateJobPost = (data, errors, isSkipDispatch) => async (dispatch) => {
   try {
     if (data.id && data.id > 0) {
       const res = await client.service("jobposts").update(data.id, data);
       if (res) {
+        if(isSkipDispatch)
+        {
+          return res.jobinterviewqtns
+        }
         dispatch({
           type: "UPDATE_JOBPOST",
           data: res,
@@ -618,7 +622,7 @@ export const getJobsSummary = (orgId, role) => async (dispatch) => {
 
 export const getInterviewDetailsByJobPost = (jobPostId) => async (dispatch) => {
   try {
-    const res = await client.service("jobinterviewers").find({
+    const res = await client.service("jobinterviewqtns").find({
       query: {
         jobPostId: jobPostId,
       },
@@ -637,12 +641,12 @@ export const getInterviewDetailsByJobPost = (jobPostId) => async (dispatch) => {
 };
 
 export const getInterviewQstnsByJobPost =
-  (panelId, jobPostId) => async (dispatch) => {
+  (jobPostId, level) => async (dispatch) => {
     try {
       const res = await client.service("jobinterviewqtns").find({
-        query: {
-          panelId,
+        query: { 
           jobPostId,
+          level
         },
       });
 

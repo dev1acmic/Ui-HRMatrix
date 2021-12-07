@@ -88,7 +88,7 @@ const Profile = (props) => {
                 {applicant.currJob}
               </Typography>
 
-              <Typography variant="h4" className={classes.mTitle}>
+              {/* <Typography variant="h4" className={classes.mTitle}>
                 {t("profile.panelname")}
               </Typography>
               <Typography
@@ -97,7 +97,7 @@ const Profile = (props) => {
               >
                 {interviewLevel.interviewpanel &&
                   interviewLevel.interviewpanel.name}
-              </Typography>
+              </Typography> */}
             </Box>
 
             <Box className={classes.proDetails}>
@@ -115,10 +115,10 @@ const Profile = (props) => {
                 variant="h3"
                 className={classNames(classes.sTitle, classes.noBmargin)}
               >
-                {interviewLevel.mode
+                {props.interviewschedule && props.interviewschedule.length>0
                   ? t(
                       `${InterviewMode.getNameByValue(
-                        parseInt(interviewLevel.mode)
+                        parseInt(props.interviewschedule[0].interviewtype)
                       )}`
                     )
                   : "--"}

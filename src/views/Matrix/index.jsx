@@ -433,8 +433,8 @@ const Matrix = (props) => {
       });
     }
   }, [interviewers]);
-
-  useEffect(() => {
+  
+  const loadSkillMatrix=()=>{
     if (state.tab === "postinterview") {
       // Find the short listed applicant and get thier assesment details
       const shortListedIds = [];
@@ -451,10 +451,10 @@ const Matrix = (props) => {
       });
 
       // Get interview levels
-      const levels = jobPost.jobinterviewqtns.map((iv) => {
+      const interviewLevels  = jobPost.jobinterviewqtns.map((iv) => {
         return iv.level;
       });
-
+      const levels = [...new Set(interviewLevels)]; 
       props.getApplicantsAssessmentsByIds(shortListedIds).then((result) => {
         const appAssesments = result;
 
@@ -488,6 +488,9 @@ const Matrix = (props) => {
         });
       });
     }
+  }
+  useEffect(() => {
+    loadSkillMatrix()
   }, [state.tab]);
 
   const recalculateMax = () => {
@@ -1011,6 +1014,7 @@ const Matrix = (props) => {
             jobPost={jobPost}
             applicationMatrix={postIntrvMatrix}
             maxValues={maxPostInrvValues}
+            loadSkillMatrix={loadSkillMatrix}
             //handleConfirmRemove={handleConfirmRemove}
             scoreRef={ref}
             handleSelect={handlePostIntervSelect}

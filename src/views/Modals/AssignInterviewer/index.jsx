@@ -461,7 +461,7 @@ const AssignInterviewer = (props) => {
         setState({
           level: interviewDetails.level,
           mode: interviewDetails.mode,
-          subject: `Interview Invitation with ${orgName} for the ${jobTitle} position`,
+          subject: `Level ${interviewDetails.level} Interview – ${applicantName} for ${jobTitle}  with  ${orgName}`,
           day: new Date(),
           message: "",
         });
