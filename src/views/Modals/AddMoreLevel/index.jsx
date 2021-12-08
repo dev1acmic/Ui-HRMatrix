@@ -43,8 +43,8 @@ import validate from "validate.js";
 import schema from "./schema"; 
  
 const AddMoreLevel = (props) =>{
-   const {levels, classes, t} = props  
-   const [values,setValues] = useState({question:'', level:'0'})
+   const {levels,jobinterviewqtns, classes, t} = props  
+   const [values,setValues] = useState({question:'', level:jobinterviewqtns.length+1})
    const [errors, setErrors] = useState([]); 
    const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
@@ -92,7 +92,46 @@ const AddMoreLevel = (props) =>{
           <Divider className={classes.modalHeadHr} />
 
           <Box className={classes.modalContent}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3}> 
+              <Grid item xs={12} sm={8}>
+                <InputLabel className={classes.inputLabel} style={{marginBottom:10}}>
+                 Level
+                </InputLabel>
+                <Select
+                  error={getMsg(errors.level, t)}
+                  fullWidth
+                  margin="dense"
+                  input={
+                    <OutlinedInput
+                      labelWidth="0"
+                      name="age"
+                      id="outlined-age-simple"
+                    />
+                  }
+                  name="answerType"
+                  disabled={true}
+                  value={values.level}
+                  onChange={(e) =>  handleChange(e.target.value, 'level')}
+                >
+                  <MenuItem value="0"> {t("common:select")}</MenuItem>
+                  {levels &&
+                                levels.map((item, index) => (
+                                  <MenuItem key={index} value={item.id}>
+                                    {t(
+                                      `${
+                                        "competency." +
+                                        item.name
+                                          .split(".")[1]
+                                          .replace(/TRANSLATION./g, "")
+                                          .split(" ")[0]
+                                      }`
+                                    ) +
+                                      " " +
+                                      item.name.split(" ")[1]}
+                                  </MenuItem>
+                                ))}
+                </Select>
+              </Grid> 
               <Grid item xs={12}>
                 <InputLabel className={classes.inputLabel}>
                   {t("question")}
@@ -116,44 +155,6 @@ const AddMoreLevel = (props) =>{
                   onChange={(e) =>  handleChange(e.target.value, 'question')}
                 />
               </Grid>
-              <Grid item xs={12} sm={8}>
-                <InputLabel className={classes.inputLabel}>
-                 Level
-                </InputLabel>
-                <Select
-                  error={getMsg(errors.level, t)}
-                  fullWidth
-                  margin="dense"
-                  input={
-                    <OutlinedInput
-                      labelWidth="0"
-                      name="age"
-                      id="outlined-age-simple"
-                    />
-                  }
-                  name="answerType"
-                  value={values.level}
-                  onChange={(e) =>  handleChange(e.target.value, 'level')}
-                >
-                  <MenuItem value="0"> {t("common:select")}</MenuItem>
-                  {levels &&
-                                levels.map((item, index) => (
-                                  <MenuItem key={index} value={item.id}>
-                                    {t(
-                                      `${
-                                        "competency." +
-                                        item.name
-                                          .split(".")[1]
-                                          .replace(/TRANSLATION./g, "")
-                                          .split(" ")[0]
-                                      }`
-                                    ) +
-                                      " " +
-                                      item.name.split(" ")[1]}
-                                  </MenuItem>
-                                ))}
-                </Select>
-              </Grid> 
               <Grid item xs={12} className={classes.modalFooter}>
                   <Button
                     variant="contained"

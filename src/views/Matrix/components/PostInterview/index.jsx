@@ -883,7 +883,7 @@ const PostInterview = (props) => {
     }
   };
 
-  const handleAddLevel=(level) => { 
+  const handleAddLevel=() => { 
     setOpenLevel(true) 
   } 
 
@@ -911,7 +911,7 @@ const PostInterview = (props) => {
 
       const {level} = jobinterviewqtns[index];
       questionHead.push(
-        <TableCell className={classes.tableHeadBorder}>{level}  {index === jobinterviewqtns.length-1 && <IconButton onClick={()=>{handleAddLevel(level+1)}}> <AddOutlined /></IconButton>}</TableCell>
+        <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
       );
 
       //   const qPriorityPerc =
@@ -995,6 +995,8 @@ const PostInterview = (props) => {
             colSpan={questionHead.length + 1}
           >
             {t("postInterview.interviewAssessment")}
+            
+            <IconButton onClick={()=>{handleAddLevel()}}> <AddOutlined /></IconButton>
             {expandQnIcon}
             <Typography variant="caption" className={classes.colSubHead}>
               {interviewWeightage}%
@@ -1179,6 +1181,9 @@ const PostInterview = (props) => {
             <AddMoreLevel 
               onSubmit={handleSubmitLevel}
               onCancel={handleModalClose} 
+              jobinterviewqtns={_.uniqBy(jobPost.jobinterviewqtns, function (e) {
+                return e.level;
+              })}
             />
           </Modal>
 
