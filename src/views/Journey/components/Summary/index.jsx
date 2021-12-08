@@ -450,7 +450,7 @@ const Summary = (props) => {
     }
   };
 
-  const handleAddLevel=(level) => { 
+  const handleAddLevel=() => { 
     setOpenLevel(true) 
   } 
 
@@ -782,7 +782,7 @@ const Summary = (props) => {
 
         const { level } = jobinterviewqtns[index];
         questionHead.push(
-          <TableCell className={classes.tableHeadBorder}>{level} {index === jobinterviewqtns.length-1 && <IconButton onClick={()=>{handleAddLevel(level+1)}}> <AddOutlined /></IconButton>}</TableCell>
+          <TableCell className={classes.tableHeadBorder}>{level}</TableCell>
         );
 
         //   const qPriorityPerc =
@@ -860,6 +860,7 @@ const Summary = (props) => {
             colSpan={questionHead.length}
           >
             {t("intrwAssessment")}
+            <IconButton onClick={()=>{handleAddLevel()}}> <AddOutlined /></IconButton>
             {expandQnIcon}
           </TableCell>
           <TableCell className={classes.tableHead} rowSpan="2">
@@ -922,6 +923,9 @@ const Summary = (props) => {
             <AddMoreLevel 
               onSubmit={handleSubmitLevel}
               onCancel={handleModalClose} 
+              jobinterviewqtns={_.uniqBy(jobPost.jobinterviewqtns, function (e) {
+                return e.level;
+              })}
             />
           </Modal>
 

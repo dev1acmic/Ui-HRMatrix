@@ -43,8 +43,8 @@ import validate from "validate.js";
 import schema from "./schema"; 
  
 const AddMoreLevel = (props) =>{
-   const {levels, classes, t} = props  
-   const [values,setValues] = useState({question:'', level:'0'})
+   const {levels,jobinterviewqtns, classes, t} = props  
+   const [values,setValues] = useState({question:'', level:jobinterviewqtns.length+1})
    const [errors, setErrors] = useState([]); 
    const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
@@ -85,39 +85,16 @@ const AddMoreLevel = (props) =>{
           <AppBar position="static" color="default" align="center">
             <Toolbar className={classes.modalHeadWrap}>
               <Typography className={classes.modalHead} variant="h6">
-              Interview 
+              Add Interview Level 
               </Typography>
             </Toolbar>
           </AppBar>
           <Divider className={classes.modalHeadHr} />
 
           <Box className={classes.modalContent}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <InputLabel className={classes.inputLabel}>
-                  {t("question")}
-                </InputLabel>
-                <TextField
-                  error={getMsg(errors.question, t)}
-                  name="question"
-                  id="outlined-bare"
-                  margin="dense"
-                  variant="outlined"
-                  multiline
-                  rowsMax="4"
-                  rows="3"
-                  className={classes.textField}
-                  //margin="dense"
-                  //variant="outlined"
-                  fullWidth
-                  inputProps={{ "aria-label": "bare", maxLength: 250 }}
-                  placeholder={t("competency.rateexpertise")}
-                  value={values.question}
-                  onChange={(e) =>  handleChange(e.target.value, 'question')}
-                />
-              </Grid>
+            <Grid container spacing={3}> 
               <Grid item xs={12} sm={8}>
-                <InputLabel className={classes.inputLabel}>
+                <InputLabel className={classes.inputLabel} style={{marginBottom:10}}>
                  Level
                 </InputLabel>
                 <Select
@@ -132,6 +109,7 @@ const AddMoreLevel = (props) =>{
                     />
                   }
                   name="answerType"
+                  disabled={true}
                   value={values.level}
                   onChange={(e) =>  handleChange(e.target.value, 'level')}
                 >
@@ -154,6 +132,29 @@ const AddMoreLevel = (props) =>{
                                 ))}
                 </Select>
               </Grid> 
+              <Grid item xs={12}>
+                <InputLabel className={classes.inputLabel}>
+                  {t("question")}
+                </InputLabel>
+                <TextField
+                  error={getMsg(errors.question, t)}
+                  name="question"
+                  id="outlined-bare"
+                  margin="dense"
+                  variant="outlined"
+                  multiline
+                  rowsMax="4"
+                  rows="3"
+                  className={classes.textField}
+                  //margin="dense"
+                  //variant="outlined"
+                  fullWidth
+                  inputProps={{ "aria-label": "bare", maxLength: 250 }}
+                  placeholder={t("question")}
+                  value={values.question}
+                  onChange={(e) =>  handleChange(e.target.value, 'question')}
+                />
+              </Grid>
               <Grid item xs={12} className={classes.modalFooter}>
                   <Button
                     variant="contained"
