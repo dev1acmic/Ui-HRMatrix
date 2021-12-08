@@ -150,7 +150,7 @@ const AddMoreLevel = (props) =>{
                   //variant="outlined"
                   fullWidth
                   inputProps={{ "aria-label": "bare", maxLength: 250 }}
-                  placeholder={t("competency.rateexpertise")}
+                  placeholder={t("question")}
                   value={values.question}
                   onChange={(e) =>  handleChange(e.target.value, 'question')}
                 />
