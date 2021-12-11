@@ -25,8 +25,7 @@ import { Roles, Types } from "util/enum";
 
 /*******ACTIONS STARTS/*******/
 
-import {
-  getJobsbyEmployer,
+import { 
   clearJobPost,
   getJobsByAttention,
 } from "services/jobPost/action";
@@ -66,7 +65,7 @@ const JobsneedAttention = (props) => {
   const userId = props.profile.id;
 
   const getJobsbyEmployer = (id, role) => {
-    try {
+    try { 
       props.getJobsByAttention(id, role, true);
     } catch (error) {
       setLoading(false);
@@ -94,7 +93,7 @@ const JobsneedAttention = (props) => {
     } else if (isTypeRecruiter(type)) {
       setType(Types.Recruiter);
     }
-    getJobsbyEmployer(userId, userrole);
+    getJobsbyEmployer(orgId, userrole);
     setRole(userrole);
     if (orgId) {
       props.getJobsByAttention(orgId, userrole, true);
@@ -203,8 +202,7 @@ const JobsneedAttention = (props) => {
   );
 };
 
-const mapDispatchToProps = {
-  getJobsbyEmployer: getJobsbyEmployer,
+const mapDispatchToProps = { 
   clearJobPost: clearJobPost,
   clearJobApplication: clearJobApplication,
   getJobsByAttention: getJobsByAttention,

@@ -765,9 +765,9 @@ class Details extends Component {
                 <Button
                   variant="contained"
                   className={classes.grpButton}
-                  onClick={this.IncrementItem}
+                  onClick={this.DecreaseItem}
                 >
-                  <Add />
+                  <Remove />
                 </Button>
                 <InputBase
                   style={
@@ -787,13 +787,14 @@ class Details extends Component {
                     this.handleChange("position", event.target.value)
                   }
                 />
-                <Button
+                  <Button
                   variant="contained"
                   className={classes.grpButton}
-                  onClick={this.DecreaseItem}
+                  onClick={this.IncrementItem}
                 >
-                  <Remove />
+                  <Add />
                 </Button>
+              
               </ButtonGroup>
             </Grid>
             <Grid item xs={12} sm={6}>
