@@ -389,7 +389,7 @@ const Summary = (props) => {
               );
               prevLevelHired =
                 q.assesmentStatus === InterviewAssessmentStatus.Hired;
-            } else {  
+            } else {   
               applicantQs.push(
                 <>
                   <TableCell className={classNames(classes.tableBodyScore)}>

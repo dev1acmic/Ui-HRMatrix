@@ -182,6 +182,25 @@ const AssignInterviewer = (props) => {
   const [key, setKey] = useState(0);
   const [errMsg, setErrMsg] = useState(false);
 
+  useEffect(() => {
+    if(props.interviewers)
+    { 
+      const interviewers =   props.interviewers.map((t) => ({
+        id: t.id,
+        fname: t.fname,
+        lname: t.lname,
+        email: t.username,
+      }));
+      const suggestions = props.interviewers.map((t) => ({
+        id: t.id,
+        name: t.fname + " " + t.lname,
+        email: t.username,
+      }));
+      setInterviewers(interviewers)
+      setSuggestions(suggestions)
+    }  
+  }, [props.interviewers])
+
   const getHours = () => {
     let hours;
     if (state.fromtime && state.totime && state.day) {
@@ -514,11 +533,14 @@ const AssignInterviewer = (props) => {
   }, [values.users, state.day]);
 
   useEffect(() => {
-    if (props.user) {
-      const newUser = props.user[0];
-      const users = [].concat(values.users || [], newUser);
-      setValues({ ...values, users });
-      setSuggestions(suggestions.filter((c) => c.id !== newUser.id));
+    if (props.user) { 
+       if(interviewers.filter(c=>c.id === props.user[0].id).length===0)
+       {
+        const newUser = props.user[0];
+        const users = [].concat(values.users || [], newUser);
+        setValues({ ...values, users });
+        setSuggestions(suggestions.filter((c) => c.id !== newUser.id));
+       } 
     }
   }, [props.user]);
 
@@ -1257,6 +1279,7 @@ const mapStateToProps = (state) => ({
   interviewSchedule:
     state.jobApplication && state.jobApplication.interviewSchedule,
   profile: state.profile,
+  interviewers: state.admin && state.admin.users,
 });
 
 export default withRouter(

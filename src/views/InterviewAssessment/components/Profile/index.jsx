@@ -87,7 +87,12 @@ const Profile = (props) => {
               <Typography variant="h3" className={classes.sTitle}>
                 {applicant.currJob}
               </Typography>
-
+              <Typography variant="h4" className={classes.mTitle}>
+                {t("profile.level")}
+              </Typography>
+              <Typography variant="h3" className={classes.sTitle}>
+                {interviewLevel.level} of {interviewLevel.totalLevel}
+              </Typography>
               {/* <Typography variant="h4" className={classes.mTitle}>
                 {t("profile.panelname")}
               </Typography>
@@ -100,20 +105,13 @@ const Profile = (props) => {
               </Typography> */}
             </Box>
 
-            <Box className={classes.proDetails}>
-              <Typography variant="h4" className={classes.mTitle}>
-                {t("profile.level")}
-              </Typography>
-              <Typography variant="h3" className={classes.sTitle}>
-                {interviewLevel.level} of {interviewLevel.totalLevel}
-              </Typography>
-
+            <Box className={classes.proDetails}>  
               <Typography variant="h4" className={classes.mTitle}>
                 {t("profile.typeofInterview")}
               </Typography>
               <Typography
                 variant="h3"
-                className={classNames(classes.sTitle, classes.noBmargin)}
+                className={ classes.sTitle }
               >
                 {props.interviewschedule && props.interviewschedule.length>0
                   ? t(
@@ -123,9 +121,6 @@ const Profile = (props) => {
                     )
                   : "--"}
               </Typography>
-            </Box>
-
-            <Box className={classes.proDetails}>
               <Typography variant="h4" className={classes.mTitle}>
                 {t("profile.dateofInterview")}
               </Typography>
@@ -134,6 +129,10 @@ const Profile = (props) => {
                   ? moment(interviewLevel.interviewDate).format("L")
                   : moment().format("L")}
               </Typography>
+
+            </Box>
+
+            <Box className={classes.proDetails}> 
 
               <Typography variant="h4" className={classes.mTitle}>
                 {t("profile.interviewer")}
