@@ -136,7 +136,7 @@ const PostInterview = (props) => {
   let reqPayRate = 0;
   let payRateType;
 
-  useEffect(() => {
+  useEffect(() => {  
     props.loadUsers(profile.orgId, -1);
   }, []);
 
@@ -144,13 +144,11 @@ const PostInterview = (props) => {
     setJobPost(props.jobPost);
   }, [props.jobPost]);
 
-  useEffect(() => {
-    if (interviewers && interviewers.length > 0) {
+  useEffect(() => { 
       setValues({
         ...values,
         interviewers: interviewers,
-      });
-    }
+      }); 
   }, [interviewers]);
 
   useEffect(() => {

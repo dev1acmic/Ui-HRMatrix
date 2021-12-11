@@ -921,7 +921,7 @@ const Configuration = (props) => {
 
         <Grid container item spacing={3} className={classes.formContainer}>
           <Grid item xs={12} sm={9}>
-            <FormLabel className={classes.formLabel}>
+            <FormLabel className={classes.formHeader}>
               {t("departments")}
             </FormLabel>
             <ReactTags
