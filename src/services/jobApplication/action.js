@@ -444,6 +444,7 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
         return true
       }
     } else {
+      ischedule[0].users = interviewers;
       const res = await client.service("interviewschedule").create(ischedule);
      await client.service("applicantinterviewers").create(applicantinterviewers);
       if (res) {
