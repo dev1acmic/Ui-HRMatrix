@@ -223,7 +223,7 @@ class PostJ extends Component {
     
     if (nextProps.jobPost && !prevState.flag) {
       const splitTabs =
-        (nextProps.jobPost.tab.length > 0 &&
+        (nextProps.jobPost.tab && nextProps.jobPost.tab.length > 0 &&
           nextProps.jobPost.tab.split(",")) ||
         [];
       let completed = [];

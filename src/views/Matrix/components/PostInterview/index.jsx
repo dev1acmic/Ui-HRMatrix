@@ -1110,9 +1110,9 @@ const PostInterview = (props) => {
     );
   };
 
-  const handleSubmitLevel = async(data) => { 
-   const job = {id:jobPost.id, interQuestRows:[{...data}]}
-  const res = await props.updateJobPost(job,null, true)
+  const handleSubmitLevel = async(data) => {   
+    jobPost && jobPost.jobinterviewqtns.push(data);
+   const res = await props.updateJobPost(jobPost,null, true)
   const copyJob = {...jobPost};
   copyJob.jobinterviewqtns.push(res[0])
   _.uniqBy(copyJob.jobinterviewqtns, function (e) {
