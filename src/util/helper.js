@@ -612,7 +612,7 @@ export const loadTimeSlots = (date) => {
       // ['11:00', '14:00'], ['16:00', '18:00']
     ],
     // startTime: moment(new Date().getHours()).add(30, 'm').toDate(),
-    endTime: '21'
+    endTime: '24'
   };
 
   let slotTime = isToday(date)? start: moment(8, "hh:mm A");
