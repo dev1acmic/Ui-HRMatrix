@@ -423,7 +423,7 @@ class EditQuestions extends Component {
                                 name="score"
                                 rootStyle={sliderStyle}
                                 domain={[0, 100]}
-                                step={1}
+                                step={10}
                                 mode={2}
                                 values={[item.score]}
                                 onChange={this.handleChangeScore(idx)}

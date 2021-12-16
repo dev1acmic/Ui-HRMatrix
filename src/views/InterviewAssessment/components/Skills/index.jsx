@@ -223,7 +223,7 @@ const Skills = (props) => {
                       disabled={!checked || disabled}
                       rootStyle={sliderStyle}
                       domain={[0, 100]}
-                      step={1}
+                      step={10}
                       mode={2}
                       values={[overallScore]}
                       onSlideEnd={(event) => handleOverallScoreChange(event[0])}
@@ -351,7 +351,7 @@ const Skills = (props) => {
                           disabled={!checked || disabled || override}
                           rootStyle={sliderStyle}
                           domain={[0, 100]}
-                          step={1}
+                          step={10}
                           mode={2}
                           values={[skill.score]}
                           onSlideEnd={(event) => handleChange(event[0], index)}

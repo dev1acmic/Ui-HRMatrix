@@ -247,7 +247,7 @@ const RatingConfirm = (props) => {
               <Slider
                 rootStyle={sliderStyle}
                 domain={[1, 100]}
-                step={1}
+                step={10}
                 mode={2}
                 values={[enthusiasmPerc]}
                 onSlideEnd={(event) => handleChange(event[0])}

@@ -249,7 +249,7 @@ const Questionnaire = (props) => {
                   disabled={true}
                   rootStyle={sliderStyle}
                   domain={[0, 100]}
-                  step={1}
+                  step={10}
                   mode={2}
                   values={[overallScore]}
                   onSlideEnd={(event) => handleOverallScoreChange(event[0])}
@@ -353,7 +353,7 @@ const Questionnaire = (props) => {
                           disabled={!checked || disabled}
                           rootStyle={sliderStyle}
                           domain={[0, 100]}
-                          step={1}
+                          step={10}
                           mode={2}
                           values={[item.score]}
                           onSlideEnd={(event) => handleChange(event[0], index)}

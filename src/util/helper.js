@@ -285,6 +285,7 @@ export function getApplicatSkillMatrix(
           totalAnsScorePrc,
           overAllScore,
           assignedInterviewer: app.applicantinterviewers, 
+          interviewschedule: app.interviewschedule,
         });
       })
     );
@@ -436,6 +437,7 @@ export function getApplicatAssesmentSkillMatrix(
           assignedInterviewer,
           resumeId,
           avatarId,
+          interviewschedule
         } = app;
 
         totalAssesmentScorePrc = totalAssesmentScorePrc
@@ -487,6 +489,7 @@ export function getApplicatAssesmentSkillMatrix(
           overAllScore,
           assignedInterviewer,
           applicantStatus,
+          interviewschedule
         });
       })
     );
