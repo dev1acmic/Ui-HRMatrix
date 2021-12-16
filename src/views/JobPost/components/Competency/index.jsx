@@ -2172,7 +2172,7 @@ class Competancy extends Component {
                             <Slider
                               rootStyle={sliderStyle}
                               domain={[0, 100]}
-                              step={1}
+                              step={10}
                               mode={2}
                               values={[this.state.skillScore]}
                               onSlideEnd={(event) =>
@@ -2242,7 +2242,7 @@ class Competancy extends Component {
                             <Slider
                               rootStyle={sliderStyle}
                               domain={[0, 100]}
-                              step={1}
+                              step={10}
                               mode={2}
                               values={[this.state.domainScore]}
                               onSlideEnd={(event) =>
@@ -2312,7 +2312,7 @@ class Competancy extends Component {
                             <Slider
                               rootStyle={sliderStyle}
                               domain={[0, 100]}
-                              step={1}
+                              step={10}
                               mode={2}
                               values={[this.state.interviewScore]}
                               onSlideEnd={(event) =>
@@ -2382,7 +2382,7 @@ class Competancy extends Component {
                             <Slider
                               rootStyle={sliderStyle}
                               domain={[0, 100]}
-                              step={1}
+                              step={10}
                               mode={2}
                               values={[this.state.behaviouralScore]}
                               onSlideEnd={(event) =>

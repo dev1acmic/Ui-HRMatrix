@@ -935,7 +935,7 @@ const Details = forwardRef((props, ref) => {
               <Slider
                 rootStyle={sliderStyle}
                 domain={[1, 100]}
-                step={1}
+                step={10}
                 mode={2}
                 values={[values.travelPrc]}
                 onSlideEnd={(event) => handleChange("travelPrc", event[0])}

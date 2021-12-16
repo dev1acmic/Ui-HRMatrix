@@ -974,7 +974,7 @@ const Configuration = (props) => {
               <Slider
                 rootStyle={sliderStyle}
                 domain={[10, 25]}
-                step={1}
+                step={10}
                 mode={2}
                 values={[values.level]}
                 onSlideEnd={(event) => handleFieldChange("level", event[0])}

@@ -25,10 +25,16 @@ export const getJobApplicationsByJobPost =
             },
           },
         });
-        if (res) {
+        if (res) { 
+          const promises = res.map(async r => {
+            const ischedule = await client.service("interviewschedule").find({ query: { jobapplicantid: r.id, jobid: r.jobpostId } })
+            r.interviewschedule = ischedule.data
+            return r;
+          })
+          const data =  await Promise.all(promises); 
           dispatch({
             type: "QUERY_JOBAPPLICANTIONS",
-            query: res,
+            query: data,
           });
           return true;
         }
