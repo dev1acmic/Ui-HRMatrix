@@ -49,6 +49,9 @@ import { loadUsers } from "services/admin/action";
 import moment from "moment";
 import {updateJobPost} from 'services/jobPost/action'
 import {
+  getJobApplicationsByJobPost, 
+} from "services/jobApplication/action";
+import {
   JobType,
   JobApplicationSelectStatus,
   InterviewAssessmentStatus,
@@ -305,8 +308,7 @@ const Summary = (props) => {
       let { selectStatus } = applicant;
       let prevLevelHired = true;
 
-      let interviewdBy, interviewdAt, applicantStatus, panelname;
-
+      let interviewdBy, interviewdAt, applicantStatus, panelname; 
       if (applicant.assesmentLevels) {
         if (applicant.assesmentLevels.length > 0) {
           applicant.assesmentLevels.sort((a, b) => a.level - b.level);
@@ -331,12 +333,13 @@ const Summary = (props) => {
               applicant.assesmentLevels.filter(
                 (c) => c.applicantStatus === InterviewAssessmentStatus.Rejected
               ).length > 0;
+ 
 
             const q = applicant.assesmentLevels[index]; 
             const ansScorePrc = q.assesmentScore
               ? Math.round(q.assesmentScore * 10) / 10
               : null;
-
+  
             if (ansScorePrc) {
               applicantQs.push(
                 <>
@@ -389,7 +392,7 @@ const Summary = (props) => {
               );
               prevLevelHired =
                 q.assesmentStatus === InterviewAssessmentStatus.Hired;
-            } else {   
+            } else {  
               applicantQs.push(
                 <>
                   <TableCell className={classNames(classes.tableBodyScore)}>
@@ -398,7 +401,7 @@ const Summary = (props) => {
                       className={classes.connectingLine}
                     ></div>
                     <Typography className={classes.dateLabel}>
-                      {isDisableAssignAgency ? "NA" : "Date: TBD"}
+                      {isDisableAssignAgency ? "NA" :  !_.isEmpty(applicant.interviewschedule)&&applicant.interviewschedule.filter(c=>c.interviewlevel===q.level).length>0 ?  moment(applicant.interviewschedule.filter(c=>c.interviewlevel===q.level)[0].interviewdate).format("ll"): 'NA'}
                     </Typography>
                     <Box className={classes.circleProgWrap}>
                       <CircularProgress
@@ -456,6 +459,13 @@ const Summary = (props) => {
 
   const handleModalClose = () => {
     setOpenLevel(false) 
+  }
+  const handleRefresh=()=>{
+    props.getJobApplicationsByJobPost(
+      jobPost&& jobPost.id,
+      [JobApplicationSelectStatus.Removed],
+      -1
+    );
   }
 
   const handleSubmitLevel = async(data) => {
@@ -946,6 +956,8 @@ const Summary = (props) => {
             organizationId={values.orgId}
             onCancel={handleClosePanel}
             totalLevels={values.totalLevels}
+            handleRefresh={handleRefresh}
+            isRecap={true}
           />
         </Modal>
       </Container>
@@ -953,7 +965,7 @@ const Summary = (props) => {
   );
 };
 
-const mapDispatchToProps = { loadUsers, getFile,updateJobPost };
+const mapDispatchToProps = { loadUsers, getFile,updateJobPost,getJobApplicationsByJobPost };
 const mapStateToProps = (state) => ({
   profile: state.profile,
   interviewers: state.admin && state.admin.users,

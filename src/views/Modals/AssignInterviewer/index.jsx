@@ -180,7 +180,7 @@ const AssignInterviewer = (props) => {
   const [alert, setAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [key, setKey] = useState(0);
-  const [errMsg, setErrMsg] = useState(false);
+  const [errMsg, setErrMsg] = useState(false);  
 
   useEffect(() => {
     if(props.interviewers)
@@ -661,6 +661,10 @@ const AssignInterviewer = (props) => {
           setLoading(false);
           setTimeout(() => {
             props.onCancel();
+            if(props.isRecap)
+            {
+              props.handleRefresh() 
+            }
           }, 1000);
         }
       });
@@ -833,6 +837,7 @@ const AssignInterviewer = (props) => {
                       })}
                     </TextField>
                   </Grid>
+                   <InputLabel className={classes.inputLabel}> </InputLabel>
                 </Grid>
                 <Grid
                   container
@@ -1121,15 +1126,17 @@ const AssignInterviewer = (props) => {
                               {item}
                             </MenuItem>
                           ))}
-                      </TextField>
+                      </TextField> 
                     </Grid>
+                    <Grid item xs={12} style={{flex:'1', textAlign:'right', marginTop:-20}}><InputLabel className={classes.inputLabel} style={{fontSize:'0.8rem'}}><i>Time zone: {Intl.DateTimeFormat().resolvedOptions().timeZone +' - '+ new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2]}</i></InputLabel></Grid>
+                  
                   </Grid>
                   <Grid
                     container
                     item
                     spacing={3}
                     className={classes.formContainer}
-                    style={{ marginTop: -30 }}
+                    style={{ marginTop: -20 }}
                   >
                     <Grid item xs={12}>
                       {/* <InputLabel className={classes.inputLabel}>Message</InputLabel> */}
