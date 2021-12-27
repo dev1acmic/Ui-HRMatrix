@@ -333,10 +333,12 @@ const Matrix = (props) => {
       applicantToSelect: null,
     });
     let candidateName = "";
+    let candidateEmail = "";
     // set status in applicationMatrix
     let selectIndex = -1;
     selectIndex = applicationMatrix.findIndex((appl) => {
       candidateName = appl.fname + " " + appl.lname;
+      candidateEmail = appl.email;
       return appl.id === id;
     });
     applicationMatrix[selectIndex].selectStatus = status;
@@ -364,7 +366,7 @@ const Matrix = (props) => {
         shortListedDate: new Date(),
       });
       if (sendMail) {
-        handleOpenPanel(1, id, candidateName);
+        handleOpenPanel(1, id, candidateName, candidateEmail);
       }
     } else if (
       status === JobApplicationSelectStatus.Hired ||
@@ -805,6 +807,7 @@ const Matrix = (props) => {
           jobpostId={state.jobPostId}
           applicantId={state.applicantId}
           applicantName={state.applicantName}
+          applicantEmail={state.applicantEmail}
           interviewers={interviewers}
           interviewDetails={state.interviewDetails}
           organizationId={props.orgId}
@@ -815,7 +818,7 @@ const Matrix = (props) => {
     );
   };
 
-  const handleOpenPanel = (level, applicantId, applicantName) => {  
+  const handleOpenPanel = (level, applicantId, applicantName,applicantEmail) => {
         const interviewDetails = jobPost.jobinterviewqtns.find(
       (c) => c.level === level
     );
@@ -825,6 +828,7 @@ const Matrix = (props) => {
       applicantToSelect: null,
       applicantId: applicantId,
       applicantName: applicantName,
+      applicantEmail:applicantEmail,
       interviewDetails: interviewDetails,
       interviewerModal: true,
       totalLevels: jobPost.jobinterviewqtns.length,

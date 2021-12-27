@@ -1182,7 +1182,7 @@ class Competancy extends Component {
         <div
           className={classes.gridBg2}
           style={{
-            backgroundImage: `url(${require(`assets/images/tab-2-bg_${i18n.language}.png`)})`,
+            backgroundImage: `url(${require(`assets/images/tab-2-bg_${i18n.language}.png`).default})`,
           }}
         >
           <Grid container xs={12} sm={10}>
