@@ -21,7 +21,7 @@ import _ from "underscore";
 import validate from "validate.js";
 import schema from "./schema";
 
-import ReactTags from "react-tag-autocomplete";
+import ReactTags from "react-tag-autocomplete"; 
 
 // Actions
 import {
@@ -635,7 +635,7 @@ class Details extends Component {
           spacing={3}
           className={classes.gridBg1}
           style={{
-            backgroundImage: `url(${require(`assets/images/tab-1-bg_${i18n.language}.png`)})`,
+            backgroundImage: `url(${require(`assets/images/tab-1-bg_${i18n.language}.png`).default})`, 
           }}
         >
           <Prompt

@@ -23,7 +23,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle,Tooltip
 } from "@material-ui/core"; 
 import _ from 'lodash'
 import classNames from "classnames";
@@ -117,7 +117,7 @@ const Summary = (props) => {
     interviewWeightage,
     jobApplications,
   } = props;
-  const { t } = useTranslation("common");
+  const {t} = useTranslation("matrix", "common");
   const [state, setState] = React.useState({
     selected: "absoulte",
     anchorEl: null,
@@ -732,7 +732,8 @@ const Summary = (props) => {
                 )}
                 {selectStatus === JobApplicationSelectStatus.ShortListed && (
                   <>
-                    {" "}
+                    {" "} 
+                  <Tooltip title={t("postInterview.hire")}>
                     <IconButton
                       className={classes.gridButton}
                       onClick={() => {
@@ -748,6 +749,8 @@ const Summary = (props) => {
                     >
                       <CheckCircleOutline style={{ color: "#75D49B" }} />
                     </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t("postInterview.reject")}>
                     <IconButton
                       className={classes.gridButton}
                       onClick={() => {
@@ -763,6 +766,7 @@ const Summary = (props) => {
                     >
                       <CancelOutlined style={{ color: "#FF725F" }} />
                     </IconButton>
+                    </Tooltip>
                   </>
                 )}
               </TableCell>
