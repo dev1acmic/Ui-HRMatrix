@@ -246,7 +246,7 @@ const RatingConfirm = (props) => {
               </InputLabel>
               <Slider
                 rootStyle={sliderStyle}
-                domain={[1, 100]}
+                domain={[0, 100]}
                 step={10}
                 mode={2}
                 values={[enthusiasmPerc]}

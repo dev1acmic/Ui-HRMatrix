@@ -104,7 +104,7 @@ class Auth extends Component {
                 <div
                   className={classes.quote}
                   style={{
-                    backgroundImage: `url(${require(`assets/images/img-signin_${i18n.language}.png`)})`,
+                    backgroundImage: `url(${require(`assets/images/img-signin_${i18n.language}.png`).default})`,
                   }}
                 >
                   <div className={classes.quoteInner}>

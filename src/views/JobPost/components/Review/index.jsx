@@ -137,7 +137,7 @@ class Review extends Component {
           spacing={3}
           className={classes.gridBg3}
           style={{
-            backgroundImage: `url(${require(`assets/images/tab-3-bg_${i18n.language}.png`)})`,
+            backgroundImage: `url(${require(`assets/images/tab-3-bg_${i18n.language}.png`).default})`,
           }}
         >
           <Grid
