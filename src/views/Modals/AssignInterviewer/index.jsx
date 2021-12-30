@@ -312,7 +312,6 @@ const AssignInterviewer = (props) => {
           (c) => c.applicantid === applicantId && c.jobid === props.jobPost.id
         );
       }
-
       if (newSlot && newSlot.length > 0) {
         newSlot[0].start = start;
         newSlot[0].end = end;
@@ -345,7 +344,7 @@ const AssignInterviewer = (props) => {
       setMessage(message);
       setKey(key ? key + 1 : 1);
     }
-  }, [state.totime, state.fromtime]);
+  }, [state.totime, state.fromtime, state.day]);
 
   const getMessage = (interviewtype, hours) => {
     let orgName =
@@ -401,19 +400,20 @@ const AssignInterviewer = (props) => {
 
   useEffect(() => { 
     async function fetch(interviewSchedule, users) {
-      if (
-         interviewSchedule &&
-        interviewSchedule.length > 0 &&
-         users
-      ) { 
-        const res = getInterviewSchedule(interviewSchedule);
-        setTimeslot(res);
-      } 
+      // if (
+      //    interviewSchedule &&
+      //   interviewSchedule.length > 0 &&
+      //    users
+      // ) { 
+      //   const res = getInterviewSchedule(interviewSchedule);
+      //   setTimeslot(res);
+      // } 
       if (
         (interviewSchedule && interviewSchedule.length === 0) ||
         ! users
       ) {
-        setTimeslot([]); 
+        
+        setTimeslot([...timeslot]); 
       }  
     }
     fetch(props.interviewSchedule,values.users);
@@ -434,7 +434,7 @@ const AssignInterviewer = (props) => {
         message: props.candidateSchedule[0].message,
         totime: moment(props.candidateSchedule[0].totime).format("hh:mm A"),
         fromtime: moment(props.candidateSchedule[0].fromtime).format("hh:mm A"),
-        day: new Date(props.candidateSchedule[0].interviewdate),
+        day: new Date(props.candidateSchedule[0].totime),
       });
       setTime(loadTimeSlots(new Date(props.candidateSchedule[0].interviewdate))); 
       let users = [];
@@ -496,7 +496,7 @@ const AssignInterviewer = (props) => {
         setSuggestions(tags);
         }
         
-        setTimeslot([]);
+        setTimeslot([...timeslot]);
       }
     }
   }
@@ -691,7 +691,7 @@ const AssignInterviewer = (props) => {
 
     setValues({ ...values, users: users });
     if (users.length === 0) {
-        setTimeslot([]);
+        setTimeslot([...timeslot]);
     }
     //suggestions = suggestions.concat(user);
     setSuggestions(suggestions.concat(tag));
