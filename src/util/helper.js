@@ -618,7 +618,7 @@ export const loadTimeSlots = (date) => {
     endTime: '24'
   };
 
-  let slotTime = isToday(date)? start: moment(8, "hh:mm A");
+  let slotTime = isToday(date)? start: moment(0, "hh:mm A");
   const endTime = moment(x.endTime, "hh:mm A");
 
   let times = ['Select'];
