@@ -470,17 +470,24 @@ export const getInterviewersByApplicantId =
         let queryParams = {
           jobapplicationId: applicantId,
         };
+        let interviewParams = {
+          jobapplicantid: applicantId,
+        }
         if (level) {
           queryParams = {
             ...queryParams,
             level: level,
           };
+          interviewParams = {
+            ...interviewParams,
+            interviewlevel: level,
+          }
         } 
         const res = await client.service("applicantinterviewers").find({
           query: queryParams,
-        });
+        }); 
         const interviewdetails = await client.service("interviewschedule").find({
-          query: {jobapplicantid:applicantId, interviewlevel:level},
+          query: interviewParams,
         }); 
         
         if (res) { 

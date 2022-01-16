@@ -1,3 +1,5 @@
+
+import _ from 'lodash'
 export default (state = {}, action) => {
   switch (action.type) {
     case "QUERY_JOBAPPLICANTIONS":
@@ -100,7 +102,7 @@ export default (state = {}, action) => {
     case "GET_APPLICANT_INTERVIEWERS":
       return {
         ...state,
-        applicantInterviewers: action.data
+        applicantInterviewers: _.sortBy(action.data, o => o.level),
       };
     default:
       return state;
