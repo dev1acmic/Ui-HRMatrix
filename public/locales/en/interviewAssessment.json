@@ -8,6 +8,7 @@
   "intrwQuestionnaire": "Interview Questionnaire",
   "backtoSkillMatrix": " Back To Skill Matrix",
   "noAccesstoLevel": "You will have to complete the previous level to have access to this level.",
+  "deniedAccesstoLevel": "You do not have access to this level.",
   "behaviour": {
     "weightage": "Weightage",
     "timeManagement": "Time Management",

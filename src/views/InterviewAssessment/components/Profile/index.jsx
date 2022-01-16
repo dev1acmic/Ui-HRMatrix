@@ -113,21 +113,21 @@ const Profile = (props) => {
                 variant="h3"
                 className={ classes.sTitle }
               >
-                {props.interviewschedule && props.interviewschedule.length>0
+                {props.hasAccess ? props.interviewschedule && props.interviewschedule.length>0
                   ? t(
                       `${InterviewMode.getNameByValue(
                         parseInt(props.interviewschedule[0].interviewtype)
                       )}`
                     )
-                  : "--"}
+                  : "--":'--'}
               </Typography>
               <Typography variant="h4" className={classes.mTitle}>
                 {t("profile.dateofInterview")}
               </Typography>
               <Typography variant="h3" className={classes.sTitle}>
-                {interviewLevel.interviewDate
+                {props.hasAccess ? interviewLevel.interviewDate
                   ? moment(interviewLevel.interviewDate).format("L")
-                  : moment().format("L")}
+                  : moment().format("L"):'--'}
               </Typography>
 
             </Box>
@@ -141,20 +141,21 @@ const Profile = (props) => {
                 variant="h3"
                 className={classNames(classes.sTitle, classes.noBmargin)}
               >
-                {interviewLevel.interviewpanel &&
+                {props.hasAccess ?interviewLevel.interviewpanel &&
                 interviewLevel.interviewpanel.users &&
                 interviewLevel.interviewpanel.users[0] &&
                 interviewLevel.interviewpanel.users[0].fname
                   ? interviewLevel.interviewpanel.users[0].fname +
                     " " +
                     interviewLevel.interviewpanel.users[0].lname
-                  : getName()}
+                  : getName():'--'}
               </Typography>
             </Box>
           </Box>
         </Box>
         {(role === Roles.Admin ||
           role === Roles.HiringManager ||
+          role === Roles.InterviewPanel ||
           role === Roles.TalentAcquisitionTeam) && (
           <Box
             style={{
