@@ -392,6 +392,8 @@ const AssignInterviewer = (props) => {
           props.jobPost && props.jobPost.id,
           interviewDetails.level
         );
+        
+      props.getInterviewersByApplicantId(applicantId, interviewDetails.level);
         setMessage('')
         setKey(0)
       } 
@@ -629,6 +631,7 @@ const AssignInterviewer = (props) => {
   }
 
   function handleSubmit() {
+    debugger
     setLoading(true)
     if (validateForm()) {
       setLoading(true);
@@ -684,8 +687,12 @@ const AssignInterviewer = (props) => {
       const interviewerid = state.ids.filter(
         (c) => c.interviewerid === user.id
       );
-      if (interviewerid && interviewerid.length > 0) {
+      if (interviewerid && interviewerid.length > 0) { 
         props.removeApplicantInterviewers(interviewerid[0].id);
+        const applicantinterviewer =  props.applicantInterviewers &&
+        props.applicantInterviewers.filter(c=>c.userId===interviewerid[0].interviewerid)
+        props.deleteApplicantInterviewers(applicantinterviewer[0].id);
+       
       }
     }
 

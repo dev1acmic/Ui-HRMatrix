@@ -81,7 +81,7 @@ const InterviewAssessment = (props) => {
   const [interviewQstns, setInterviewQstns] = React.useState(null);
   const [skills, setSkills] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  const [hasAccess, setHasAccess] = React.useState(false);
+  const [hasAccess, setHasAccess] = React.useState(true);
   const [noData, setNoData] = React.useState(false);
 
   const [contentLoading, setContentLoading] = React.useState(true);
@@ -100,7 +100,15 @@ const InterviewAssessment = (props) => {
 
   useEffect(() => {
     if (applicantId > 0) {
-      props.getInterviewersByApplicantId(applicantId, levelNo);
+      props.getApplicantAssessment(levelNo, applicantId).then(res => {
+        if (res) {
+          setNoData(false);
+        } else {
+          setNoData(true);
+        }
+      }); 
+      props.getInterviewersByApplicantId(applicantId, null);
+     
     }
   }, [levelNo, applicantId]);
 
@@ -160,7 +168,7 @@ const InterviewAssessment = (props) => {
     // }
     if (props.match.params && props.match.params.jobApplId) {
       jobApplId = parseInt(props.match.params.jobApplId);
-    }
+    } 
     if (jobApplId > 0) {
       if (props.location.state && props.location.state.candidates) {
         let candidates = props.location.state.candidates;
@@ -231,8 +239,7 @@ const InterviewAssessment = (props) => {
     }
   }, [props.jobApplication]);
 
-  useEffect(() => {
-    let assessment = props.assessment;
+  const loadAssessment = (assessment) => { 
     if (assessment && assessment.jobapplicationId === applicantId) {
       const {
         id,
@@ -312,8 +319,14 @@ const InterviewAssessment = (props) => {
         ...res,
       });
     } else {
+      let appln = props.jobApplication;
+          let skills = appln &&
+    appln.jobskills &&
+    appln.jobskills.map((c) => {
+      return { id: 0, skillId: c.skill.id, name: c.skill.name, score: 0 };
+    });
       setInterviewQstns(null);
-      setSkills(null);
+      setSkills(skills);
       setBehaviouralAssessment(null);
 
       const newState = { ...state };
@@ -343,29 +356,32 @@ const InterviewAssessment = (props) => {
         ...res,
       });
     }
+  }
+
+  useEffect(() => {
+    loadAssessment(props.assessment)
   }, [props.assessment]);
 
   useEffect(() => {
     if (props.applicantInterviewers) {
-      //if (props.applicantInterviewers.length > 0) {
+      //if (props.applicantInterviewers.length > 0) { 
       let levelNumber = levelNo;
       let userId = props.profile.id;
       let canEdit = false;
       let level;
-
+      let applicantInterviewers =  props.applicantInterviewers
       //check user has access to this interview level
       if (!levelNumber || levelNumber === 0) {
         for (
           let index = 0;
-          index < props.applicantInterviewers.length;
+          index < applicantInterviewers.length;
           index++
         ) {
-          const obj = props.applicantInterviewers[index];
-
+          const obj =  applicantInterviewers[index]; 
           if (obj.userId === userId) {
             setLevelNo(obj.level);
             levelNumber = obj.level;
-            checkAccess(obj.level);
+            checkAccess(obj.level, userId);
             canEdit =
               role === Roles.InterviewPanel
                 ? true
@@ -374,21 +390,28 @@ const InterviewAssessment = (props) => {
           }
         }
       } else {
-        checkAccess(levelNumber);
-        canEdit =
-          props.applicantInterviewers.findIndex(
-            (c) => c.level === levelNumber && c.userId === userId
-          ) !== -1;
+        checkAccess(levelNumber, userId);  
+        canEdit =  _.isEmpty(props.assessment)
       }
-      let interviewLevel = props.interviewLevel;
+      setPaginate({
+        ...paginate,
+        pageNo: 1,
+        candidates: applicantInterviewers,
+        totalPage: applicantInterviewers.length,
+      });
+      const interviewLevel = props.interviewLevel && props.interviewLevel.data.filter(el => {
+        return applicantInterviewers.some( f => {
+          return f.level === el.level
+        });
+      });
       if (interviewLevel) {
-        level = interviewLevel.data.find((c) => c.level === levelNumber) || {};
-        level.totalLevel =_.uniqBy(interviewLevel.data, function (e) {
+        level = interviewLevel.find((c) => c.level === levelNumber) || {};
+        level.totalLevel =_.uniqBy(props.applicantInterviewers, function (e) {
           return e.level;
         }).length;
         level.interviewDate = state.interviewDate;
         props.getInterviewQstnsByJobPost(state.jobpostId,levelNumber);
-        setLevelNo(levelNumber);
+        setLevelNo(levelNumber); 
         canEdit =
           canEdit &&
           props.jobApplication &&
@@ -463,30 +486,32 @@ const InterviewAssessment = (props) => {
   //   }
   // }, [props.interviewLevel]);
 
-  async function checkAccess(levelNo) {
-    if (role === Roles.InterviewPanel) {
-      let hasAccess = true;
-      if (levelNo > 1) {
-        hasAccess = await props.checkAssessmentAccess(levelNo - 1, applicantId);
-      }
+  async function checkAccess(levelNo, userId) {
 
-      if (hasAccess) {
-        setHasAccess(true);
-        props.getApplicantAssessment(levelNo, applicantId);
-      } else {
-        setHasAccess(false);
-      }
-      setNoData(false);
-    } else {
-      props.getApplicantAssessment(levelNo, applicantId).then((res) => {
-        if (res) {
-          setNoData(false);
-        } else {
-          setNoData(true);
-        }
-      });
-      setHasAccess(true);
-    }
+    setHasAccess(props.applicantInterviewers.filter(c=>c.userId===userId && c.level===levelNo).length);
+    // setNoData(props.applicantInterviewers.filter(c=>c.userId===userId && c.level===levelNo).length===0); 
+    // if (role === Roles.InterviewPanel) {
+    //   let hasAccess = true;
+    //   if (levelNo > 1) {
+    //     hasAccess = await props.checkAssessmentAccess(levelNo - 1, applicantId);
+    //   } 
+    //   if (hasAccess) {
+    //     setHasAccess(true);
+    //     props.getApplicantAssessment(levelNo, applicantId);
+    //   } else {
+    //     setHasAccess(false);
+    //   }
+    //   setNoData(false);
+    // } else {
+    //   props.getApplicantAssessment(levelNo, applicantId).then((res) => {
+    //     if (res) {
+    //       setNoData(false);
+    //     } else {
+    //       setNoData(true);
+    //     }
+    //   });
+    //   setHasAccess(true);
+    // }
 
     setContentLoading(false);
   }
@@ -755,16 +780,16 @@ const InterviewAssessment = (props) => {
 
   const handlePaginate = (next) => {
     let pageNo = paginate.pageNo + next;
-    --pageNo;
-
+    --pageNo; 
     const applicantId =
       paginate.candidates &&
       paginate.candidates.length > 0 &&
-      paginate.candidates.slice(pageNo * pageSize, (pageNo + 1) * pageSize);
+      paginate.candidates.slice(pageNo * pageSize, (pageNo + 1) * pageSize); 
+     
     if (applicantId) {
       props.getJobApplicationsById(applicantId);
       setApplicantId(parseInt(applicantId));
-      setPaginate({ ...paginate, pageNo: pageNo + 1 });
+      setPaginate({ ...paginate, pageNo: pageNo + 1 });   
     }
   };
 
@@ -782,7 +807,34 @@ const InterviewAssessment = (props) => {
 
   const handleChangeLevel = (next, level, totalLevel) => {
     let pageNo = level + next;
-    setLevelNo(pageNo);
+    setLevelNo(pageNo); 
+    loadAssessment(props.assessment)
+    // let appln = props.jobApplication;
+    // const {
+    //   behaviouralScore,
+    //   domainScore,
+    //   interviewScore,
+    //   skillScore,
+    // } = appln.jobpost;
+    // let skills =
+    // appln.jobskills &&
+    // appln.jobskills.map((c) => {
+    //   return { id: 0, skillId: c.skill.id, name: c.skill.name, score: 0 };
+    // });
+    // setInterviewQstns(null);
+    // setSkills(skills);
+    // setBehaviouralAssessment(null);
+    // setState({ 
+    //   initialbehaviouralWeightage: behaviouralScore,
+    //   initialdomainWeightage: domainScore,
+    //   initialinterviewWeightage: interviewScore,
+    //   initialskillWeightage: skillScore,
+    //   behaviouralWeightage: behaviouralScore,
+    //   domainWeightage: domainScore,
+    //   interviewWeightage: interviewScore,
+    //   skillWeightage: skillScore,
+    //   jobpostId: appln.jobpostId,
+    // });
   };
 
   const renderLoading = () => (
@@ -798,8 +850,7 @@ const InterviewAssessment = (props) => {
     >
       <CircularProgress className={classes.progress} size={20} />
     </div>
-  );
-
+  ); 
   return (
     <DashboardLayout title={t("common:dashboard")}>
       <Container
@@ -923,20 +974,20 @@ const InterviewAssessment = (props) => {
                     />{" "}
                     {t("next")}
                   </Button>
-                  {/* <Button
+                  <Button
                     onClick={() => handlePaginate(-1)}
                     disabled={paginate.pageNo === 1}
                   >
                     <ArrowBackOutlined size /> Previous
-                  </Button> */}
-                  {/* <Button
+                  </Button>
+                  <Button
                     onClick={() => handlePaginate(1)}
                     disabled={paginate.totalPage === paginate.pageNo}
                   >
                     <ArrowForwardOutlined />
                     Next
-                  </Button> */}
-                  {/* <Select
+                  </Button>
+                  <Select
                     value={levelNo}
                     margin="dense"
                     input={
@@ -949,7 +1000,7 @@ const InterviewAssessment = (props) => {
                     onChange={event => handleChangeLevel(event.target.value)}
                   >
                     {interviewLevel && renderLevels(interviewLevel.totalLevel)}
-                  </Select> */}
+                  </Select>
                 </>
               )}
               <Button
@@ -965,12 +1016,13 @@ const InterviewAssessment = (props) => {
               </Button>
             </div>
           </Grid>
-        )}
+        )} 
         {loading ? (
           renderLoading()
         ) : (
           <div>
             <Profile
+              hasAccess={hasAccess}
               applicant={applicant}
               interviewLevel={interviewLevel}
               interviewschedule={props.interviewschedule}
@@ -1105,7 +1157,7 @@ const InterviewAssessment = (props) => {
             ) : (
               <div className={classes.noAccessWrap}>
                 <Box>
-                  <Typography variant="h4">{t("noAccesstoLevel")}</Typography>
+                  <Typography variant="h4">{t("deniedAccesstoLevel")}</Typography>
                 </Box>
               </div>
             )}

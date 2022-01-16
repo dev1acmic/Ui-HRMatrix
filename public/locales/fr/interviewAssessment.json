@@ -8,6 +8,7 @@
   "intrwQuestionnaire": "questionnaire d'entretien",
   "backtoSkillMatrix": "Retour à la matrice de compétences",
   "noAccesstoLevel": "Vous devrez terminer le niveau précédent pour avoir accès à ce niveau.",
+  "deniedAccesstoLevel": "Vous n'avez pas accès à ce niveau.",
   "behaviour": {
     "weightage": "Poids",
     "timeManagement": "Gestion Du Temps",
