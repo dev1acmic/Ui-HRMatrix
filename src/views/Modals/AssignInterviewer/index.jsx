@@ -630,8 +630,7 @@ const AssignInterviewer = (props) => {
     return valid;
   }
 
-  function handleSubmit() {
-    debugger
+  function handleSubmit() { 
     setLoading(true)
     if (validateForm()) {
       setLoading(true);

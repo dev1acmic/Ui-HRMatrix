@@ -208,12 +208,12 @@ const Tracker = (props) => {
     });
   };
 
-  const interviewAssessment = (jobappId) => {
-    props.history.push({
+  const interviewAssessment = (jobappId, level) => {
+        props.history.push({
       pathname: "/rc/assessment",
-      state: { jobApplId: jobappId },
-      //state: { jobApplId: jobappId, level: 2 }
-    });
+      state: { jobApplId: jobappId,level: level },
+      //state: { jobApplId: jobappId,  }
+    }); 
   };
 
   useEffect(() => {
@@ -264,8 +264,8 @@ const Tracker = (props) => {
       // } else {
       //   openAlert();
       // }
-    } else if (role === Roles.InterviewPanel) {
-      interviewAssessment(applicant.id);
+    } else if (role === Roles.InterviewPanel) { 
+      interviewAssessment(applicant.id, applicant.applicantinterviewers && applicant.applicantinterviewers[0].level);
     } else {
       // if (
       //   share.checkCanidatePremiumMembership(

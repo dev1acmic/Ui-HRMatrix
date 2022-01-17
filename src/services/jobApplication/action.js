@@ -418,11 +418,11 @@ export const saveApplicantInterviewers = (data) => async (dispatch) => {
     interviewers.push(data.candidate)
     if (data.ids) { 
       let res = await client.service("interviewschedule").patch(null, {
-        subject: ischedule[0].subject,
-        message: ischedule[0].message,
-        interviewdate: ischedule[0].interviewdate,
-        fromtime: ischedule[0].fromtime,
-        totime: ischedule[0].totime,
+        subject: data.subject,
+        message: data.message,
+        interviewdate: data.interviewdate,
+        fromtime: data.fromtime,
+        totime: data.totime,
         isRemoved :false,
         users: interviewers
       }, { query: { id: { $in: data.ids } } });
