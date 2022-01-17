@@ -379,7 +379,7 @@ const InterviewAssessment = (props) => {
         ) {
           const obj =  applicantInterviewers[index]; 
           if (obj.userId === userId) {
-            setLevelNo(obj.level);
+            // setLevelNo(obj.level);
             levelNumber = obj.level;
             checkAccess(obj.level, userId);
             canEdit =
@@ -397,21 +397,21 @@ const InterviewAssessment = (props) => {
         ...paginate,
         pageNo: 1,
         candidates: applicantInterviewers,
-        totalPage: applicantInterviewers.length,
+        totalPage: props.interviewLevel.total,
       });
-      const interviewLevel = props.interviewLevel && props.interviewLevel.data.filter(el => {
-        return applicantInterviewers.some( f => {
-          return f.level === el.level
-        });
-      });
-      if (interviewLevel) {
+      const interviewLevel = props.interviewLevel && props.interviewLevel.data
+      
+      // props.interviewLevel && props.interviewLevel.data.filter(el => {
+      //   return applicantInterviewers.some( f => {
+      //     return f.level === el.level
+      //   });
+      // });
+      if (interviewLevel) {  
         level = interviewLevel.find((c) => c.level === levelNumber) || {};
-        level.totalLevel =_.uniqBy(props.applicantInterviewers, function (e) {
-          return e.level;
-        }).length;
+        level.totalLevel = interviewLevel.length;
         level.interviewDate = state.interviewDate;
         props.getInterviewQstnsByJobPost(state.jobpostId,levelNumber);
-        setLevelNo(levelNumber); 
+        // setLevelNo(levelNumber); 
         canEdit =
           canEdit &&
           props.jobApplication &&
