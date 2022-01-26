@@ -371,7 +371,7 @@ class Competancy extends Component {
     this.setState(newState);
     return newState.isValid;
   }, 300);
-
+  
   //Save Competancy
   saveCompetancy = async () => {
     const {
@@ -427,14 +427,16 @@ class Competancy extends Component {
       }
       data.tab = tab;
       //data.status = 1;
+      
+      const res = await this.props.updateJobPost(data, {
+        competencyError: errors,
+      });
       this.setState({
         ...this.state,
         touched: {},
         showError: false,
         showSuccess: true,
-      });
-      const res = await this.props.updateJobPost(data, {
-        competencyError: errors,
+        iscertUpdate:false
       });
       return res;
     } else {
@@ -940,7 +942,7 @@ class Competancy extends Component {
     return touched && Object.entries(touched).length > 0;
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) { 
     if (nextProps.skills && !prevState.suggestionFlag) {
       return {
         suggestions: nextProps.skills.map((t) => ({

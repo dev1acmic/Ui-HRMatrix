@@ -333,12 +333,10 @@ class Details extends Component {
     if (money) {
       const newState = { ...this.state };
       const curencyRegex =
-        /^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])?$/;
-      if (!curencyRegex.test(money)) {
-        this.setState({
-          commonError: true,
-          commonErrorMsg: "Invalid pay rate",
-        });
+        /^(?!0*[.,]?0+$)\d*[.,]?\d+$/;
+      if (!curencyRegex.test(money)) {  
+        newState.values.payRate = "";
+        this.setState(newState);
       } else {
         newState.commonError = false;
         newState.commonErrorMsg = "";
