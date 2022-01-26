@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { CircularProgress } from "@material-ui/core";
 import { ResponsiveBar } from "@nivo/bar";
+import _ from 'lodash'
 
 const BarChart = (props) => {
   const { isPrint } = props;
   const [applicantSkills, setApplicantSkills] = React.useState(null);
-  const exp = props.exp || null; //set as max value
+  const max_exp = props.applicantSkills && _.maxBy(props.applicantSkills, function(o) {
+    return o.exp;
+  }); //set as max value
+  const exp = max_exp && max_exp.exp;
   const [loading, setLoading] = React.useState(true);
   const yaxisValues = Array.from(Array(exp + 1).keys());
   useEffect(() => {
@@ -35,7 +39,7 @@ const BarChart = (props) => {
         }
         applicantSkill["Candidate skillColor"] = "#F1F1F1";
         applicantSkills.push(applicantSkill);
-      }
+      } 
       setApplicantSkills(applicantSkills);
       setLoading(false);
     }
@@ -61,7 +65,7 @@ const BarChart = (props) => {
   /**
    * Returns a tick element that wraps text for the given number of lines and adds an ellipsis if the text can't fit. This can be passed to the renderTick method.
    */
-  const HorizontalTick = ({ textAnchor, textBaseline, value, x, y }) => {
+  const HorizontalTick = ({ textAnchor, textBaseline, value, x, y }) => { 
     const MAX_LINE_LENGTH = 10;
     const MAX_LINES = 2;
     const LENGTH_OF_ELLIPSIS = 3;
