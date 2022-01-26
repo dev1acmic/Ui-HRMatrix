@@ -65,8 +65,7 @@ const BarChart = (props) => {
   /**
    * Returns a tick element that wraps text for the given number of lines and adds an ellipsis if the text can't fit. This can be passed to the renderTick method.
    */
-  const HorizontalTick = ({ textAnchor, textBaseline, value, x, y }) => {
-    debugger
+  const HorizontalTick = ({ textAnchor, textBaseline, value, x, y }) => { 
     const MAX_LINE_LENGTH = 10;
     const MAX_LINES = 2;
     const LENGTH_OF_ELLIPSIS = 3;
