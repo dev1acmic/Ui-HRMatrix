@@ -32,7 +32,7 @@ const checkAvailability = (jobStartDt, availableDt) => {
 };
 
 //Find the candidates avg job tenure (total experience/number of companies worked) and its >3
-const checkAvgJobTenure = (totalExp, noOfEmps) => {
+const checkAvgJobTenure = (totalExp, noOfEmps) => { 
 	return Math.floor(totalExp / noOfEmps);
 };
 
