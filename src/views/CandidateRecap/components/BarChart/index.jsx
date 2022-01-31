@@ -9,7 +9,7 @@ const BarChart = (props) => {
   const max_exp = props.applicantSkills && _.maxBy(props.applicantSkills, function(o) {
     return o.exp;
   }); //set as max value
-  const exp = max_exp && max_exp.exp;
+  const exp = max_exp && max_exp.exp + 1;
   const [loading, setLoading] = React.useState(true);
   const yaxisValues = Array.from(Array(exp + 1).keys());
   useEffect(() => {
