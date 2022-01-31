@@ -95,10 +95,9 @@ const NotificationList = (props) => {
           >
             {categoryIcon.icon}
           </ListItemIcon>
-          <ListItemText
-          style={{wordBreak:'break-all'}}
-            classes={{secondary: classes.listItemTextSecondary}}
-            primary={message}
+          <ListItemText 
+            classes={{secondary: classes.listItemTextSecondary}} 
+            primary={message.replace(/\xA0/g,' ')}
             secondary={moment(createdAt).fromNow()}
           />
         </ListItem>
