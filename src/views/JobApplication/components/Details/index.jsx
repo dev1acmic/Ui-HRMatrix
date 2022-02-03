@@ -246,11 +246,9 @@ const Details = forwardRef((props, ref) => {
   const format = (money) => {
     if (money) {
       const newState = { ...values };
-      const curencyRegex = /^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])?$/;
+      const curencyRegex = /^(?!0*[.,]?0+$)\d*[.,]?\d+$/;
       if (!curencyRegex.test(money)) {
-        setValues({ ...values, ["payRate"]: "" });
-        setErrMsg(true);
-        setErrMsg("Invalid pay rate");
+        setValues({ ...values, ["payRate"]: "" }); 
       } else {
         setErrMsg(false);
         newState.payRate = formatCurrency(money);
